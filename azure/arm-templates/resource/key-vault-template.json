@@ -1,0 +1,42 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "keyVault": {
+            "type": "object"
+        },
+        "containerRegistry": {
+            "type": "object"
+        },
+        "storageAccount": {
+            "type": "object"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2021-10-01",
+            "name": "[parameters('keyVault').name]",
+            "location": "[parameters('keyVault').location]",
+            "properties": {
+                "enabledForDeployment": "[parameters('keyVault').enabledForDeployment]",
+                "enabledForTemplateDeployment": "[parameters('keyVault').enabledForTemplateDeployment]",
+                "enabledForDiskEncryption": "[parameters('keyVault').enabledForDiskEncryption]",
+                "enableRbacAuthorization": "[parameters('keyVault').enableRbacAuthorization]",
+                "accessPolicies": "[parameters('keyVault').accessPolicies]",
+                "tenantId": "[parameters('keyVault').tenant]",
+                "sku": {
+                    "name": "[parameters('keyVault').sku]",
+                    "family": "A"
+                },
+                "publicNetworkAccess": "[parameters('keyVault').publicNetworkAccess]",
+                "enableSoftDelete": "[parameters('keyVault').enableSoftDelete]",
+                "softDeleteRetentionInDays": "[parameters('keyVault').softDeleteRetentionInDays]",
+                "networkAcls": "[parameters('keyVault').networkAcls]"
+            },
+            "tags": {},
+            "dependsOn": []
+        }
+    ],
+    "outputs": {}
+}

@@ -1,0 +1,43 @@
+﻿@model TechNews.Web.Models.UserModel;
+@{
+    ViewData["Title"] = "Tech News - Home";
+}
+
+<div class="py-5 rounded">
+    <div class="p-4 p-md-5 mb-4 row">
+        <div class="col-8 px-0">
+            <h1 class="display-4">O servidor das melhores notícias de tecnologia do mundo!</h1>
+            <p class="lead my-3">Desde Agosto de 2023, o Tech News gera as notícias automaticamente utilizando
+                <a class="link-offset-3 link-underline link-underline-opacity-0" href="https://mussumipsum.com/">Mussum
+                    Ipsum</a> para os textos,
+                <a class="link-offset-3 link-underline link-underline-opacity-0"
+                    href="https://picsum.photos/">Picsum</a> para as imagens.
+            </p>
+            <p class="lead my-3">
+                Mussum Ipsum, cacilds vidis litro abertis. Suco de cevadiss deixa as pessoas mais interessantis. Viva
+                Forevis aptent taciti sociosqu ad litora torquent. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh
+                non tellus tristique interdum. Diuretics paradis num copo é motivis de denguis.
+            </p>
+            @if (!Model.IsAuthenticated)
+            {
+                <p class="lead mb-0">
+                    <a href="/account/login" class="fw-bold link-offset-3 link-underline link-underline-opacity-0">Entre</a>
+                    ou
+                    <a href="/account" class="fw-bold link-offset-3 link-underline link-underline-opacity-0">Cadastre-se</a>
+                    para acessar todas as notícias.
+                </p>
+            }
+            @if (Model.IsAuthenticated)
+            {
+                <p class="lead mb-0">
+                    Clique 
+                    <a href="/news" class="fw-bold link-offset-3 link-underline link-underline-opacity-0">aqui</a>
+                    para acessar todas as notícias.
+                </p>
+            }
+        </div>
+        <div class="col-4">
+            <img src="https://picsum.photos/id/48/400" class="img-fluid rounded" alt="imagem notícia">
+        </div>
+    </div>
+</div>

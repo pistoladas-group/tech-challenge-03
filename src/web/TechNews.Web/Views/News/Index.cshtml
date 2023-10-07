@@ -1,0 +1,9 @@
+﻿@model List<TechNews.Web.Models.News>;
+@{
+    ViewData["Title"] = "TechNews";
+}
+
+@foreach(var post in @Model) 
+{
+    <vc:post news="@post"/>
+}

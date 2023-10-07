@@ -1,0 +1,86 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP.NET Core service.
+# Please note that all data here is not sensitive. For storing sensitive data, please check: https://docs.docker.com/compose/use-secrets/
+
+version: '3.4'
+
+services:
+
+    technews-database:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        container_name: technews-database
+        expose:
+            - 1433
+        ports:
+            - 14333:1433   
+        environment:
+            SA_PASSWORD: "Pass@123"
+            ACCEPT_EULA: "Y"
+        volumes:
+            - ./sql:/scripts/
+        command: /bin/bash ./scripts/entrypoint.sh
+    
+    technews-auth-api:
+        container_name: technews-auth-api
+        build: 
+            context: .
+            dockerfile: src/api/TechNews.Auth.Api/Dockerfile
+        restart: always  
+        ports:
+            - 7279:7279
+            - 5138:5138
+        environment: 
+            ASPNETCORE_ENVIRONMENT: Docker
+            ASPNETCORE_URLS: https://+:7279;http://+5138
+            TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING: Server=technews-database,1433;Initial Catalog=TechNewsAuth;User ID=tech-news-auth;Password=Pass@123;TrustServerCertificate=True;
+            ASPNETCORE_Kestrel__Certificates__Default__Password: OVmTv9lykb0)>m=wWcQaJ
+            ASPNETCORE_Kestrel__Certificates__Default__Path: /https/technews.pfx
+        volumes:
+            - ~/.aspnet/https:/https:ro
+        depends_on:
+            - technews-database
+
+    technews-core-api:
+        container_name: technews-core-api
+        build: 
+            context: .
+            dockerfile: src/api/TechNews.Core.Api/Dockerfile
+        restart: always    
+        ports:
+            - 7105:7105   
+            - 5142:5142   
+        environment: 
+            ASPNETCORE_ENVIRONMENT: Docker
+            ASPNETCORE_URLS: https://+:7105;http://+5142
+            TECHNEWS_CORE_API_DATABASE_CONNECTION_STRING: Server=technews-database,1433;Initial Catalog=TechNews;User ID=tech-news;Password=Pass@123;TrustServerCertificate=True
+            TECHNEWS_CORE_API_AUTH_JWKS_URL: https://localhost:7279/jwks
+            ASPNETCORE_Kestrel__Certificates__Default__Password: OVmTv9lykb0)>m=wWcQaJ
+            ASPNETCORE_Kestrel__Certificates__Default__Path: /https/technews.pfx
+        volumes:
+            - ~/.aspnet/https:/https:ro
+        depends_on:
+            - technews-database
+
+    technews-web:
+        container_name: technews-web
+        build:
+            context: .
+            dockerfile: src/web/TechNews.Web/Dockerfile
+        restart: always   
+        ports:
+            - 7283:7283         
+            - 5055:5055         
+        environment:
+            ASPNETCORE_ENVIRONMENT: Docker
+            ASPNETCORE_URLS: https://+:7283;http://+5055
+            LC_ALL: pt_BR.UTF-8
+            LANG: pt_BR.UTF-8
+            ASPNETCORE_Kestrel__Certificates__Default__Password: OVmTv9lykb0)>m=wWcQaJ
+            ASPNETCORE_Kestrel__Certificates__Default__Path: /https/technews.pfx
+            TECHNEWS_APP_API_AUTH_URL: https://localhost:7279
+        volumes:
+            - ~/.aspnet/https:/https:ro
+        depends_on:
+            - technews-database
+            - technews-auth-api
+            - technews-core-api
+

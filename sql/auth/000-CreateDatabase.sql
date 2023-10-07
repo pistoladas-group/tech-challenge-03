@@ -1,0 +1,35 @@
+USE master
+GO
+
+IF DB_ID('TechNewsAuth') IS NULL
+BEGIN
+    CREATE DATABASE TechNewsAuth
+END
+GO
+
+IF NOT EXISTS (SELECT name FROM master.sys.server_principals WHERE name = 'tech-news-auth')
+BEGIN
+    --select PWDENCRYPT('<senha>')
+    CREATE LOGIN [tech-news-auth] WITH
+        PASSWORD = 0x02001385969E568DE2C91A2FB75384814F5BA42C893414DE183E6B242CB9DF0809FD970D5F9D035BA76F708C1D0F1FFF30CF25A991C85B62F7E632394EA79BFFE7DD269280DC HASHED,
+        DEFAULT_DATABASE = TechNewsAuth
+END
+GO
+
+GRANT CREATE ANY DATABASE TO [tech-news-auth]
+GO
+
+USE TechNewsAuth
+GO
+
+IF NOT EXISTS (SELECT name FROM sys.database_principals WHERE name = 'tech-news-auth')
+BEGIN
+    CREATE USER [tech-news-auth] FOR LOGIN [tech-news-auth]
+END
+GO
+
+GRANT CREATE TABLE TO [tech-news-auth]
+GO
+
+GRANT SELECT,UPDATE,INSERT ON SCHEMA::dbo TO [tech-news-auth]
+GO

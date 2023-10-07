@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "keyVault": {
+            "value": {
+                "name": "npvaulttechnews",
+                "location": "brazilsouth",
+                "sku": "Standard",
+                "accessPolicies": [],
+                "tenant": "11dbbfe2-89b8-4549-be10-cec364e59551",
+                "enabledForDeployment": false,
+                "enabledForTemplateDeployment": true,
+                "enabledForDiskEncryption": false,
+                "enableRbacAuthorization": true,
+                "publicNetworkAccess": "Enabled",
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 90,
+                "networkAcls": {
+                    "defaultAction": "allow",
+                    "bypass": "AzureServices",
+                    "ipRules": [],
+                    "virtualNetworkRules": []
+                }
+            }
+        },
+        "containerRegistry": {
+            "value": {
+                "registryName": "acrtechnews",
+                "registryLocation": "brazilsouth",
+                "zoneRedundancy": "disabled",
+                "registrySku": "Standard",
+                "registryApiVersion": "2022-02-01-preview",
+                "tags": {},
+                "publicNetworkAccess": "Enabled"
+            }
+        },
+        "storageAccount": {
+            "value": {
+                "location": "brazilsouth",
+                "storageAccountName": "satechnews",
+                "accountType": "Standard_LRS",
+                "kind": "StorageV2",
+                "minimumTlsVersion": "TLS1_2",
+                "supportsHttpsTrafficOnly": true,
+                "allowBlobPublicAccess": true,
+                "allowSharedKeyAccess": true,
+                "defaultOAuth": false,
+                "accessTier": "Hot",
+                "publicNetworkAccess": "Enabled",
+                "allowCrossTenantReplication": true,
+                "networkAclsBypass": "AzureServices",
+                "networkAclsDefaultAction": "Allow",
+                "dnsEndpointType": "Standard",
+                "keySource": "Microsoft.Storage",
+                "encryptionEnabled": true,
+                "keyTypeForTableAndQueueEncryption": "Account",
+                "infrastructureEncryptionEnabled": false,
+                "isContainerRestoreEnabled": false,
+                "isBlobSoftDeleteEnabled": true,
+                "blobSoftDeleteRetentionDays": 7,
+                "isContainerSoftDeleteEnabled": true,
+                "containerSoftDeleteRetentionDays": 7,
+                "changeFeed": false,
+                "isVersioningEnabled": false,
+                "isShareSoftDeleteEnabled": true,
+                "shareSoftDeleteRetentionDays": 7
+            }
+        }
+    }
+}
