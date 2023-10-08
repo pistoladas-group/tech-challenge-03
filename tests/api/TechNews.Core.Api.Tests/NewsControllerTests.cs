@@ -30,7 +30,7 @@ public class NewsControllerTests : IClassFixture<TestsFixture>
     }
 
     [Fact]
-    public async void GetNewsById_ShouldReturnData_WhenValidIdIsProvided()
+    public async void GetNewsById_ShouldReturnOkWithData_WhenValidIdIsProvided()
     {
         //Arrange
         var dbContext = _testsFixture.GetDbContext();
