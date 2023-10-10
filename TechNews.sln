@@ -17,13 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechNews.Web", "src\web\Tec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{135F58D3-5690-417F-A20B-ECD106B212A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechNews.Common.Library", "src\shared\TechNews.Common.Library\TechNews.Common.Library.csproj", "{0205AF86-1AEA-4414-A4D5-51DE7EEBC0D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechNews.Common.Library", "src\shared\TechNews.Common.Library\TechNews.Common.Library.csproj", "{0205AF86-1AEA-4414-A4D5-51DE7EEBC0D3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B13517E0-0D56-4773-B295-A1870C392F2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{532E4F0C-F708-460B-A336-6154B0E1BE0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechNews.Core.Api.Tests", "tests\api\TechNews.Core.Api.Tests\TechNews.Core.Api.Tests.csproj", "{A4C45BE7-777C-4F60-A314-69BB22E531E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechNews.Core.Api.Tests", "tests\api\TechNews.Core.Api.Tests\TechNews.Core.Api.Tests.csproj", "{A4C45BE7-777C-4F60-A314-69BB22E531E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechNews.Auth.Api.Tests", "tests\api\TechNews.Auth.Api.Tests\TechNews.Auth.Api.Tests.csproj", "{933D10FE-0AE4-4D8E-8528-56E14E9A7B13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{A4C45BE7-777C-4F60-A314-69BB22E531E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4C45BE7-777C-4F60-A314-69BB22E531E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4C45BE7-777C-4F60-A314-69BB22E531E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{933D10FE-0AE4-4D8E-8528-56E14E9A7B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{933D10FE-0AE4-4D8E-8528-56E14E9A7B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{933D10FE-0AE4-4D8E-8528-56E14E9A7B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{933D10FE-0AE4-4D8E-8528-56E14E9A7B13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{0205AF86-1AEA-4414-A4D5-51DE7EEBC0D3} = {135F58D3-5690-417F-A20B-ECD106B212A8}
 		{532E4F0C-F708-460B-A336-6154B0E1BE0A} = {B13517E0-0D56-4773-B295-A1870C392F2D}
 		{A4C45BE7-777C-4F60-A314-69BB22E531E2} = {532E4F0C-F708-460B-A336-6154B0E1BE0A}
+		{933D10FE-0AE4-4D8E-8528-56E14E9A7B13} = {532E4F0C-F708-460B-A336-6154B0E1BE0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1904BB76-12DE-4DD8-BA2C-4A8D2566F470}
