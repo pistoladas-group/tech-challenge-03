@@ -1,3 +1,4 @@
+using Bogus;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -30,10 +31,36 @@ public class TestsFixture : IDisposable
         return _applicationDbContext;
     }
 
+    public News GetNewsWithAuthor()
+    {
+        var testAuthor = new Faker<Author>()
+            .CustomInstantiator(f =>
+                new Author(
+                    name: f.Name.FirstName(),
+                    email: f.Internet.Email(),
+                    imageSource: f.Image.PicsumUrl()
+                )
+            );
+
+        var author = testAuthor.Generate();
+
+        var testNews = new Faker<News>()
+            .CustomInstantiator(f =>
+                new News(
+                    title: string.Join(" ", f.Lorem.Words(f.Random.Number(5, 10))),
+                    description: f.Lorem.Paragraphs(),
+                    publishDate: f.Date.Recent(),
+                    author: author,
+                    imageSource: f.Image.PicsumUrl()
+                )
+            );
+
+        return testNews.Generate();
+    }
+
     public Guid AddNewsToDbContext()
     {
-        var author = new Author(name: "Everton", email: "everton.teste@gmail.com", imageSource: "https://picsum.photos/200/300");
-        var news = new News(title: "Noticinha de Teste", description: "testando notícias", publishDate: DateTime.UtcNow, author: author, imageSource: "https://picsum.photos/200");
+        var news = GetNewsWithAuthor();
 
         _applicationDbContext?.News.Add(news);
         _applicationDbContext?.SaveChanges();

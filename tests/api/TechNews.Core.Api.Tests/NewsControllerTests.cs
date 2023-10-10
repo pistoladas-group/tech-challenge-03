@@ -8,6 +8,7 @@ namespace TechNews.Core.Api.Tests;
 public class NewsControllerTests : IClassFixture<TestsFixture>
 {
     private TestsFixture _testsFixture { get; set; }
+
     public NewsControllerTests(TestsFixture testsFixture)
     {
         _testsFixture = testsFixture;
