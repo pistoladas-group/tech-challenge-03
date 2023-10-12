@@ -26,8 +26,10 @@ public class NewsControllerTests : IClassFixture<TestsFixture>
 
         //Assert
         var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
+
         Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
-        Assert.Null(_testsFixture.GetApiResponseFromObjectResult(objectResult)?.Data);
+        Assert.Null(apiResponse?.Data);
     }
 
     [Fact]
@@ -44,8 +46,11 @@ public class NewsControllerTests : IClassFixture<TestsFixture>
 
         //Assert
         var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
+        var apiResponseData = _testsFixture.ConvertDataFromObjectResult<News?>(objectResult);
+
         Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.OK);
-        Assert.NotNull(_testsFixture.GetApiResponseFromObjectResult(objectResult)?.Data);
-        Assert.Equal(_testsFixture.ConvertDataFromObjectResult<News?>(objectResult)?.Id, newsId);
+        Assert.NotNull(apiResponse?.Data);
+        Assert.Equal(apiResponseData?.Id, newsId);
     }
 }

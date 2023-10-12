@@ -12,6 +12,7 @@ namespace TechNews.Core.Api.Controllers;
 public class NewsController : ControllerBase
 {
     public ApplicationDbContext _context { get; set; }
+
     public NewsController(ApplicationDbContext context)
     {
         _context = context;
