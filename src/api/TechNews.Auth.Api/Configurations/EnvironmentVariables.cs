@@ -8,10 +8,10 @@ public static class EnvironmentVariables
     public static string? DatabaseConnectionString { get; private set; }
     public static string? DiscordWebhookId { get; private set; }
     public static string? DiscordWebhookToken { get; private set; }
-    public static int TokenExpirationInMinutes { get; private set; }
-    public static int KeyRotatorExecutionInMinutes { get; private set; }
-    public static int KeyCreationSizeInBits { get; private set; }
-    public static int KeyExpirationInDays { get; private set; }
+    public static int TokenExpirationInMinutes { get; private set; } = 10;
+    public static int KeyRotatorExecutionInMinutes { get; private set; } = 5;
+    public static int KeyCreationSizeInBits { get; private set; } = 2048;
+    public static int KeyExpirationInDays { get; private set; } = 30;
     public static string? CryptographicAlgorithm { get; private set; }
     public static string AzureKeyVaultUrl { get; private set; } = string.Empty;
 
@@ -52,35 +52,31 @@ public static class EnvironmentVariables
         AzureKeyVaultUrl = Environment.GetEnvironmentVariable("AZURE_KEY_VAULT_URL") ?? string.Empty;
 
         int.TryParse(Environment.GetEnvironmentVariable("TOKEN_EXPIRATION_IN_MINUTES"), out var parsedExpiration);
-        TokenExpirationInMinutes = parsedExpiration;
 
-        if (parsedExpiration == 0)
+        if (parsedExpiration > 0)
         {
-            TokenExpirationInMinutes = 10;
+            TokenExpirationInMinutes = parsedExpiration;
         }
 
         int.TryParse(Environment.GetEnvironmentVariable("KEY_ROTATOR_EXECUTION_IN_MINUTES"), out var parsedExecution);
-        KeyRotatorExecutionInMinutes = parsedExecution;
 
-        if (parsedExecution == 0)
+        if (parsedExecution > 0)
         {
-            KeyRotatorExecutionInMinutes = 5;
+            KeyRotatorExecutionInMinutes = parsedExecution;
         }
 
         int.TryParse(Environment.GetEnvironmentVariable("KEY_CREATION_SIZE_IN_BITS"), out var parsedSize);
-        KeyCreationSizeInBits = parsedSize;
 
-        if (parsedSize == 0)
+        if (parsedSize > 0)
         {
-            KeyCreationSizeInBits = 2048;
+            KeyCreationSizeInBits = parsedSize;
         }
 
         int.TryParse(Environment.GetEnvironmentVariable("KEY_EXPIRATION_IN_DAYS"), out var parsedDays);
-        KeyExpirationInDays = parsedDays;
 
-        if (parsedDays == 0)
+        if (parsedDays > 0)
         {
-            KeyExpirationInDays = 30;
+            KeyExpirationInDays = parsedDays;
         }
     }
 }
