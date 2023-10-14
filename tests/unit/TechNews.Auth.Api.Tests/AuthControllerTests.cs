@@ -170,10 +170,10 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         A.CallTo(() => httpContextFake.Request.Host).Returns(new HostString("localhost:5000"));
 
         A.CallTo(() => userManagerFake.GetClaimsAsync(createdUserFake))
-           .Returns(Task.FromResult<IList<Claim>>(_testsFixture.GetFakeClaims()));
+           .Returns(Task.FromResult(_testsFixture.GetFakeClaims()));
 
         A.CallTo(() => userManagerFake.GetRolesAsync(createdUserFake))
-           .Returns(Task.FromResult<IList<string>>(_testsFixture.GetFakeRoles()));
+           .Returns(Task.FromResult(_testsFixture.GetFakeRoles()));
 
         var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake)
         {
