@@ -22,6 +22,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
     }
 
     [Fact]
+    [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnBadRequest_WhenUserAlreadyExists()
     {
         // Arrange
@@ -57,6 +58,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
     }
 
     [Fact]
+    [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnBadRequest_WhenUserCreationDoesNotSucceed()
     {
         // Arrange
@@ -93,6 +95,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
     }
 
     [Fact]
+    [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnInternalError_WhenUserCreatedIsNotFound()
     {
         // Arrange
@@ -134,6 +137,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
     }
 
     [Fact]
+    [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnTokenWithAllClaims_WhenUserHasClaimsOrRoles()
     {
         // Arrange
@@ -219,6 +223,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
     }
 
     [Fact]
+    [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnTokenWithOnlyJwtClaims_WhenUserHasNoClaimsAndRoles()
     {
         // Arrange
@@ -294,6 +299,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
     }
 
     [Fact]
+    [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnInternalError_WhenNoCryptoKeyAvailable()
     {
         // Arrange
@@ -340,6 +346,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
     }
 
     [Fact]
+    [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnCreatedWithToken_WhenRequestIsValid()
     {
         // Arrange
@@ -399,5 +406,68 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         A.CallTo(() => userManagerFake.FindByIdAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
         A.CallTo(() => userManagerFake.CreateAsync(A<User>._, A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
         A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+    }
+
+    [Fact]
+    [Trait("Login User", "")]
+    public async void LoginAsync_xxx_xxx()
+    {
+        //    // Arrange
+        //    var userManagerFake = A.Fake<UserManager<User>>();
+        //    var signInManagerFake = A.Fake<SignInManager<User>>();
+        //    var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
+        //    var cryptoKeyFake = A.Fake<ICryptographicKey>();
+        //    var httpContextFake = A.Fake<HttpContext>();
+        //    var requestFake = _testsFixture.GetValidRegisterUserRequestModel();
+
+        //    if (requestFake.Id is null)
+        //    {
+        //        Assert.Fail($"Arrange not configured correctly. Property {nameof(requestFake.Id)} should not be null.");
+        //    }
+
+        //    var createdUserFake = new User(requestFake.Id.Value, requestFake.Email, requestFake.UserName);
+
+        //    A.CallTo(() => userManagerFake.FindByIdAsync(A<string>._))
+        //        .Returns(Task.FromResult<User?>(null));
+
+        //    A.CallTo(() => userManagerFake.CreateAsync(A<User>._, A<string>._))
+        //       .Returns(Task.FromResult(IdentityResult.Success));
+
+        //    A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
+        //       .Returns(Task.FromResult<User?>(createdUserFake));
+
+        //    A.CallTo(() => cryptographicKeyRetrieverFake.GetExistingKeyAsync())
+        //       .Returns(Task.FromResult<ICryptographicKey?>(cryptoKeyFake));
+
+        //    A.CallTo(() => cryptoKeyFake.GetSigningCredentials())
+        //       .Returns(_testsFixture.GetRsaSigningCredentials());
+
+        //    A.CallTo(() => httpContextFake.Request.Scheme).Returns("https");
+        //    A.CallTo(() => httpContextFake.Request.Host).Returns(new HostString("localhost:5000"));
+
+        //    var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake)
+        //    {
+        //        ControllerContext = new ControllerContext()
+        //        {
+        //            HttpContext = httpContextFake
+        //        }
+        //    };
+
+        //    // Act
+        //    var response = await controller.RegisterUserAsync(requestFake);
+
+        //    // Assert
+        //    var objectResult = (ObjectResult?)response;
+        //    var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
+        //    var accessToken = _testsFixture.GetAccessTokenFromApiResponse(apiResponse);
+
+        //    Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.Created);
+        //    Assert.NotNull(apiResponse?.Data);
+        //    Assert.True(accessToken?.ExpiresInSeconds > 0);
+        //    Assert.Equal("at+jwt", accessToken?.TokenType);
+        //    Assert.True(!string.IsNullOrWhiteSpace(accessToken?.AccessToken));
+        //    A.CallTo(() => userManagerFake.FindByIdAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+        //    A.CallTo(() => userManagerFake.CreateAsync(A<User>._, A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+        //    A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
     }
 }
