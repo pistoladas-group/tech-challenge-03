@@ -23,7 +23,7 @@ namespace TechNews.UI.Tests.StepDefinitions
             _landingPage.GoTo();
 
             // Assert
-            //Assert.True(_landingPage.IsRegisterPage());
+            Assert.True(_landingPage.IsPage());
         }
 
         [Given(@"the Register button is clicked")]

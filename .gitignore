@@ -478,3 +478,6 @@ $RECYCLE.BIN/
 
 # Env file
 .env
+
+# JetBrains Rider
+.idea/

@@ -13,6 +13,6 @@ public class TestsFixture
 
     public TestsFixture()
     {
-        SeleniumHelper = new SeleniumHelper(browser: Browser.Chrome, headless: true);
+        SeleniumHelper = new SeleniumHelper(browser: Browser.Chrome, headless: false);
     }
 }

@@ -13,8 +13,6 @@ public class LandingPage : PageObjectModel
 
     public bool IsPage()
     {
-        var text = Helper.GetElementTextByXPath("/html/body/app-root/app-identity-root/app-identity-account/div/h1");
-
-        return text.Contains("Cadastro");
+        return Helper.ElementExistsById("landing-page");
     }
 }

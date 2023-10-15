@@ -1,5 +1,4 @@
-﻿using System.IO;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
@@ -9,9 +8,9 @@ namespace TechNews.UI.Tests.Configuration;
 public class SeleniumHelper : IDisposable
 {
     // TODO: Deixar tudo dinâmico
-    private const string WEB_DRIVER_PATH = @"C:\Projects\tools\chromedriver_win32\";
-    private const int TIME_OUT_IN_SECONDS = 30;
-    private const string DOMAIN_URL = "http://localhost:4200";
+    private const string WEB_DRIVER_PATH = @"D:\chromedriver-win64\chromedriver-win64\";
+    private const int TIME_OUT_IN_SECONDS = 10;
+    private const string DOMAIN_URL = "https://localhost:7283";
     private const string SCREENSHOTS_FOLDER = "";
 
     private readonly IWebDriver WebDriver;
@@ -87,7 +86,7 @@ public class SeleniumHelper : IDisposable
     {
         return ElementExists(By.Id(id));
     }
-
+    
     public void FillTextInputById(string id, string value)
     {
         Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id)))
