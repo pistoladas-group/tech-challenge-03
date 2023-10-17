@@ -1,10 +1,9 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Security.Claims;
-using FakeItEasy;
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using FakeItEasy;
 using TechNews.Auth.Api.Controllers;
 using TechNews.Auth.Api.Data;
 using TechNews.Auth.Api.Models;

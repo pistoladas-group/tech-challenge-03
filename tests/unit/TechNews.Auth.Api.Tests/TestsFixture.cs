@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Bogus;
+using FakeItEasy;
 using TechNews.Auth.Api.Models;
 using TechNews.Common.Library.Models;
 using TechNews.Auth.Api.Data;
@@ -115,6 +116,28 @@ public class TestsFixture : IDisposable
             { "testRole1" },
             { "testRole2" }
         };
+    }
+
+    public List<ICryptographicKey> GetFakeJwksKeys()
+    {
+        var fakeKey = A.Fake<ICryptographicKey>();
+
+        A.CallTo(() => fakeKey.GetJsonWebKey())
+        .Returns(new JsonWebKeyModel()
+        {
+            KeyType = "RSA",
+            KeyId = Guid.NewGuid().ToString(),
+            Algorithm = "RS256",
+            Use = "sig",
+            Modulus = "AQAB",
+            Exponent = "0quLYDiZIxssFKreHcXeeUIbgyU-dctbQXTfBTbAKp4Jl_TH-FQt3EfBVbo2P_1bkH-6ofvDSkQDUbigOhN4zx7JwbjAl8P18-dgjxuhF9HRdZA2W54VxBspEuHhqpsFZKoH_409ywbnc0DtAT-OQR3oQ-6ZnJfUOkLvw7o62QSDyscEi_zh8NIAGQnBo98UVVWr6lbR_PIm7l_NZu0LAux-P5Av-CxAxf32Dvl6crfv_I8ME3_fRisfKaVn5qOt_XuSXmygtTtT94lwelCCuutT6VjjIe397j83yR6LDZACOY7aAw8dx_rb3TS-SgvxQoBshj3142B4RFTVwupyQQ"
+        });
+
+        var fakeKeys = new List<ICryptographicKey>();
+
+        fakeKeys.Add(fakeKey);
+
+        return fakeKeys;
     }
 
     public T? ConvertDataFromObjectResult<T>(ObjectResult? objectResult)

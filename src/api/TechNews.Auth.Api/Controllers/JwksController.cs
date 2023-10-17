@@ -31,11 +31,6 @@ public class JwksController : ControllerBase
 
         var result = new JwksResponseModel();
 
-        if (keys is null)
-        {
-            return Ok(result);
-        }
-
         foreach (var key in keys)
         {
             var jwk = key.GetJsonWebKey();
