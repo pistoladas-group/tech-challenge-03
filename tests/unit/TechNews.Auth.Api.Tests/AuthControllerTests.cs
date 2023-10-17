@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TechNews.Auth.Api.Controllers;
 using TechNews.Auth.Api.Data;
+using TechNews.Auth.Api.Models;
 using TechNews.Auth.Api.Services.KeyRetrievers;
 using TechNews.Core.Api.Tests;
 
@@ -30,18 +31,10 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var signInManagerFake = A.Fake<SignInManager<User>>();
         var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
         var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
-
         var requestFake = _testsFixture.GetValidRegisterUserRequestModel();
 
-        if (requestFake.Id is null)
-        {
-            Assert.Fail($"Arrange not configured correctly. Property {nameof(requestFake.Id)} should not be null.");
-        }
-
-        var existingUserFake = new User(requestFake.Id.Value, requestFake.Email, requestFake.UserName);
-
         A.CallTo(() => userManagerFake.FindByIdAsync(A<string>._))
-            .Returns(Task.FromResult<User?>(existingUserFake));
+        .Returns(Task.FromResult<User?>(_testsFixture.GetFakeUser()));
 
         // Act
         var response = await controller.RegisterUserAsync(requestFake);
@@ -200,6 +193,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
 
         Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.Created);
         Assert.NotNull(apiResponse?.Data);
+        Assert.Null(apiResponse?.Errors);
         Assert.True(accessToken?.ExpiresInSeconds > 0);
         Assert.Equal("at+jwt", accessToken?.TokenType);
         Assert.True(!string.IsNullOrWhiteSpace(accessToken?.AccessToken));
@@ -280,6 +274,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
 
         Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.Created);
         Assert.NotNull(apiResponse?.Data);
+        Assert.Null(apiResponse?.Errors);
         Assert.True(accessToken?.ExpiresInSeconds > 0);
         Assert.Equal("at+jwt", accessToken?.TokenType);
         Assert.True(!string.IsNullOrWhiteSpace(accessToken?.AccessToken));
@@ -400,6 +395,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
 
         Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.Created);
         Assert.NotNull(apiResponse?.Data);
+        Assert.Null(apiResponse?.Errors);
         Assert.True(accessToken?.ExpiresInSeconds > 0);
         Assert.Equal("at+jwt", accessToken?.TokenType);
         Assert.True(!string.IsNullOrWhiteSpace(accessToken?.AccessToken));
@@ -613,10 +609,87 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
 
         Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.OK);
         Assert.NotNull(apiResponse?.Data);
+        Assert.Null(apiResponse?.Errors);
         Assert.True(accessToken?.ExpiresInSeconds > 0);
         Assert.Equal("at+jwt", accessToken?.TokenType);
         Assert.True(!string.IsNullOrWhiteSpace(accessToken?.AccessToken));
         A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
         A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+    }
+
+    [Fact(DisplayName = "ShouldReturnBadRequest_WhenGuidEmpty")]
+    [Trait("Get User", "")]
+    public async void GetUser_ShouldReturnBadRequest_WhenGuidEmpty()
+    {
+        // Arrange
+        var userManagerFake = A.Fake<UserManager<User>>();
+        var signInManagerFake = A.Fake<SignInManager<User>>();
+        var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
+        var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
+
+        // Act
+        var response = await controller.GetUser(Guid.Empty);
+
+        // Assert
+        var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
+
+        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
+        Assert.Null(apiResponse?.Data);
+        Assert.True(apiResponse?.Errors?.Count > 0);
+        Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InvalidUser"));
+    }
+
+    [Fact(DisplayName = "ShouldReturnNotFound_WhenUserNotFound")]
+    [Trait("Get User", "")]
+    public async void GetUser_ShouldReturnNotFound_WhenUserNotFound()
+    {
+        // Arrange
+        var userManagerFake = A.Fake<UserManager<User>>();
+        var signInManagerFake = A.Fake<SignInManager<User>>();
+        var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
+        var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
+
+        A.CallTo(() => userManagerFake.FindByIdAsync(A<string>._))
+        .Returns(Task.FromResult<User?>(null));
+
+        // Act
+        var response = await controller.GetUser(Guid.NewGuid());
+
+        // Assert
+        var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
+
+        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.NotFound);
+        Assert.Null(apiResponse?.Data);
+        Assert.True(apiResponse?.Errors?.Count > 0);
+        Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "UserNotFound"));
+    }
+
+    [Fact(DisplayName = "ShouldReturnOk_WhenUserFound")]
+    [Trait("Get User", "")]
+    public async void GetUser_ShouldReturnOk_WhenUserFound()
+    {
+        // Arrange
+        var userManagerFake = A.Fake<UserManager<User>>();
+        var signInManagerFake = A.Fake<SignInManager<User>>();
+        var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
+        var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
+        var fakeUser = _testsFixture.GetFakeUser();
+
+        A.CallTo(() => userManagerFake.FindByIdAsync(A<string>._))
+        .Returns(Task.FromResult<User?>(fakeUser));
+
+        // Act
+        var response = await controller.GetUser(fakeUser.Id);
+
+        // Assert
+        var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
+
+        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.OK);
+        Assert.NotNull(apiResponse?.Data);
+        Assert.Null(apiResponse?.Errors);
+        Assert.Equal(fakeUser.Id, ((GetUserResponseModel?)apiResponse?.Data)?.Id);
     }
 }
