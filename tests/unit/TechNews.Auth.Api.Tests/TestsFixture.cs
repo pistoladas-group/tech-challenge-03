@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Bogus;
 using TechNews.Auth.Api.Models;
 using TechNews.Common.Library.Models;
+using TechNews.Auth.Api.Data;
 
 namespace TechNews.Core.Api.Tests;
 
@@ -29,6 +30,20 @@ public class TestsFixture : IDisposable
                     UserName = f.Internet.UserName(),
                     Password = validPassword,
                     Repassword = validPassword
+                }
+            );
+
+        return requestFake.Generate();
+    }
+
+    public LoginRequestModel GetValidLoginRequestModel()
+    {
+        var requestFake = new Faker<LoginRequestModel>()
+            .CustomInstantiator(f =>
+                new LoginRequestModel()
+                {
+                    Email = f.Internet.Email(),
+                    Password = new Faker().Internet.Password(length: 8, memorable: false, prefix: @"1aA@-")
                 }
             );
 
@@ -72,6 +87,16 @@ public class TestsFixture : IDisposable
         }
 
         return (AccessTokenResponse)apiResponse.Data;
+    }
+
+    public User GetFakeUser()
+    {
+        var userFake = new Faker<User>()
+            .CustomInstantiator(f =>
+                new User(Guid.NewGuid(), f.Internet.Email(), f.Internet.UserName())
+            );
+
+        return userFake.Generate();
     }
 
     public IList<Claim> GetFakeClaims()

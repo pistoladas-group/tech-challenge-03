@@ -21,7 +21,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         _testsFixture = testsFixture;
     }
 
-    [Fact]
+    [Fact(DisplayName = "ShouldReturnBadRequest_WhenUserAlreadyExists")]
     [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnBadRequest_WhenUserAlreadyExists()
     {
@@ -57,7 +57,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         A.CallTo(() => userManagerFake.FindByIdAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
     }
 
-    [Fact]
+    [Fact(DisplayName = "ShouldReturnBadRequest_WhenUserCreationDoesNotSucceed")]
     [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnBadRequest_WhenUserCreationDoesNotSucceed()
     {
@@ -94,7 +94,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         A.CallTo(() => userManagerFake.CreateAsync(A<User>._, A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
     }
 
-    [Fact]
+    [Fact(DisplayName = "ShouldReturnInternalError_WhenUserCreatedIsNotFound")]
     [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnInternalError_WhenUserCreatedIsNotFound()
     {
@@ -136,7 +136,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
     }
 
-    [Fact]
+    [Fact(DisplayName = "ShouldReturnTokenWithAllClaims_WhenUserHasClaimsOrRoles")]
     [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnTokenWithAllClaims_WhenUserHasClaimsOrRoles()
     {
@@ -222,7 +222,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
     }
 
-    [Fact]
+    [Fact(DisplayName = "ShouldReturnTokenWithOnlyJwtClaims_WhenUserHasNoClaimsAndRoles")]
     [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnTokenWithOnlyJwtClaims_WhenUserHasNoClaimsAndRoles()
     {
@@ -298,7 +298,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
     }
 
-    [Fact]
+    [Fact(DisplayName = "ShouldReturnInternalError_WhenNoCryptoKeyAvailable")]
     [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnInternalError_WhenNoCryptoKeyAvailable()
     {
@@ -345,7 +345,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
     }
 
-    [Fact]
+    [Fact(DisplayName = "ShouldReturnCreatedWithToken_WhenRequestIsValid")]
     [Trait("Register User", "")]
     public async void RegisterUserAsync_ShouldReturnCreatedWithToken_WhenRequestIsValid()
     {
@@ -408,66 +408,215 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
     }
 
-    [Fact]
+    [Fact(DisplayName = "ShouldReturnBadRequest_WhenUserNotFound")]
     [Trait("Login User", "")]
-    public async void LoginAsync_xxx_xxx()
+    public async void LoginAsync_ShouldReturnBadRequest_WhenUserNotFound()
     {
-        //    // Arrange
-        //    var userManagerFake = A.Fake<UserManager<User>>();
-        //    var signInManagerFake = A.Fake<SignInManager<User>>();
-        //    var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
-        //    var cryptoKeyFake = A.Fake<ICryptographicKey>();
-        //    var httpContextFake = A.Fake<HttpContext>();
-        //    var requestFake = _testsFixture.GetValidRegisterUserRequestModel();
+        // Arrange
+        var userManagerFake = A.Fake<UserManager<User>>();
+        var signInManagerFake = A.Fake<SignInManager<User>>();
+        var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
+        var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
 
-        //    if (requestFake.Id is null)
-        //    {
-        //        Assert.Fail($"Arrange not configured correctly. Property {nameof(requestFake.Id)} should not be null.");
-        //    }
+        var requestFake = _testsFixture.GetValidLoginRequestModel();
 
-        //    var createdUserFake = new User(requestFake.Id.Value, requestFake.Email, requestFake.UserName);
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
+            .Returns(Task.FromResult<User?>(null));
 
-        //    A.CallTo(() => userManagerFake.FindByIdAsync(A<string>._))
-        //        .Returns(Task.FromResult<User?>(null));
+        // Act
+        var response = await controller.LoginAsync(requestFake);
 
-        //    A.CallTo(() => userManagerFake.CreateAsync(A<User>._, A<string>._))
-        //       .Returns(Task.FromResult(IdentityResult.Success));
+        // Assert
+        var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        //    A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
-        //       .Returns(Task.FromResult<User?>(createdUserFake));
+        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
+        Assert.Null(apiResponse?.Data);
+        Assert.True(apiResponse?.Errors?.Count > 0);
+        Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InvalidRequest"));
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+    }
 
-        //    A.CallTo(() => cryptographicKeyRetrieverFake.GetExistingKeyAsync())
-        //       .Returns(Task.FromResult<ICryptographicKey?>(cryptoKeyFake));
+    [Fact(DisplayName = "ShouldReturnBadRequest_WhenUserHasNoUserName")]
+    [Trait("Login User", "")]
+    public async void LoginAsync_ShouldReturnBadRequest_WhenUserHasNoUserName()
+    {
+        // Arrange
+        var userManagerFake = A.Fake<UserManager<User>>();
+        var signInManagerFake = A.Fake<SignInManager<User>>();
+        var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
+        var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
 
-        //    A.CallTo(() => cryptoKeyFake.GetSigningCredentials())
-        //       .Returns(_testsFixture.GetRsaSigningCredentials());
+        var requestFake = _testsFixture.GetValidLoginRequestModel();
 
-        //    A.CallTo(() => httpContextFake.Request.Scheme).Returns("https");
-        //    A.CallTo(() => httpContextFake.Request.Host).Returns(new HostString("localhost:5000"));
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
+            .Returns(Task.FromResult<User?>(new User(Guid.NewGuid(), requestFake.Email, null)));
 
-        //    var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake)
-        //    {
-        //        ControllerContext = new ControllerContext()
-        //        {
-        //            HttpContext = httpContextFake
-        //        }
-        //    };
+        // Act
+        var response = await controller.LoginAsync(requestFake);
 
-        //    // Act
-        //    var response = await controller.RegisterUserAsync(requestFake);
+        // Assert
+        var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        //    // Assert
-        //    var objectResult = (ObjectResult?)response;
-        //    var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
-        //    var accessToken = _testsFixture.GetAccessTokenFromApiResponse(apiResponse);
+        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
+        Assert.Null(apiResponse?.Data);
+        Assert.True(apiResponse?.Errors?.Count > 0);
+        Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InvalidRequest"));
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+    }
 
-        //    Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.Created);
-        //    Assert.NotNull(apiResponse?.Data);
-        //    Assert.True(accessToken?.ExpiresInSeconds > 0);
-        //    Assert.Equal("at+jwt", accessToken?.TokenType);
-        //    Assert.True(!string.IsNullOrWhiteSpace(accessToken?.AccessToken));
-        //    A.CallTo(() => userManagerFake.FindByIdAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
-        //    A.CallTo(() => userManagerFake.CreateAsync(A<User>._, A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
-        //    A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+    [Fact(DisplayName = "ShouldReturnForbidden_WhenUserLockedOut")]
+    [Trait("Login User", "")]
+    public async void LoginAsync_ShouldReturnForbidden_WhenUserLockedOut()
+    {
+        // Arrange
+        var userManagerFake = A.Fake<UserManager<User>>();
+        var signInManagerFake = A.Fake<SignInManager<User>>();
+        var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
+        var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
+
+        var requestFake = _testsFixture.GetValidLoginRequestModel();
+
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
+            .Returns(Task.FromResult<User?>(_testsFixture.GetFakeUser()));
+
+        A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true))
+            .Returns(Task.FromResult(Microsoft.AspNetCore.Identity.SignInResult.LockedOut));
+
+        // Act
+        var response = await controller.LoginAsync(requestFake);
+
+        // Assert
+        var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
+
+        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.Forbidden);
+        Assert.Null(apiResponse?.Data);
+        Assert.True(apiResponse?.Errors?.Count > 0);
+        Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "LockedUser"));
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+        A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+    }
+
+    [Fact(DisplayName = "ShouldReturnBadRequest_WhenSignInFails")]
+    [Trait("Login User", "")]
+    public async void LoginAsync_ShouldReturnBadRequest_WhenSignInFails()
+    {
+        // Arrange
+        var userManagerFake = A.Fake<UserManager<User>>();
+        var signInManagerFake = A.Fake<SignInManager<User>>();
+        var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
+        var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
+
+        var requestFake = _testsFixture.GetValidLoginRequestModel();
+
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
+            .Returns(Task.FromResult<User?>(_testsFixture.GetFakeUser()));
+
+        A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true))
+            .Returns(Task.FromResult(Microsoft.AspNetCore.Identity.SignInResult.Failed));
+
+        // Act
+        var response = await controller.LoginAsync(requestFake);
+
+        // Assert
+        var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
+
+        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
+        Assert.Null(apiResponse?.Data);
+        Assert.True(apiResponse?.Errors?.Count > 0);
+        Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InvalidRequest"));
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+        A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+    }
+
+    [Fact(DisplayName = "ShouldReturnInternalError_WhenNoCryptoKeyAvailable")]
+    [Trait("Login User", "")]
+    public async void LoginAsync_ShouldReturnInternalError_WhenNoCryptoKeyAvailable()
+    {
+        // Arrange
+        var userManagerFake = A.Fake<UserManager<User>>();
+        var signInManagerFake = A.Fake<SignInManager<User>>();
+        var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
+        var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
+
+        var requestFake = _testsFixture.GetValidLoginRequestModel();
+
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
+            .Returns(Task.FromResult<User?>(_testsFixture.GetFakeUser()));
+
+        A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true))
+            .Returns(Task.FromResult(Microsoft.AspNetCore.Identity.SignInResult.Success));
+
+        A.CallTo(() => cryptographicKeyRetrieverFake.GetExistingKeyAsync())
+           .Returns(Task.FromResult<ICryptographicKey?>(null));
+
+        // Act
+        var response = await controller.LoginAsync(requestFake);
+
+        // Assert
+        var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
+
+        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.InternalServerError);
+        Assert.Null(apiResponse?.Data);
+        Assert.True(apiResponse?.Errors?.Count > 0);
+        Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InternalError"));
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+        A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+    }
+
+    [Fact(DisplayName = "ShouldReturnOkWithToken_WhenRequestIsValid")]
+    [Trait("Login User", "")]
+    public async void LoginAsync_ShouldReturnOkWithToken_WhenRequestIsValid()
+    {
+        // Arrange
+        var userManagerFake = A.Fake<UserManager<User>>();
+        var signInManagerFake = A.Fake<SignInManager<User>>();
+        var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
+        var cryptoKeyFake = A.Fake<ICryptographicKey>();
+        var httpContextFake = A.Fake<HttpContext>();
+        var requestFake = _testsFixture.GetValidLoginRequestModel();
+
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
+            .Returns(Task.FromResult<User?>(_testsFixture.GetFakeUser()));
+
+        A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true))
+            .Returns(Task.FromResult(Microsoft.AspNetCore.Identity.SignInResult.Success));
+
+        A.CallTo(() => cryptographicKeyRetrieverFake.GetExistingKeyAsync())
+           .Returns(Task.FromResult<ICryptographicKey?>(cryptoKeyFake));
+
+        A.CallTo(() => cryptoKeyFake.GetSigningCredentials())
+           .Returns(_testsFixture.GetRsaSigningCredentials());
+
+        A.CallTo(() => httpContextFake.Request.Scheme).Returns("https");
+        A.CallTo(() => httpContextFake.Request.Host).Returns(new HostString("localhost:5000"));
+
+        var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake)
+        {
+            ControllerContext = new ControllerContext()
+            {
+                HttpContext = httpContextFake
+            }
+        };
+
+        // Act
+        var response = await controller.LoginAsync(requestFake);
+
+        // Assert
+        var objectResult = (ObjectResult?)response;
+        var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
+        var accessToken = _testsFixture.GetAccessTokenFromApiResponse(apiResponse);
+
+        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.OK);
+        Assert.NotNull(apiResponse?.Data);
+        Assert.True(accessToken?.ExpiresInSeconds > 0);
+        Assert.Equal("at+jwt", accessToken?.TokenType);
+        Assert.True(!string.IsNullOrWhiteSpace(accessToken?.AccessToken));
+        A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
+        A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
     }
 }
