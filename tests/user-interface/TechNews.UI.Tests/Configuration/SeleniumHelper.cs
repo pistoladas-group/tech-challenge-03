@@ -101,13 +101,13 @@ public class SeleniumHelper : IDisposable
         selectElement.SelectByValue(value);
     }
 
-    public void ClickById(string id)
+    public void ClickElementById(string id)
     {
         Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id)))
             .Click();
     }
 
-    public void ClickByXPath(string xPath)
+    public void ClickElementByXPath(string xPath)
     {
         Wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(xPath)))
             .Click();
@@ -146,16 +146,8 @@ public class SeleniumHelper : IDisposable
 
     public void Dispose()
     {
-        Dispose(true);
+        WebDriver.Quit();
+        WebDriver.Dispose();
         GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            WebDriver.Quit();
-            WebDriver.Dispose();
-        }
     }
 }

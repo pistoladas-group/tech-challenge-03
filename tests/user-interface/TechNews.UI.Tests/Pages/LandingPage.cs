@@ -4,6 +4,9 @@ namespace TechNews.UI.Tests.Pages;
 
 public class LandingPage : PageObjectModel
 {
+    private const string PageIdentifierElementId = "landing-page";
+    private const string RegisterUserElementId = "btnRegisterUser";
+
     public LandingPage(SeleniumHelper helper) : base(helper) { }
 
     public void GoTo()
@@ -13,6 +16,11 @@ public class LandingPage : PageObjectModel
 
     public bool IsPage()
     {
-        return Helper.ElementExistsById("landing-page");
+        return Helper.ElementExistsById(PageIdentifierElementId);
+    }
+
+    public void ClickRegisterButton()
+    {
+        Helper.ClickElementById(RegisterUserElementId);
     }
 }

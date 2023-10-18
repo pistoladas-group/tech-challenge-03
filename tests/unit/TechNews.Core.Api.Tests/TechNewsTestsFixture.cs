@@ -31,7 +31,7 @@ public class TestsFixture : IDisposable
         return _applicationDbContext;
     }
 
-    public News GetNewsWithAuthor()
+    private News GetNewsWithAuthor()
     {
         var testAuthor = new Faker<Author>()
             .CustomInstantiator(f =>

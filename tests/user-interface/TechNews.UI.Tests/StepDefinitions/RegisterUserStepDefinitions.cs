@@ -9,10 +9,12 @@ namespace TechNews.UI.Tests.StepDefinitions
     {
         private readonly TestsFixture _fixture;
         private readonly LandingPage _landingPage;
+        private readonly RegisterPage _registerPage;
 
         public RegisterUserStepDefinitions(TestsFixture fixture)
         {
             _fixture = fixture;
+            _registerPage = new RegisterPage(_fixture.SeleniumHelper);
             _landingPage = new LandingPage(_fixture.SeleniumHelper);
         }
 
@@ -29,19 +31,31 @@ namespace TechNews.UI.Tests.StepDefinitions
         [Given(@"the Register button is clicked")]
         public void GivenTheRegisterButtonIsClicked()
         {
-            throw new PendingStepException();
+            // Arrange & Act
+            _landingPage.ClickRegisterButton();
+
+            // Assert
+            Assert.True(_registerPage.IsPage());
         }
 
         [When(@"the form is populated correctly")]
         public void WhenTheFormIsPopulatedCorrectly()
         {
-            throw new PendingStepException();
+            // Arrange & Act
+            _registerPage.FillFormCorrectly();
+
+            // Assert
+            Assert.True(_registerPage.CheckFormIsFilledUp());
         }
 
         [When(@"the submit button is clicked")]
         public void WhenTheSubmitButtonIsClicked()
         {
-            throw new PendingStepException();
+            // Arrange & Act
+            _registerPage.ClickSubmitButton();
+
+            // Assert
+            Assert.True(true);
         }
 
         [Then(@"the lector must be logged in")]
