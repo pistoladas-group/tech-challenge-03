@@ -9,11 +9,15 @@ public sealed class CommonStepDefinitions
 {
     private readonly TestsFixture _fixture;
     private readonly LandingPage _landingPage;
+    private readonly NavigationPage _navigationPage;
+    private readonly NewsPage _newsPage;
 
     public CommonStepDefinitions(TestsFixture fixture)
     {
         _fixture = fixture;
         _landingPage = new LandingPage(_fixture.SeleniumHelper);
+        _navigationPage = new NavigationPage(_fixture.SeleniumHelper);
+        _newsPage = new NewsPage(_fixture.SeleniumHelper);
     }
 
     [Given(@"the lector is at the landing page")]
@@ -29,12 +33,14 @@ public sealed class CommonStepDefinitions
     [Then(@"the lector must be logged in")]
     public void ThenTheLectorMustBeLoggedIn()
     {
-        throw new PendingStepException();
+        // Arrange & Act & Assert
+        Assert.True(_navigationPage.IsUserLoggedIn());
     }
 
     [Then(@"the lector must be redirected to the News Home page")]
     public void ThenTheLectorMustBeRedirectedToTheNewsHomePage()
     {
-        throw new PendingStepException();
+        // Arrange & Act & Assert
+        Assert.True(_newsPage.IsPage());
     }
 }

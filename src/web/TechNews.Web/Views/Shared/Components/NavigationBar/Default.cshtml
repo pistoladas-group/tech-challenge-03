@@ -9,15 +9,15 @@
                 </a>
             </div>
 
-            @if(Model.IsAuthenticated) 
+            @if (Model.IsAuthenticated)
             {
                 <div class="d-flex justify-content-end">
-                    <span class="text-light mx-2 px-2 mt-2 fw-bold">Olá, @Model.UserName</span>
-                    <a class="btn btn-light" href="/account/logout">Sair</a>
+                    <span id="txtLoggedUserName" class="text-light mx-2 px-2 mt-2 fw-bold">Olá, @Model.UserName</span>
+                    <a id="btnLogout" class="btn btn-light" href="/account/logout">Sair</a>
                 </div>
             }
 
-            @if(!Model.IsAuthenticated) 
+            @if (!Model.IsAuthenticated)
             {
                 <div class="d-flex justify-content-end text-light">
                     <a class="btn btn-light mx-2" href="/account">Cadastrar</a>

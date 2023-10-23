@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "TechNews";
 }
-
+<input type="hidden" id="news-page" />
 @foreach(var post in @Model) 
 {
     <vc:post news="@post"/>

@@ -7,23 +7,17 @@ namespace TechNews.UI.Tests.Configuration;
 
 public class SeleniumHelper : IDisposable
 {
-    // TODO: Deixar tudo dinâmico
-    private const string WEB_DRIVER_PATH = @"D:\chromedriver-win64\chromedriver-win64\";
-    private const int TIME_OUT_IN_SECONDS = 10;
-    private const string DOMAIN_URL = "https://localhost:7283";
-    private const string SCREENSHOTS_FOLDER = "";
-
     private readonly IWebDriver WebDriver;
     public WebDriverWait Wait;
 
     public SeleniumHelper(Browser browser, bool headless = true)
     {
-        WebDriver = WebDriverFactory.CreateWebDriver(browser, WEB_DRIVER_PATH, headless);
+        WebDriver = WebDriverFactory.CreateWebDriver(browser, EnvironmentVariables.WebDriverPath, headless);
 
         WebDriver.Manage().Window.Maximize();
-        WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(TIME_OUT_IN_SECONDS);
+        WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(EnvironmentVariables.MaxSecondsWaitingForPage);
 
-        Wait = new WebDriverWait(WebDriver, TimeSpan.FromSeconds(TIME_OUT_IN_SECONDS));
+        Wait = new WebDriverWait(WebDriver, TimeSpan.FromSeconds(EnvironmentVariables.MaxSecondsWaitingForPage));
     }
 
     public string GetUrl()
@@ -38,7 +32,7 @@ public class SeleniumHelper : IDisposable
 
     public void GoToUrl(string path)
     {
-        WebDriver.Navigate().GoToUrl($"{DOMAIN_URL}/{path}");
+        WebDriver.Navigate().GoToUrl($"{EnvironmentVariables.TechNewsWebUri}/{path}");
     }
 
     public void ClickLinkByText(string linkText)
@@ -82,11 +76,16 @@ public class SeleniumHelper : IDisposable
         return Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id))).GetAttribute("value");
     }
 
+    public string GetElementInnerHtmlById(string id)
+    {
+        return Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id))).GetAttribute("innerHTML");
+    }
+
     public bool ElementExistsById(string id)
     {
         return ElementExists(By.Id(id));
     }
-    
+
     public void FillTextInputById(string id, string value)
     {
         Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id)))
@@ -141,7 +140,7 @@ public class SeleniumHelper : IDisposable
 
     private void SaveScreenshot(Screenshot screenshot, string fileName)
     {
-        screenshot.SaveAsFile($"{SCREENSHOTS_FOLDER}{fileName}");
+        screenshot.SaveAsFile($"{EnvironmentVariables.ScreenshotsFolderPath}{fileName}");
     }
 
     public void Dispose()

@@ -105,7 +105,7 @@ this.ScenarioInitialize(scenarioInfo);
     testRunner.And("the login button is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 6
-    testRunner.When("the login form is populated correctly", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("the login form is populated with a registered lector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
     testRunner.And("the login submit button is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

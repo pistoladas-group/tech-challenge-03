@@ -13,6 +13,8 @@ public class TestsFixture
 
     public TestsFixture()
     {
+        EnvironmentVariables.LoadVariables();
+
         SeleniumHelper = new SeleniumHelper(browser: Browser.Chrome, headless: false);
     }
 }

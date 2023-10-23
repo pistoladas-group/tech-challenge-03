@@ -41,6 +41,7 @@ public sealed class RegisterUserStepDefinitions
     [When(@"the register submit button is clicked")]
     public void WhenTheRegisterSubmitButtonIsClicked()
     {
-        throw new PendingStepException();
+        // Arrange & Act & Assert
+        _registerPage.ClickSubmitButton();
     }
 }
