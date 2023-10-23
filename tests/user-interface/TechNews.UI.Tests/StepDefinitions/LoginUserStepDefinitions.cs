@@ -33,18 +33,56 @@ public sealed class LoginUserStepDefinitions
         Assert.True(_loginPage.IsPage());
     }
 
-    [When(@"the login form is populated with a registered lector")]
+    [Given(@"the login form is populated with a registered lector")]
     public void WhenTheLoginFormIsPopulatedWithARegisteredLector()
     {
         // Arrange
         var registeredUser = RegisterUserAndGoToLoginPage();
 
         // Act
-        _loginPage.FillFormCorrectly(registeredUser);
+        _loginPage.FillFormWithUser(registeredUser);
 
         // Assert
         Assert.True(_loginPage.CheckFormIsFilledUp());
     }
+
+    [Given(@"the login form is populated with an unexistent lector")]
+    public void WhenTheLoginFormIsPopulatedWithAnUnexistentLector()
+    {
+        // Arrange & Act
+        _loginPage.FillFormRandomly();
+
+        // Assert
+        Assert.True(_loginPage.CheckFormIsFilledUp());
+    }
+
+    [Given(@"the password is incorrect")]
+    public void GivenThePasswordIsIncorrect()
+    {
+        // Arrange & Act
+        _loginPage.FillFormWithRandomPassword();
+
+        // Assert
+        Assert.True(_loginPage.CheckFormIsFilledUp());
+    }
+
+    [Given(@"the email is incorrect")]
+    public void GivenTheEmailIsIncorrect()
+    {
+        // Arrange & Act
+        _loginPage.FillFormWithRandomPassword();
+
+        // Assert
+        Assert.True(_loginPage.CheckFormIsFilledUp());
+    }
+
+    [Given(@"the login form is not populated")]
+    public void GivenTheLoginFormIsNotPopulated()
+    {
+        // Arrange & Act & Assert
+        Assert.True(_loginPage.CheckFormIsNotFilledUp());
+    }
+
 
     [When(@"the login submit button is clicked")]
     public void WhenTheLoginSubmitButtonIsClicked()
@@ -52,6 +90,67 @@ public sealed class LoginUserStepDefinitions
         // Arrange & Act & Assert
         _loginPage.ClickSubmitButton();
     }
+
+    [When(@"the login button is clicked")]
+    public void WhenTheLoginButtonIsClicked()
+    {
+        // Arrange & Act & Assert
+        _landingPage.ClickLoginButton();
+    }
+
+    [When(@"the login link is clicked")]
+    public void WhenTheLoginLinkIsClicked()
+    {
+        // Arrange & Act & Assert
+        _registerPage.ClickLoginLink();
+    }
+
+    [When(@"the login submit button is clicked more than three times")]
+    public void WhenTheLoginSubmitButtonIsClickedMoreThanThreeTimes()
+    {
+        // Arrange & Act & Assert
+        _loginPage.ClickSubmitButton();
+        Thread.Sleep(TimeSpan.FromSeconds(1));
+        _loginPage.ClickSubmitButton();
+        Thread.Sleep(TimeSpan.FromSeconds(1));
+        _loginPage.ClickSubmitButton();
+    }
+
+
+    [Then(@"a generic error message appears")]
+    public void ThenAGenericErrorMessageAppears()
+    {
+        // Arrange & Act & Assert
+        _loginPage.IsErrorShownEqualTo("Usuário ou senha inválidos");
+    }
+
+    [Then(@"the lector must be redirected to the login page")]
+    public void ThenTheLectorMustBeRedirectedToTheLoginPage()
+    {
+        // Arrange & Act & Assert
+        Assert.True(_loginPage.IsPage());
+    }
+
+    [Then(@"a lockout message appears")]
+    public void ThenALockoutMessageAppears()
+    {
+        // Arrange & Act & Assert
+        _loginPage.ContainsInShownWarning("Número máximo de tentativas de login excedido");
+    }
+
+    [Then(@"the user remains in the login page")]
+    public void ThenTheUserRemainsInTheLoginPage()
+    {
+        // Assert & Act & Assert
+        Assert.True(_loginPage.IsPage());
+    }
+
+    [Then(@"error indicators are shown")]
+    public void ThenErrorIndicatorsAreShown()
+    {
+        throw new PendingStepException();
+    }
+
 
     private UserModel RegisterUserAndGoToLoginPage()
     {

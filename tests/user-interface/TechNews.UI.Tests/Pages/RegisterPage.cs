@@ -12,6 +12,7 @@ public class RegisterPage : PageObjectModel
     private const string PasswordElementId = "txtPassword";
     private const string ConfirmPasswordElementId = "txtConfirmPassword";
     private const string RegisterUserElementId = "btnRegisterUser";
+    private const string LoginLinkElementId = "lnkLogin";
 
     public RegisterPage(SeleniumHelper helper) : base(helper) { }
 
@@ -62,5 +63,10 @@ public class RegisterPage : PageObjectModel
         ClickSubmitButton();
 
         return registeredUser;
+    }
+
+    public void ClickLoginLink()
+    {
+        Helper.ClickElementById(LoginLinkElementId);
     }
 }
