@@ -19,7 +19,7 @@ namespace TechNews.UI.Tests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class RegisterUserFeature : object, Xunit.IClassFixture<RegisterUserFeature.FixtureData>, System.IDisposable
+    public partial class LoginUserFeature : object, Xunit.IClassFixture<LoginUserFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace TechNews.UI.Tests.Features
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "RegisterUser.feature"
+#line 1 "LoginUser.feature"
 #line hidden
         
-        public RegisterUserFeature(RegisterUserFeature.FixtureData fixtureData, TechNews_UI_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public LoginUserFeature(LoginUserFeature.FixtureData fixtureData, TechNews_UI_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace TechNews.UI.Tests.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Register User", null, ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Login User", null, ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,14 +80,14 @@ namespace TechNews.UI.Tests.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Registering user successfully")]
-        [Xunit.TraitAttribute("FeatureTitle", "Register User")]
-        [Xunit.TraitAttribute("Description", "Registering user successfully")]
-        public void RegisteringUserSuccessfully()
+        [Xunit.SkippableFactAttribute(DisplayName="Login user successfully")]
+        [Xunit.TraitAttribute("FeatureTitle", "Login User")]
+        [Xunit.TraitAttribute("Description", "Login user successfully")]
+        public void LoginUserSuccessfully()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Registering user successfully", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login user successfully", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 3
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -102,13 +102,13 @@ this.ScenarioInitialize(scenarioInfo);
     testRunner.Given("the lector is at the landing page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 5
-    testRunner.And("the register button is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("the login button is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 6
-    testRunner.When("the register form is populated correctly", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("the login form is populated correctly", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
-    testRunner.And("the register submit button is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("the login submit button is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 8
     testRunner.Then("the lector must be logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -127,12 +127,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                RegisterUserFeature.FeatureSetup();
+                LoginUserFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                RegisterUserFeature.FeatureTearDown();
+                LoginUserFeature.FeatureTearDown();
             }
         }
     }
