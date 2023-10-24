@@ -44,7 +44,7 @@ public class TestsFixture : IDisposable
                 new LoginRequestModel()
                 {
                     Email = f.Internet.Email(),
-                    Password = new Faker().Internet.Password(length: 8, memorable: false, prefix: @"1aA@-")
+                    Password = f.Internet.Password(length: 8, memorable: false, prefix: @"1aA@-")
                 }
             );
 

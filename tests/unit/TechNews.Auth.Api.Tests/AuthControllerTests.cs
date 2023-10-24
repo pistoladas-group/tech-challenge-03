@@ -42,7 +42,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
+        Assert.Equal((int)HttpStatusCode.BadRequest, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "UserAlreadyExists"));
@@ -79,7 +79,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
+        Assert.Equal((int)HttpStatusCode.BadRequest, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         A.CallTo(() => userManagerFake.FindByIdAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
@@ -119,7 +119,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.InternalServerError);
+        Assert.Equal((int)HttpStatusCode.InternalServerError, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InternalError"));
@@ -190,7 +190,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var handler = new JwtSecurityTokenHandler();
         var jsonToken = handler.ReadToken(accessToken?.AccessToken) as JwtSecurityToken;
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.Created);
+        Assert.Equal((int)HttpStatusCode.Created, objectResult?.StatusCode);
         Assert.NotNull(apiResponse?.Data);
         Assert.Null(apiResponse?.Errors);
         Assert.True(accessToken?.ExpiresInSeconds > 0);
@@ -271,7 +271,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var handler = new JwtSecurityTokenHandler();
         var jsonToken = handler.ReadToken(accessToken?.AccessToken) as JwtSecurityToken;
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.Created);
+        Assert.Equal((int)HttpStatusCode.Created, objectResult?.StatusCode);
         Assert.NotNull(apiResponse?.Data);
         Assert.Null(apiResponse?.Errors);
         Assert.True(accessToken?.ExpiresInSeconds > 0);
@@ -330,7 +330,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.InternalServerError);
+        Assert.Equal((int)HttpStatusCode.InternalServerError, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InternalError"));
@@ -392,7 +392,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
         var accessToken = _testsFixture.GetAccessTokenFromApiResponse(apiResponse);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.Created);
+        Assert.Equal((int)HttpStatusCode.Created, objectResult?.StatusCode);
         Assert.NotNull(apiResponse?.Data);
         Assert.Null(apiResponse?.Errors);
         Assert.True(accessToken?.ExpiresInSeconds > 0);
@@ -425,7 +425,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
+        Assert.Equal((int)HttpStatusCode.BadRequest, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InvalidRequest"));
@@ -454,7 +454,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
+        Assert.Equal((int)HttpStatusCode.BadRequest, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InvalidRequest"));
@@ -486,7 +486,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.Forbidden);
+        Assert.Equal((int)HttpStatusCode.Forbidden, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "LockedUser"));
@@ -519,7 +519,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
+        Assert.Equal((int)HttpStatusCode.BadRequest, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InvalidRequest"));
@@ -555,7 +555,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.InternalServerError);
+        Assert.Equal((int)HttpStatusCode.InternalServerError, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InternalError"));
@@ -606,7 +606,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
         var accessToken = _testsFixture.GetAccessTokenFromApiResponse(apiResponse);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.OK);
+        Assert.Equal((int)HttpStatusCode.OK, objectResult?.StatusCode);
         Assert.NotNull(apiResponse?.Data);
         Assert.Null(apiResponse?.Errors);
         Assert.True(accessToken?.ExpiresInSeconds > 0);
@@ -633,7 +633,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.BadRequest);
+        Assert.Equal((int)HttpStatusCode.BadRequest, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InvalidUser"));
@@ -659,7 +659,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.NotFound);
+        Assert.Equal((int)HttpStatusCode.NotFound, objectResult?.StatusCode);
         Assert.Null(apiResponse?.Data);
         Assert.True(apiResponse?.Errors?.Count > 0);
         Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "UserNotFound"));
@@ -686,7 +686,7 @@ public class AuthControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.OK);
+        Assert.Equal((int)HttpStatusCode.OK, objectResult?.StatusCode);
         Assert.NotNull(apiResponse?.Data);
         Assert.Null(apiResponse?.Errors);
         Assert.Equal(fakeUser.Id, ((GetUserResponseModel?)apiResponse?.Data)?.Id);

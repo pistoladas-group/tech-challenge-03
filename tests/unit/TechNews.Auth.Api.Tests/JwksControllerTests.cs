@@ -35,7 +35,7 @@ public class JwksControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = (JwksResponseModel?)objectResult?.Value;
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.OK);
+        Assert.Equal((int)HttpStatusCode.OK, objectResult?.StatusCode);
         Assert.Equal(0, apiResponse?.Keys.Count);
     }
 
@@ -57,7 +57,7 @@ public class JwksControllerTests : IClassFixture<TestsFixture>
         var objectResult = (ObjectResult?)response;
         var apiResponse = (JwksResponseModel?)objectResult?.Value;
 
-        Assert.Equal(objectResult?.StatusCode, (int)HttpStatusCode.OK);
+        Assert.Equal((int)HttpStatusCode.OK, objectResult?.StatusCode);
         Assert.True(apiResponse?.Keys.Count > 0);
     }
 }
