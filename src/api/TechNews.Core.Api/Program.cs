@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
+using TechNews.Common.Library.Middlewares;
 using TechNews.Core.Api.Configurations;
-using TechNews.Core.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 

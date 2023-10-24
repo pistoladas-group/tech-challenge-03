@@ -1,5 +1,5 @@
 using TechNews.Auth.Api.Configurations;
-using TechNews.Auth.Api.Middlewares;
+using TechNews.Common.Library.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 

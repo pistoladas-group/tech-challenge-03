@@ -1,5 +1,5 @@
+using TechNews.Common.Library.Middlewares;
 using TechNews.Web.Configurations;
-using TechNews.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 

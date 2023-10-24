@@ -1,4 +1,6 @@
-﻿namespace TechNews.Web.Middlewares;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace TechNews.Common.Library.Middlewares;
 
 public class ResponseHeaderMiddleware
 {
