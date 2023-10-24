@@ -1,4 +1,4 @@
-namespace TechNews.Auth.Api.Middlewares;
+﻿namespace TechNews.Core.Api.Middlewares;
 
 public class ResponseHeaderMiddleware
 {

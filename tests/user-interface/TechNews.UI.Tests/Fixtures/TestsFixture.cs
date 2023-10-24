@@ -15,6 +15,6 @@ public class TestsFixture
     {
         EnvironmentVariables.LoadVariables();
 
-        SeleniumHelper = new SeleniumHelper(browser: Browser.Chrome, headless: false);
+        SeleniumHelper = new SeleniumHelper(browser: Browser.Chrome, headless: true);
     }
 }

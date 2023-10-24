@@ -21,7 +21,7 @@ public static class WebDriverFactory
 
                 if (headless)
                 {
-                    options.AddArgument("--headless");
+                    options.AddArguments("--headless", "--disable-gpu", "--window-size=1920,1200", "--ignore-certificate-errors");
                 }
 
                 webDriver = new ChromeDriver(driverPath, options);

@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using TechNews.Core.Api.Configurations;
+using TechNews.Core.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ var app = builder.Build();
 
 app.UseSwaggerConfiguration();
 app.UseHttpsRedirection();
+app.UseMiddleware<ResponseHeaderMiddleware>();
 app.UseAuthConfiguration();
 app.MapControllers();
 app.MigrateDatabase();

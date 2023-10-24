@@ -1,4 +1,5 @@
 using TechNews.Web.Configurations;
+using TechNews.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ var app = builder.Build();
 
 app.UseHsts();
 app.UseHttpsRedirection();
+app.UseMiddleware<ResponseHeaderMiddleware>();
 app.UseStaticFiles();
 
 app.UseRouting();
