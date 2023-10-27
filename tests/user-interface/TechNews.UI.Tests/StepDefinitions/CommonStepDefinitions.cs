@@ -7,17 +7,15 @@ namespace TechNews.UI.Tests.StepDefinitions;
 [Collection(nameof(TestsFixtureCollection))]
 public sealed class CommonStepDefinitions
 {
-    private readonly TestsFixture _fixture;
     private readonly LandingPage _landingPage;
     private readonly NavigationPage _navigationPage;
     private readonly NewsPage _newsPage;
 
     public CommonStepDefinitions(TestsFixture fixture)
     {
-        _fixture = fixture;
-        _landingPage = new LandingPage(_fixture.SeleniumHelper);
-        _navigationPage = new NavigationPage(_fixture.SeleniumHelper);
-        _newsPage = new NewsPage(_fixture.SeleniumHelper);
+        _landingPage = new LandingPage(fixture.SeleniumHelper);
+        _navigationPage = new NavigationPage(fixture.SeleniumHelper);
+        _newsPage = new NewsPage(fixture.SeleniumHelper);
     }
 
     [Given(@"the lector is at the landing page")]

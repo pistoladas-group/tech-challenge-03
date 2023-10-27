@@ -17,10 +17,10 @@ public sealed class LoginUserStepDefinitions
     public LoginUserStepDefinitions(TestsFixture fixture)
     {
         _fixture = fixture;
-        _loginPage = new LoginPage(_fixture.SeleniumHelper);
-        _registerPage = new RegisterPage(_fixture.SeleniumHelper);
-        _navigationPage = new NavigationPage(_fixture.SeleniumHelper);
-        _landingPage = new LandingPage(_fixture.SeleniumHelper);
+        _loginPage = new LoginPage(fixture.SeleniumHelper);
+        _registerPage = new RegisterPage(fixture.SeleniumHelper);
+        _navigationPage = new NavigationPage(fixture.SeleniumHelper);
+        _landingPage = new LandingPage(fixture.SeleniumHelper);
     }
 
     [Given(@"the login button is clicked")]
@@ -156,11 +156,14 @@ public sealed class LoginUserStepDefinitions
     {
         _landingPage.GoTo();
         _landingPage.ClickRegisterButton();
-        var registeredUser = _registerPage.RegisterUser();
+        
+        var user = _fixture.GetValidUser();
+        
+        _registerPage.RegisterUser(user);
         _navigationPage.ClickLogoutButton();
         _landingPage.GoTo();
         _landingPage.ClickLoginButton();
 
-        return registeredUser;
+        return user;
     }
 }

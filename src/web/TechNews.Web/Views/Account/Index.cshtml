@@ -11,10 +11,10 @@
     <div class="container-login100">
         <div class="wrap-login100" style="width: 600px;">
             <form id="frmAccount" method="post" class="login100-form validate-form">
-                <span class="login100-form-title p-b-26" style="padding-bottom: 60px;">
+                <span id="spnRegisterAccountTitle" class="login100-form-title p-b-26" style="padding-bottom: 60px;">
                     Cadastre uma conta
                 </span>
-                <div class="wrap-input100 validate-input" data-validate="E-mail inválido">
+                <div id="divEmailWrapper" class="wrap-input100 validate-input" data-validate="E-mail inválido">
                     <input id="txtEmail" class="input100" type="text" name="email" maxlength="256">
                     <span class="focus-input100" data-placeholder="E-mail"></span>
                 </div>
@@ -32,7 +32,7 @@
                     <span class="focus-input100" data-placeholder="Senha"></span>
                 </div>
 
-                <div class="wrap-input100 validate-input" data-validate="Senhas não conferem">
+                <div id="divConfirmPasswordWrapper" class="wrap-input100 validate-input" data-validate="Senhas não conferem">
                     <span class="btn-show-pass">
                         <i class="zmdi zmdi-eye"></i>
                     </span>

@@ -65,6 +65,11 @@ public class SeleniumHelper : IDisposable
     {
         return Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id))).Text;
     }
+    
+    public string GetElementAttribute(string elementId, string attributeName)
+    {
+        return Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(elementId))).GetAttribute(attributeName);
+    }
 
     public string GetElementTextByXPath(string xPath)
     {
@@ -73,12 +78,12 @@ public class SeleniumHelper : IDisposable
 
     public string GetElementValueById(string id)
     {
-        return Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id))).GetAttribute("value");
+        return GetElementAttribute(id, "value");
     }
 
     public string GetElementInnerHtmlById(string id)
     {
-        return Wait.Until(ExpectedConditions.ElementIsVisible(By.Id(id))).GetAttribute("innerHTML");
+        return GetElementAttribute(id, "innerHTML");
     }
 
     public bool ElementExistsById(string id)
@@ -142,7 +147,14 @@ public class SeleniumHelper : IDisposable
     {
         screenshot.SaveAsFile($"{EnvironmentVariables.ScreenshotsFolderPath}{fileName}");
     }
-
+    
+    public bool CheckElementHasClass(By by, string className)
+    {
+        return Wait.Until(ExpectedConditions.ElementIsVisible(by))
+                .GetAttribute("class")
+                .Contains(className);
+    }
+    
     public void Dispose()
     {
         WebDriver.Quit();
