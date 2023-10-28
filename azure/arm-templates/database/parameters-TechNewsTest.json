@@ -6,7 +6,7 @@
             "value": "SQL_Latin1_General_CP1_CI_AS"
         },
         "databaseName": {
-            "value": "TechNews"
+            "value": "TechNewsTest"
         },
         "tier": {
             "value": "Standard"
@@ -53,7 +53,7 @@
         "clientIpValue": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/npvaulttechnews"
+                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-02/providers/Microsoft.KeyVault/vaults/npvaulttechnews"
                 },
                 "secretName": "clientIpValue"
             }
@@ -199,7 +199,7 @@
         "administratorLogin": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/npvaulttechnews"
+                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-02/providers/Microsoft.KeyVault/vaults/npvaulttechnews"
                 },
                 "secretName": "administratorLogin"
             }
@@ -207,7 +207,7 @@
         "administratorLoginPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/npvaulttechnews"
+                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-02/providers/Microsoft.KeyVault/vaults/npvaulttechnews"
                 },
                 "secretName": "administratorLoginPassword"
             }

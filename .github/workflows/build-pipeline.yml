@@ -1,10 +1,10 @@
-name: Build Pipelines
+name: Build Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "develop", "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "develop", "main" ]
   workflow_dispatch:
 
 jobs:
@@ -25,26 +25,6 @@ jobs:
     - name: Build Apps
       run: dotnet build --no-restore
 
-  check-resource:
-    runs-on: ubuntu-latest
-    outputs:
-      resource_exists: ${{ steps.check-resource.outputs.resource_exists }}
-    steps:
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Check Resource Existence
-        id: check-resource
-        run: |
-          if az resource show --resource-group "${{ vars.RESOURCE_GROUP_NAME }}" --name "${{ vars.CONTAINER_REGISTRY_NAME}}" --resource-type "Microsoft.ContainerRegistry/registries" --output none; then
-             echo "resource exists"
-             echo "::set-output name=resource_exists::true"
-          else
-             echo "resource does not exist"
-             echo "::set-output name=resource_exists::false"
-          fi
   push-auth-image:
     runs-on: ubuntu-latest
     needs: [build-apps, check-resource]
@@ -66,7 +46,7 @@ jobs:
         retry_on: error
         azcliversion: latest
         inlineScript: |
-            az acr build --image ${{ vars.AUTH_APP_NAME}}:v1 --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
+            az acr build --image ${{ vars.AUTH_APP_NAME}}:latest --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
   
   push-core-image:
     runs-on: ubuntu-latest
@@ -89,7 +69,7 @@ jobs:
           retry_on: error
           azcliversion: latest
           inlineScript: |
-            az acr build --image ${{ vars.CORE_APP_NAME}}:v1 --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Core.Api/Dockerfile .
+            az acr build --image ${{ vars.CORE_APP_NAME}}:latest --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Core.Api/Dockerfile .
 
   push-web-image:
     runs-on: ubuntu-latest
@@ -112,4 +92,4 @@ jobs:
           retry_on: error
           azcliversion: latest
           inlineScript: |
-            az acr build --image ${{ vars.WEB_APP_NAME}}:v1 --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .
+            az acr build --image ${{ vars.WEB_APP_NAME}}:latest --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .

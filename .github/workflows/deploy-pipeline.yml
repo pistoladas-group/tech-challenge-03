@@ -41,34 +41,6 @@ jobs:
             --name ${{ vars.AUTH_APP_NAME }}-container \
             --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.AUTH_APP_NAME }}:v1
     
-    - name: Grant Access to Key Vault
-      uses: azure/cli@v1
-      with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            response=$(az container show \
-            --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
-            --name ${{ vars.AUTH_APP_NAME }}-container \
-            --query identity --output json)
-
-            assignee_object_id=$(echo "$response" | jq -r '.principalId')
-
-            az role assignment create \
-            --role "Key Vault Administrator" \
-            --assignee-principal-type ServicePrincipal \
-            --assignee-object-id "$assignee_object_id" \
-            --scope /subscriptions/${{ secrets.SUBSCRIPTION_ID }}/resourceGroups/${{ vars.RESOURCE_GROUP_NAME }}/providers/Microsoft.KeyVault/vaults/${{ vars.VAULT_NAME }}
-
-    - name: Restart Container
-      uses: azure/cli@v1
-      with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            az container restart --name ${{ vars.AUTH_APP_NAME }}-container  --resource-group ${{ vars.RESOURCE_GROUP_NAME }}
 
     - name: Health Check Auth
       run: |

@@ -31,5 +31,5 @@ GO
 GRANT CREATE TABLE TO [tech-news-auth]
 GO
 
-GRANT SELECT,UPDATE,INSERT ON SCHEMA::dbo TO [tech-news-auth]
+GRANT SELECT,UPDATE,INSERT, DELETE ON SCHEMA::dbo TO [tech-news-auth]
 GO

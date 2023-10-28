@@ -6,7 +6,7 @@
             "value": "SQL_Latin1_General_CP1_CI_AS"
         },
         "databaseName": {
-            "value": "TechNews"
+            "value": "TechNewsAuthTest"
         },
         "tier": {
             "value": "Standard"
