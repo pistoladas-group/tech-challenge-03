@@ -76,7 +76,7 @@ public class RegisterPage : PageObjectModel
                Helper.GetElementAttribute(EmailWrapperElementId, "data-validate") == "E-mail inválido";
     }
     
-    public bool CheckWeekPasswordMessageIsBeingShown()
+    public bool CheckWeakPasswordMessageIsBeingShown()
     {
         return !Helper.CheckElementHasClass(By.Id(WarningAlertElementId), ElementHiddenClassName) &&
                Helper.GetElementTextById(WarningAlertElementId) == "O campo Senha deve conter pelo menos um digito, uma letra minúscula, uma maiúscula e um caracter especial";

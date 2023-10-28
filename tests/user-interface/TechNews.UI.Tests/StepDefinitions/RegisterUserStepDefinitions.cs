@@ -100,7 +100,7 @@ public sealed class RegisterUserStepDefinitions
         Assert.True(invalidMessageIsBeingShown);
     }
 
-    [When(@"the register form is populated with a week password")]
+    [When(@"the register form is populated with a weak password")]
     public void WhenTheRegisterFormIsPopulatedWithAWeekPassword()
     {
         // Arrange 
@@ -119,7 +119,7 @@ public sealed class RegisterUserStepDefinitions
     public void ThenAWeekPasswordErrorMessageAppears()
     {
         // Arrange & Act 
-        var invalidMessageIsBeingShown = _registerPage.CheckWeekPasswordMessageIsBeingShown();
+        var invalidMessageIsBeingShown = _registerPage.CheckWeakPasswordMessageIsBeingShown();
         
         // Assert
         Assert.True(invalidMessageIsBeingShown);

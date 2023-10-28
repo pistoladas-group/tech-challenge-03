@@ -22,10 +22,10 @@
         And the register submit button is clicked
         Then an invalid user name error message appears
         
-    Scenario: Registering user with invalid weak password
+    Scenario: Registering user with weak password
         Given the lector is at the landing page
         And the register button is clicked
-        When the register form is populated with a week password
+        When the register form is populated with a weak password
         And the register submit button is clicked
         Then a week password error message appears
         

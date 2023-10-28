@@ -145,13 +145,6 @@ public sealed class LoginUserStepDefinitions
         Assert.True(_loginPage.IsPage());
     }
 
-    [Then(@"error indicators are shown")]
-    public void ThenErrorIndicatorsAreShown()
-    {
-        throw new PendingStepException();
-    }
-
-
     private UserModel RegisterUserAndGoToLoginPage()
     {
         _landingPage.GoTo();

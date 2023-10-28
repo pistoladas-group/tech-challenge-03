@@ -194,14 +194,14 @@ namespace TechNews.UI.Tests.Features
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Registering user with invalid weak password")]
+        [Xunit.SkippableFactAttribute(DisplayName="Registering user with weak password")]
         [Xunit.TraitAttribute("FeatureTitle", "Register User")]
-        [Xunit.TraitAttribute("Description", "Registering user with invalid weak password")]
-        public void RegisteringUserWithInvalidWeakPassword()
+        [Xunit.TraitAttribute("Description", "Registering user with weak password")]
+        public void RegisteringUserWithWeakPassword()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Registering user with invalid weak password", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Registering user with weak password", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 25
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -219,7 +219,7 @@ namespace TechNews.UI.Tests.Features
         testRunner.And("the register button is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 28
-        testRunner.When("the register form is populated with a week password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.When("the register form is populated with a weak password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 29
         testRunner.And("the register submit button is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
