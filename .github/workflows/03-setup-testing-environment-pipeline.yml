@@ -238,16 +238,8 @@ jobs:
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: latest
-
-      - name: Debugging
-        run: |
-          whoami
-
-      - name: Allow Driver Execution
-        run: |
-          chmod 777 ./tests/user-interface/WebDrivers/chromedriver-linux64
        
       - name: Run Acceptance Tests
-        run: dotnet test ./tests/user-interface/TechNews.UI.Tests/TechNews.UI.Tests.csproj -e WEB_DRIVER_PATH="../../../../WebDrivers/chromedriver-linux64" -e TECH_NEWS_WEB_URI="http://${{ vars.WEB_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.WEB_PORT }}" -e MAX_SECONDS_WAITING_FOR_PAGE="30"
+        run: dotnet test ./tests/user-interface/TechNews.UI.Tests/TechNews.UI.Tests.csproj -e TECH_NEWS_WEB_URI="http://${{ vars.WEB_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.WEB_PORT }}" -e MAX_SECONDS_WAITING_FOR_PAGE="30"
 
 # Destroy Setup

@@ -5,7 +5,6 @@ namespace TechNews.UI.Tests.Configuration;
 
 public static class EnvironmentVariables
 {
-    public static string WebDriverPath { get; private set; } = string.Empty;
     public static string TechNewsWebUri { get; private set; } = string.Empty;
     public static int MaxSecondsWaitingForPage { get; private set; } = 10;
     public static string ScreenshotsFolderPath { get; private set; } = string.Empty;
@@ -15,7 +14,6 @@ public static class EnvironmentVariables
     {
         LoadEnvFile();
 
-        WebDriverPath = Environment.GetEnvironmentVariable("WEB_DRIVER_PATH") ?? string.Empty;
         TechNewsWebUri = Environment.GetEnvironmentVariable("TECH_NEWS_WEB_URI") ?? string.Empty;
         ScreenshotsFolderPath = Environment.GetEnvironmentVariable("SCREENSHOTS_FOLDER_PATH") ?? string.Empty;
 

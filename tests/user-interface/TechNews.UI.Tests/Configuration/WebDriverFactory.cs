@@ -10,7 +10,7 @@ public enum Browser
 
 public static class WebDriverFactory
 {
-    public static IWebDriver CreateWebDriver(Browser browser, string driverPath, bool headless)
+    public static IWebDriver CreateWebDriver(Browser browser, bool headless)
     {
         IWebDriver? webDriver = null;
 
@@ -24,7 +24,7 @@ public static class WebDriverFactory
                     options.AddArguments("--headless", "--disable-gpu", "--window-size=1920,1200", "--ignore-certificate-errors");
                 }
 
-                webDriver = new ChromeDriver(driverPath, options);
+                webDriver = new ChromeDriver(options);
 
                 break;
         }

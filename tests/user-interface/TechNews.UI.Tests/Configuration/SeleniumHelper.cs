@@ -12,7 +12,7 @@ public class SeleniumHelper : IDisposable
 
     public SeleniumHelper(Browser browser, bool headless = true)
     {
-        WebDriver = WebDriverFactory.CreateWebDriver(browser, EnvironmentVariables.WebDriverPath, headless);
+        WebDriver = WebDriverFactory.CreateWebDriver(browser, headless);
 
         WebDriver.Manage().Window.Maximize();
         WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(EnvironmentVariables.MaxSecondsWaitingForPage);
