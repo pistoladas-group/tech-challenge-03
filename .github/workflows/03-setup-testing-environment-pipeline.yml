@@ -12,6 +12,15 @@ jobs:
   deploy-databases:
     runs-on: ubuntu-latest
     steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3
+
+    - name: Azure Login
+      id: login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+
     - name: Deploy TechNewsAuthTest Database
       uses: azure/arm-deploy@v1
       with:
