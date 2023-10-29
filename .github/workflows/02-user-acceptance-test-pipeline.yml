@@ -241,6 +241,7 @@ jobs:
 
   clean-up-setup:
     runs-on: ubuntu-latest
+    needs: [user-acceptance-tests]
     steps:
       - name: Azure Login
         id: login
