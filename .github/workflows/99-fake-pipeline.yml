@@ -36,7 +36,7 @@ jobs:
     
   # Run Acceptance Tests
   run-user-acceptance-tests:
-    needs: [ setup-test-environment ]
+    needs: [ setup-testing-environment ]
     uses: ./.github/workflows/user-acceptance-tests.yml
   
   # Clean up Testing Environment
