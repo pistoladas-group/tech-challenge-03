@@ -239,21 +239,20 @@ jobs:
 
 # Destroy Setup
 
-destroy-test-setup:
+  clean-up-setup:
     runs-on: ubuntu-latest
     steps:
-
-    - name: Azure Login
-      id: login
-      uses: Azure/login@v1.4.6
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-        
-    - name: Push TechNews Web
-      uses: azure/cli@v1
-      with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            az group delete --name ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+      - name: Azure Login
+        id: login
+        uses: Azure/login@v1.4.6
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+          
+      - name: Delete Resource Group
+        uses: azure/cli@v1
+        with:
+            max_attempts: 1
+            retry_on: error
+            azcliversion: latest
+            inlineScript: |
+              az group delete --name ${{ vars.TEST_RESOURCE_GROUP_NAME }}
