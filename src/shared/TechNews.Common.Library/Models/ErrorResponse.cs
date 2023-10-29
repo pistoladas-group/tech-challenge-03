@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace TechNews.Common.Library.Models;
 
 public class ErrorResponse

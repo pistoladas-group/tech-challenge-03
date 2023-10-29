@@ -1,28 +1,41 @@
 using TechNews.Auth.Api.Configurations;
 using TechNews.Common.Library.Middlewares;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace TechNews.Auth.Api;
 
-builder.Services.AddControllers(options => options.Filters.ConfigureFilters());
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-builder.Services
-        .AddEndpointsApiExplorer()
-        .ConfigureSwagger()
-        .AddEnvironmentVariables(builder.Environment)
-        .AddLoggingConfiguration(builder.Host)
-        .ConfigureIdentity()
-        .ConfigureDatabase()
-        .ConfigureDependencyInjections()
-        .AddHealthChecks();
+        builder.Services.AddControllers(options => options.Filters.ConfigureFilters());
 
-var app = builder.Build();
+        builder.Services
+                .AddEndpointsApiExplorer()
+                .ConfigureSwagger()
+                .AddEnvironmentVariables(builder.Environment)
+                .AddLoggingConfiguration(builder.Host)
+                .ConfigureIdentity()
+                .ConfigureDatabase(builder.Environment)
+                .ConfigureDependencyInjections()
+                .AddHealthChecks();
 
-app.UseSwaggerConfiguration();
-app.UseHsts();
-app.UseHttpsRedirection();
-app.UseMiddleware<ResponseHeaderMiddleware>();
-app.UseIdentityConfiguration();
-app.MapControllers();
-app.MapHealthChecks("/health");
-app.MigrateDatabase();
-app.Run();
+        var app = builder.Build();
+
+        app.UseSwaggerConfiguration();
+        app.UseHsts();
+        app.UseHttpsRedirection();
+        app.UseMiddleware<ResponseHeaderMiddleware>();
+        app.UseIdentityConfiguration();
+        app.MapControllers();
+        app.MapHealthChecks("/health");
+
+        if (!builder.Environment.IsEnvironment("Testing"))
+        {
+            app.MigrateDatabase();
+        }
+
+        app.Run();
+    }
+}
