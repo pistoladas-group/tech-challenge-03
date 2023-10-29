@@ -4,7 +4,7 @@
     "parameters": {
         "keyVault": {
             "value": {
-                "name": "kvtechnewsnonprodbrazilsouth-nonprod-brazilsouth",
+                "name": "kvtechnewsnonprodbrazilsouth",
                 "location": "brazilsouth",
                 "sku": "Standard",
                 "accessPolicies": [],
