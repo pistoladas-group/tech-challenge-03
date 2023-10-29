@@ -48,14 +48,6 @@ jobs:
           az keyvault secret set --vault-name ${{ vars.VAULT_NAME }} --name administratorLoginPassword --value ${{secrets.ADMIN_PASSWORD}}
           az keyvault secret set --vault-name ${{ vars.VAULT_NAME }} --name clientIpValue --value ${{secrets.CLIENT_IP}}
 
-    - name: Deploy Blob Storage
-      uses: azure/arm-deploy@v1
-      with:
-        subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-        resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
-        template: ./azure/arm-templates/resource/storage-template.json
-        parameters: ./azure/arm-templates/resource/parameters.json
-
     - name: Deploy TechNewsAuth Database Template
       uses: azure/arm-deploy@v1
       with:

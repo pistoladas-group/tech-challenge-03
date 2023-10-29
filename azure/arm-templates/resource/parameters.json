@@ -34,38 +34,6 @@
                 "tags": {},
                 "publicNetworkAccess": "Enabled"
             }
-        },
-        "storageAccount": {
-            "value": {
-                "location": "brazilsouth",
-                "storageAccountName": "sa-technews-nonprod-brazilsouth",
-                "accountType": "Standard_LRS",
-                "kind": "StorageV2",
-                "minimumTlsVersion": "TLS1_2",
-                "supportsHttpsTrafficOnly": true,
-                "allowBlobPublicAccess": true,
-                "allowSharedKeyAccess": true,
-                "defaultOAuth": false,
-                "accessTier": "Hot",
-                "publicNetworkAccess": "Enabled",
-                "allowCrossTenantReplication": true,
-                "networkAclsBypass": "AzureServices",
-                "networkAclsDefaultAction": "Allow",
-                "dnsEndpointType": "Standard",
-                "keySource": "Microsoft.Storage",
-                "encryptionEnabled": true,
-                "keyTypeForTableAndQueueEncryption": "Account",
-                "infrastructureEncryptionEnabled": false,
-                "isContainerRestoreEnabled": false,
-                "isBlobSoftDeleteEnabled": true,
-                "blobSoftDeleteRetentionDays": 7,
-                "isContainerSoftDeleteEnabled": true,
-                "containerSoftDeleteRetentionDays": 7,
-                "changeFeed": false,
-                "isVersioningEnabled": false,
-                "isShareSoftDeleteEnabled": true,
-                "shareSoftDeleteRetentionDays": 7
-            }
         }
     }
 }
