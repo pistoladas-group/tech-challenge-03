@@ -26,7 +26,7 @@
         },
         "containerRegistry": {
             "value": {
-                "registryName": "acr-technews-nonprod-brazilsouth",
+                "registryName": "acrtechnewsnonprodbrazilsouth",
                 "registryLocation": "brazilsouth",
                 "zoneRedundancy": "disabled",
                 "registrySku": "Standard",
