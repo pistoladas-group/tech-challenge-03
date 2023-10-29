@@ -9,6 +9,25 @@ on:
 
 jobs:
 # Setup
+  clean-up-setup:
+    runs-on: ubuntu-latest
+    needs: [user-acceptance-tests]
+    steps:
+      - name: Azure Login
+        id: login
+        uses: Azure/login@v1.4.6
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+          
+      - name: Create Resource Group
+        uses: azure/cli@v1
+        with:
+            max_attempts: 1
+            retry_on: error
+            azcliversion: latest
+            inlineScript: |
+              az group create --name ${{ vars.TEST_RESOURCE_GROUP_NAME }} --location brazilsouth
+
   deploy-databases:
     runs-on: ubuntu-latest
     steps:
@@ -256,4 +275,4 @@ jobs:
             retry_on: error
             azcliversion: latest
             inlineScript: |
-              az group delete --name ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+              az group delete --name ${{ vars.TEST_RESOURCE_GROUP_NAME }} --yes
