@@ -4,7 +4,7 @@
     "parameters": {
         "keyVault": {
             "value": {
-                "name": "kvtechnewsnonprodbrazilsouth",
+                "name": "kvtechnewsnpbrazilsouth",
                 "location": "brazilsouth",
                 "sku": "Standard",
                 "accessPolicies": [],
@@ -26,7 +26,7 @@
         },
         "containerRegistry": {
             "value": {
-                "registryName": "acrtechnewsnonprodbrazilsouth",
+                "registryName": "acrtechnewsnpbrazilsouth",
                 "registryLocation": "brazilsouth",
                 "zoneRedundancy": "disabled",
                 "registrySku": "Standard",
