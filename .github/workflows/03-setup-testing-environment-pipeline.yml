@@ -91,8 +91,10 @@ jobs:
           inlineScript: |
             az acr build --image ${{ vars.WEB_APP_NAME}}:test --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .
 
+
   deploy-auth-container:
     runs-on: ubuntu-latest
+    needs: [deploy-databases, push-auth-image, push-core-image, push-web-image]
     steps:
       - name: Azure Login
         id: login
@@ -184,7 +186,7 @@ jobs:
 
   deploy-web-container:
     runs-on: ubuntu-latest
-    needs: [deploy-auth-container, deploy-core-container]
+    needs: [deploy-core-container, deploy-auth-container]
     steps:
       - name: Azure Login
         id: login
@@ -218,6 +220,7 @@ jobs:
 # Run Tests
   user-acceptance-tests:
     runs-on: ubuntu-latest
+    needs: [deploy-web-container]
     steps:
       - name: Clone Repo
         uses: actions/checkout@v3
@@ -236,6 +239,5 @@ jobs:
             --environment WEB_DRIVER_PATH="./tests/user-interface/WebDrivers/chromedriver-win64" \
             --environment TECH_NEWS_WEB_URI="http://${{ vars.WEB_APP_NAME }}:${{ vars.WEB_PORT }}" \
             --environment MAX_SECONDS_WAITING_FOR_PAGE="30"
-
 
 # Destroy Setup
