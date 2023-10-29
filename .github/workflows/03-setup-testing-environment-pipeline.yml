@@ -244,6 +244,6 @@ jobs:
           pwd
        
       - name: Run Acceptance Tests
-        run: dotnet test ./tests/user-interface/TechNews.UI.Tests/TechNews.UI.Tests.csproj -e WEB_DRIVER_PATH="./tests/user-interface/WebDrivers/chromedriver-win64" -e TECH_NEWS_WEB_URI="http://${{ vars.WEB_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.WEB_PORT }}" -e MAX_SECONDS_WAITING_FOR_PAGE="30"
+        run: dotnet test ./tests/user-interface/TechNews.UI.Tests/TechNews.UI.Tests.csproj -e WEB_DRIVER_PATH="../../../../WebDrivers/chromedriver-win64" -e TECH_NEWS_WEB_URI="http://${{ vars.WEB_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.WEB_PORT }}" -e MAX_SECONDS_WAITING_FOR_PAGE="30"
 
 # Destroy Setup
