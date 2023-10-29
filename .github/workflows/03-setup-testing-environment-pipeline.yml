@@ -2,13 +2,13 @@ name: Setup Testing Environment Pipeline
 
 on:
   workflow_run:
-    workflows: [ "Unit Tests Pipeline" ]
+    workflows: [ "Build and Unit Tests Pipeline" ]
     types:
       - completed
-  push:
-    branches: [ "develop", "main" ]
-  pull_request:
-    branches: [ "develop", "main" ]
+#  push:
+#    branches: [ "develop", "main" ]
+#  pull_request:
+#    branches: [ "develop", "main" ]
   workflow_dispatch:
 
 jobs:
@@ -92,7 +92,7 @@ jobs:
           retry_on: error
           azcliversion: latest
           inlineScript: |
-            az acr build --image ${{ vars.WEB_APP_NAME}}:v1 --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .
+            az acr build --image ${{ vars.WEB_APP_NAME}}:test --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .
 
   deploy-auth-container:
     runs-on: ubuntu-latest
@@ -129,8 +129,7 @@ jobs:
             --registry-username "anonymous" \
             --registry-password "anonymous" \
             --name ${{ vars.AUTH_APP_NAME }}-container \
-            --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.AUTH_APP_NAME }}:v1
-
+            --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.AUTH_APP_NAME }}:test
 
       - name: Health Check Auth
         run: |
@@ -173,7 +172,7 @@ jobs:
             --registry-username "anonymous" \
             --registry-password "anonymous" \
             --name ${{ vars.CORE_APP_NAME }}-container \
-            --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.CORE_APP_NAME }}:v1
+            --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.CORE_APP_NAME }}:test
 
       - name: Health Check Core
         run: |
@@ -216,4 +215,4 @@ jobs:
             --registry-username "anonymous" \
             --registry-password "anonymous" \
             --name ${{ vars.WEB_APP_NAME }}-container \
-            --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.WEB_APP_NAME }}:v1
+            --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.WEB_APP_NAME }}:test
