@@ -1,0 +1,105 @@
+name: Build Pipeline
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+  workflow_dispatch:
+
+jobs:
+  build-apps:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Restore Dependencies
+      run: dotnet restore
+      
+    - name: Build Apps
+      run: dotnet build --no-restore
+
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+
+      - name: Run Auth Unit Tests
+        run: dotnet test ./tests/unit/TechNews.Auth.Api.Tests/TechNews.Auth.Api.Tests.csproj
+
+      - name: Run Core Unit Tests
+        run: dotnet test ./tests/unit/TechNews.Core.Api.Tests/TechNews.Core.Api.Tests.csproj
+
+      - name: Run Auth Integration Tests
+        run: dotnet test ./tests/integration/TechNews.Auth.Api.integrationTests/TechNews.Auth.Api.IntegrationTests.csproj
+
+  push-auth-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3.5.3
+    
+    - name: Azure Login
+      id: login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+
+    - name: Push TechNews Auth API
+      uses: azure/cli@v1
+      with:
+        max_attempts: 1
+        retry_on: error
+        azcliversion: latest
+        inlineScript: |
+            az acr build --image ${{ vars.AUTH_APP_NAME}}:latest --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
+  
+  push-core-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3.5.3
+    
+    - name: Azure Login
+      id: login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        
+    - name: Push TechNews Core API
+      uses: azure/cli@v1
+      with:
+          max_attempts: 1
+          retry_on: error
+          azcliversion: latest
+          inlineScript: |
+            az acr build --image ${{ vars.CORE_APP_NAME}}:latest --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Core.Api/Dockerfile .
+
+## TODO: Colocar depois dos testes de UI
+  push-web-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3.5.3
+
+    - name: Azure Login
+      id: login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        
+    - name: Push TechNews Web
+      uses: azure/cli@v1
+      with:
+          max_attempts: 1
+          retry_on: error
+          azcliversion: latest
+          inlineScript: |
+            az acr build --image ${{ vars.WEB_APP_NAME}}:latest --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .

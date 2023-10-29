@@ -1,17 +1,14 @@
-name: Setup Testing Environment Pipeline
+name: User Acceptance Test Pipeline
 
 on:
   workflow_run:
-    workflows: [ "Build and Unit Tests Pipeline" ]
+    workflows: [ "Build Pipeline" ]
     types:
       - completed
-#  push:
-#    branches: [ "develop", "main" ]
-#  pull_request:
-#    branches: [ "develop", "main" ]
   workflow_dispatch:
 
 jobs:
+# Setup
   deploy-databases:
     runs-on: ubuntu-latest
     steps:
@@ -216,3 +213,33 @@ jobs:
             --registry-password "anonymous" \
             --name ${{ vars.WEB_APP_NAME }}-container \
             --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.WEB_APP_NAME }}:test
+
+
+# Run Tests
+  user-acceptance-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+
+      - name: Install Google Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: latest
+        id: setup-chrome
+        run: |
+          echo Installed chromium version: ${{ steps.setup-chrome.outputs.chrome-version }}
+          ${{ steps.setup-chrome.outputs.chrome-path }} --version
+
+      - name: Debugging
+        run: |
+          pwd
+       
+      - name: Run Acceptance Tests
+        run: dotnet test ./tests/user-interface/TechNews.UI.Tests/TechNews.UI.Tests.csproj \
+            --environment WEB_DRIVER_PATH="./tests/user-interface/WebDrivers/chromedriver-win64" \
+            --environment TECH_NEWS_WEB_URI="http://${{ vars.WEB_APP_NAME }}:${{ vars.WEB_PORT }}" \
+            --environment MAX_SECONDS_WAITING_FOR_PAGE="30"
+
+
+# Destroy Setup
