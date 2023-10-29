@@ -7,9 +7,6 @@
         },
         "containerRegistry": {
             "type": "object"
-        },
-        "storageAccount": {
-            "type": "object"
         }
     },
     "resources": [
