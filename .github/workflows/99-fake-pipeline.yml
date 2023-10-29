@@ -36,7 +36,7 @@ jobs:
     
   # Run Acceptance Tests
   run-user-acceptance-tests:
-    needs: [ setup-test-environment-reusable ]
+    needs: [ setup-test-environment ]
     uses: ./.github/workflows/user-acceptance-tests.yml
   
   # Clean up Testing Environment
@@ -46,7 +46,7 @@ jobs:
     
   # Deploy to Prodution
   deploy-to-production-environment:
-    needs: [ run-user-acceptance-tests ]
+    needs: [ cleanup-testing-environment ]
     uses: ./.github/workflows/deploy-to-production-environment-reusable.yml
   
   
