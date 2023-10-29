@@ -4,7 +4,7 @@
     "parameters": {
         "keyVault": {
             "value": {
-                "name": "npvaulttechnews",
+                "name": "kv-technews-nonprod-brazilsouth",
                 "location": "brazilsouth",
                 "sku": "Standard",
                 "accessPolicies": [],
@@ -26,7 +26,7 @@
         },
         "containerRegistry": {
             "value": {
-                "registryName": "acrtechnews",
+                "registryName": "acr-technews-nonprod-brazilsouth",
                 "registryLocation": "brazilsouth",
                 "zoneRedundancy": "disabled",
                 "registrySku": "Standard",
@@ -38,7 +38,7 @@
         "storageAccount": {
             "value": {
                 "location": "brazilsouth",
-                "storageAccountName": "satechnews",
+                "storageAccountName": "sa-technews-nonprod-brazilsouth",
                 "accountType": "Standard_LRS",
                 "kind": "StorageV2",
                 "minimumTlsVersion": "TLS1_2",
