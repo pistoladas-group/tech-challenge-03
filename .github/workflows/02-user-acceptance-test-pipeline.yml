@@ -9,7 +9,7 @@ on:
 
 jobs:
 # Setup
-  clean-up-setup:
+  create-resource-group:
     runs-on: ubuntu-latest
     needs: [user-acceptance-tests]
     steps:
