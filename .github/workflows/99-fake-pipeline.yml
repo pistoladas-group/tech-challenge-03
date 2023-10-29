@@ -34,5 +34,5 @@ jobs:
     
   # Deploy to Prodution
   deploy-to-production-environment:
-    needs: [ cleanup-testing-environment ]
+    needs: [ run-user-acceptance-tests ]
     uses: ./.github/workflows/reusable-deploy-to-production-environment.yml
