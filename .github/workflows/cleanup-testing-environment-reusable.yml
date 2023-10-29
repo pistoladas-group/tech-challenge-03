@@ -1,0 +1,11 @@
+name: Cleanup Testing Environment Reusable Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  cleanup-testing-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fake cleaning up testing environment
+        run: echo cleaning up test environment

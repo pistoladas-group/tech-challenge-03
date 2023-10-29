@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
+  # --> A sample of how to call a reusable workflow
   call-workflow-passing-data-1:
     uses: ./.github/workflows/test-reusable.yml
     with:
@@ -16,5 +17,36 @@ jobs:
   call-workflow-passing-data-2:
     uses: ./.github/workflows/test-reusable.yml
     with:
-      username: Joyce
-
+      username: Igor
+  
+  # Build
+  build-apps:
+    needs: [ call-workflow-passing-data-1, call-workflow-passing-data-2 ]
+    uses: ./.github/workflows/build-reusable.yml
+  
+  # Unit and Integrations Tests
+  run-unit-and-integration-tests:
+    needs: [ build-apps ]
+    uses: ./.github/workflows/unit-and-integration-tests-reusable.yml
+  
+  # Setup Testing Environment
+  setup-testing-environment:
+    needs: [ run-unit-and-integration-tests ]
+    uses: ./.github/workflows/unit-and-integration-tests-reusable.yml
+    
+  # Run Acceptance Tests
+  run-user-acceptance-tests:
+    needs: [ setup-test-environment-reusable ]
+    uses: ./.github/workflows/user-acceptance-tests.yml
+  
+  # Clean up Testing Environment
+  cleanup-testing-environment:
+    needs: [ run-user-acceptance-tests ]
+    uses: ./.github/workflows/cleanup-testing-environment-reusable.yml
+    
+  # Deploy to Prodution
+  deploy-to-production-environment:
+    needs: [ run-user-acceptance-tests ]
+    uses: ./.github/workflows/deploy-to-production-environment-reusable.yml
+  
+  

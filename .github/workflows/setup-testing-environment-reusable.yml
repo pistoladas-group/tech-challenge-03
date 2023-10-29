@@ -1,0 +1,247 @@
+name: Setup Testing Environment Reusable Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  setup-testing-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fake auth test database deploy
+        run: echo deploying test auth database
+        
+      - name: fake core test database deploy
+        run: echo deploying test core database      
+      
+      - name: fake push auth test image
+        run: echo pushing auth test image
+
+      - name: fake push core test image
+        run: echo pushing core test image
+
+      - name: fake push web test image
+        run: echo pushing web test image
+
+      - name: fake deploy auth test image
+        run: echo deploying auth test image
+
+      - name: fake deploy core test image
+        run: echo deploying core test image
+
+      - name: fake deploy web test image
+        run: echo deploying web test image
+    
+#  deploy-databases:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Clone Repo
+#        uses: actions/checkout@v3
+#
+#      - name: Azure Login
+#        id: login
+#        uses: Azure/login@v1.4.6
+#        with:
+#          creds: ${{secrets.AZURE_CREDENTIALS}}
+#
+#      - name: Deploy TechNewsAuthTest Database
+#        uses: azure/arm-deploy@v1
+#        with:
+#          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+#          resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
+#          template: ./azure/arm-templates/database/template.json
+#          parameters: ./azure/arm-templates/database/parameters-TechNewsAuthTest.json
+#
+#      - name: Deploy TechNewsTest Database
+#        uses: azure/arm-deploy@v1
+#        with:
+#          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+#          resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
+#          template: ./azure/arm-templates/database/template.json
+#          parameters: ./azure/arm-templates/database/parameters-TechNewsTest.json
+#  
+#  push-auth-image:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Clone Repo
+#        uses: actions/checkout@v3.5.3
+#
+#      - name: Azure Login
+#        id: login
+#        uses: Azure/login@v1.4.6
+#        with:
+#          creds: ${{secrets.AZURE_CREDENTIALS}}
+#
+#      - name: Push TechNews Auth API
+#        uses: azure/cli@v1
+#        with:
+#          max_attempts: 1
+#          retry_on: error
+#          azcliversion: latest
+#          inlineScript: |
+#            az acr build --image ${{ vars.AUTH_APP_NAME}}:test --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
+#  
+#  push-core-image:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Clone Repo
+#        uses: actions/checkout@v3.5.3
+#
+#      - name: Azure Login
+#        id: login
+#        uses: Azure/login@v1.4.6
+#        with:
+#          creds: ${{secrets.AZURE_CREDENTIALS}}
+#
+#      - name: Push TechNews Core API
+#        uses: azure/cli@v1
+#        with:
+#          max_attempts: 1
+#          retry_on: error
+#          azcliversion: latest
+#          inlineScript: |
+#            az acr build --image ${{ vars.CORE_APP_NAME}}:test --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Core.Api/Dockerfile .
+#  
+#  push-web-image:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Clone Repo
+#        uses: actions/checkout@v3.5.3
+#
+#      - name: Azure Login
+#        id: login
+#        uses: Azure/login@v1.4.6
+#        with:
+#          creds: ${{secrets.AZURE_CREDENTIALS}}
+#
+#      - name: Push TechNews Web
+#        uses: azure/cli@v1
+#        with:
+#          max_attempts: 1
+#          retry_on: error
+#          azcliversion: latest
+#          inlineScript: |
+#            az acr build --image ${{ vars.WEB_APP_NAME}}:test --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .
+#  
+#  deploy-auth-container:
+#    runs-on: ubuntu-latest
+#    needs: [deploy-databases, push-auth-image, push-core-image, push-web-image]
+#    steps:
+#      - name: Azure Login
+#        id: login
+#        uses: Azure/login@v1.4.6
+#        with:
+#          creds: ${{secrets.AZURE_CREDENTIALS}}
+#
+#      - name: Deploy TechNews Auth Container
+#        uses: azure/cli@v1
+#        with:
+#          max_attempts: 1
+#          retry_on: error
+#          azcliversion: latest
+#          inlineScript: |
+#            az container create \
+#            --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
+#            --assign-identity \
+#            --environment-variables \
+#            TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-technews-nonprod-brazilsouth.database.windows.net,1433;Initial Catalog=TechNewsAuthTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" \
+#            AZURE_KEY_VAULT_URL="https://${{ vars.VAULT_NAME }}.vault.azure.net/" \
+#            ASPNETCORE_URLS="http://+:${{ vars.AUTH_PORT }} " \
+#            TOKEN_EXPIRATION_IN_MINUTES="${{ vars.TOKEN_EXPIRATION_IN_MINUTES }}" \
+#            KEY_ROTATOR_EXECUTION_IN_MINUTES="${{ vars.KEY_ROTATOR_EXECUTION_IN_MINUTES }}" \
+#            KEY_CREATION_SIZE_IN_BITS="${{ vars.KEY_CREATION_SIZE_IN_BITS }}" \
+#            KEY_EXPIRATION_IN_DAYS="${{ vars.KEY_EXPIRATION_IN_DAYS }}" \
+#            CRYPTOGRAPHIC_ALGORITHM="${{ vars.CRYPTOGRAPHIC_ALGORITHM }}" \
+#            --memory 0.5 --cpu 1 --ports ${{ vars.AUTH_PORT }} \
+#            --ip-address Public \
+#            --dns-name-label ${{ vars.AUTH_APP_NAME }} \
+#            --registry-login-server ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io \
+#            --registry-username "anonymous" \
+#            --registry-password "anonymous" \
+#            --name ${{ vars.AUTH_APP_NAME }}-container \
+#            --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.AUTH_APP_NAME }}:test
+#
+#      - name: Health Check Auth
+#        run: |
+#          RESPONSE=$(curl -s "http://${{ vars.AUTH_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.AUTH_PORT }}/health")
+#          
+#          if [[ "$RESPONSE" == *"Healthy"* ]]; then
+#            echo "API is Healthy"
+#          else
+#            echo "API is not Healthy"
+#            exit 1
+#          fi
+#  
+#  deploy-core-container:
+#    runs-on: ubuntu-latest
+#    needs: [deploy-databases, push-auth-image, push-core-image, push-web-image]
+#    steps:
+#
+#      - name: Azure Login
+#        id: login
+#        uses: Azure/login@v1.4.6
+#        with:
+#          creds: ${{secrets.AZURE_CREDENTIALS}}
+#
+#      - name: Deploy TechNews Core Container
+#        uses: azure/cli@v1
+#        with:
+#          max_attempts: 1
+#          retry_on: error
+#          azcliversion: latest
+#          inlineScript: |
+#            az container create \
+#            --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
+#            --environment-variables \
+#            TECHNEWS_CORE_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-technews-nonprod-brazilsouth.database.windows.net,1433;Initial Catalog=TechNewsTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" \
+#            ASPNETCORE_URLS="http://+:${{ vars.CORE_PORT }}" \
+#            TECHNEWS_CORE_API_AUTH_JWKS_URL="http://${{ vars.AUTH_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.AUTH_PORT }}/jwks" \
+#            --memory 0.5 --cpu 1 --ports ${{ vars.CORE_PORT }} \
+#            --ip-address Public \
+#            --dns-name-label ${{ vars.CORE_APP_NAME }} \
+#            --registry-login-server ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io \
+#            --registry-username "anonymous" \
+#            --registry-password "anonymous" \
+#            --name ${{ vars.CORE_APP_NAME }}-container \
+#            --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.CORE_APP_NAME }}:test
+#      - name: Health Check Core
+#        run: |
+#          RESPONSE=$(curl -s "http://${{ vars.CORE_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.CORE_PORT }}/health")
+#          
+#          if [[ "$RESPONSE" == *"Healthy"* ]]; then
+#            echo "API is Healthy"
+#          else
+#            echo "API is not Healthy"
+#            exit 1
+#          fi
+#  
+#  deploy-web-container:
+#    runs-on: ubuntu-latest
+#    needs: [deploy-core-container, deploy-auth-container]
+#    steps:
+#      - name: Azure Login
+#        id: login
+#        uses: Azure/login@v1.4.6
+#        with:
+#          creds: ${{secrets.AZURE_CREDENTIALS}}
+#      - name: Deploy TechNews Web Container
+#        uses: azure/cli@v1
+#        with:
+#          max_attempts: 1
+#          retry_on: error
+#          azcliversion: latest
+#          inlineScript: |
+#            az container create \
+#            --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
+#            --environment-variables \
+#            TECHNEWS_APP_API_AUTH_URL="http://${{ vars.AUTH_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.AUTH_PORT }}" \
+#            TECHNEWS_APP_API_CORE_URL="http://${{ vars.CORE_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.CORE_PORT }}" \
+#            ASPNETCORE_URLS="http://+:${{ vars.WEB_PORT }}" \
+#            --memory 0.5 --cpu 1 --ports ${{ vars.WEB_PORT }} \
+#            --ip-address Public \
+#            --dns-name-label ${{ vars.WEB_APP_NAME }} \
+#            --registry-login-server ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io \
+#            --registry-username "anonymous" \
+#            --registry-password "anonymous" \
+#            --name ${{ vars.WEB_APP_NAME }}-container \
+#            --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.WEB_APP_NAME }}:test
+#            
