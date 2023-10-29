@@ -4,6 +4,69 @@ on:
   workflow_dispatch:
 
 jobs:
+  push-auth-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3.5.3
+    
+    - name: Azure Login
+      id: login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+
+    - name: Push TechNews Auth API
+      uses: azure/cli@v1
+      with:
+        max_attempts: 1
+        retry_on: error
+        azcliversion: latest
+        inlineScript: |
+            az acr build --image ${{ vars.AUTH_APP_NAME}}:latest --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
+  
+  push-core-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3.5.3
+    
+    - name: Azure Login
+      id: login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        
+    - name: Push TechNews Core API
+      uses: azure/cli@v1
+      with:
+          max_attempts: 1
+          retry_on: error
+          azcliversion: latest
+          inlineScript: |
+            az acr build --image ${{ vars.CORE_APP_NAME}}:latest --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Core.Api/Dockerfile .
+
+  push-web-image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repo
+      uses: actions/checkout@v3.5.3
+
+    - name: Azure Login
+      id: login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        
+    - name: Push TechNews Web
+      uses: azure/cli@v1
+      with:
+          max_attempts: 1
+          retry_on: error
+          azcliversion: latest
+          inlineScript: |
+            az acr build --image ${{ vars.WEB_APP_NAME}}:latest --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .
+
   deploy-auth-container:
     runs-on: ubuntu-latest
     steps:
