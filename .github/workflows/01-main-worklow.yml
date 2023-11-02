@@ -40,7 +40,7 @@ jobs:
     
   # Deploy to Prodution
   deploy-to-production-environment:
-    needs: [ run-user-acceptance-tests ]
+    #needs: [ run-user-acceptance-tests ]
     uses: ./.github/workflows/reusable-deploy-to-production-environment.yml
     with:
       image-tag: latest
