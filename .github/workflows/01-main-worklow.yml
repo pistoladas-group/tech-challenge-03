@@ -13,10 +13,10 @@ jobs:
     uses: ./.github/workflows/reusable-build.yml
   
   # Unit and Integrations Tests
-  # run-unit-and-integration-tests:
-  #   needs: [ build-apps ]
-  #   uses: ./.github/workflows/reusable-unit-and-integration-tests.yml
-  #   secrets: inherit
+  run-unit-and-integration-tests:
+    needs: [ build-apps ]
+    uses: ./.github/workflows/reusable-unit-and-integration-tests.yml
+    secrets: inherit
   
   # Setup Testing Environment
   # setup-testing-environment:

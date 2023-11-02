@@ -4,7 +4,7 @@
     "parameters": {
         "keyVault": {
             "value": {
-                "name": "kvtechnewsnpeastus",
+                "name": "kvtechnewsprodeastus",
                 "location": "eastus",
                 "sku": "Standard",
                 "accessPolicies": [],
@@ -26,7 +26,7 @@
         },
         "containerRegistry": {
             "value": {
-                "registryName": "acrtechnewsnpeastus",
+                "registryName": "acrtechnewsprodeastus",
                 "registryLocation": "eastus",
                 "zoneRedundancy": "disabled",
                 "registrySku": "Standard",
