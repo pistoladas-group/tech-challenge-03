@@ -23,7 +23,7 @@ jobs:
         retry_on: error
         azcliversion: latest
         inlineScript: |
-          az group create --name ${{ vars.RESOURCE_GROUP_NAME }} --location brazilsouth
+          az group create --name ${{ vars.RESOURCE_GROUP_NAME }} --location eastus
 
     - name: Deploy Container Registry
       uses: azure/arm-deploy@v1

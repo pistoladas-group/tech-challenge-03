@@ -15,7 +15,7 @@
             "value": "S0"
         },
         "location": {
-            "value": "brazilsouth"
+            "value": "eastus"
         },
         "maxSizeBytes": {
             "value": 268435456000
@@ -24,7 +24,7 @@
             "value": ""
         },
         "serverName": {
-            "value": "dbs-technews-test-brazilsouth"
+            "value": "dbs-technews-test-eastus"
         },
         "licenseType": {
             "value": ""
@@ -53,7 +53,7 @@
         "clientIpValue": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/kvtechnewsnpbrazilsouth"
+                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/kvtechnewsprodeastus"
                 },
                 "secretName": "clientIpValue"
             }
@@ -199,7 +199,7 @@
         "administratorLogin": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/kvtechnewsnpbrazilsouth"
+                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/kvtechnewsprodeastus"
                 },
                 "secretName": "administratorLogin"
             }
@@ -207,7 +207,7 @@
         "administratorLoginPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/kvtechnewsnpbrazilsouth"
+                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/kvtechnewsprodeastus"
                 },
                 "secretName": "administratorLoginPassword"
             }
