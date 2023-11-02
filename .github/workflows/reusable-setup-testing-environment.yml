@@ -29,7 +29,7 @@ jobs:
           retry_on: error
           azcliversion: latest
           inlineScript: |
-            az group create --name ${{ vars.TEST_RESOURCE_GROUP_NAME }} --location brazilsouth
+            az group create --name ${{ vars.TEST_RESOURCE_GROUP_NAME }} --location eastus
 
       - name: Deploy TechNewsAuthTest Database
         uses: azure/arm-deploy@v1
@@ -88,7 +88,7 @@ jobs:
             --resource-group ${{ vars.TEST_RESOURCE_GROUP_NAME }} \
             --assign-identity \
             --environment-variables \
-            TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-technews-test-brazilsouth.database.windows.net,1433;Initial Catalog=TechNewsAuthTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" \
+            TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-technews-test-eastus.database.windows.net,1433;Initial Catalog=TechNewsAuthTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" \
             AZURE_KEY_VAULT_URL="https://${{ vars.VAULT_NAME }}.vault.azure.net/" \
             ASPNETCORE_URLS="http://+:${{ vars.AUTH_PORT }} " \
             TOKEN_EXPIRATION_IN_MINUTES="${{ vars.TOKEN_EXPIRATION_IN_MINUTES }}" \
@@ -107,7 +107,7 @@ jobs:
 
       - name: Health Check Auth
         run: |
-          RESPONSE=$(curl -s "http://${{ vars.AUTH_APP_NAME }}-test.brazilsouth.azurecontainer.io:${{ vars.AUTH_PORT }}/health")
+          RESPONSE=$(curl -s "http://${{ vars.AUTH_APP_NAME }}-test.eastus.azurecontainer.io:${{ vars.AUTH_PORT }}/health")
           
           if [[ "$RESPONSE" == *"Healthy"* ]]; then
             echo "API is Healthy"
@@ -126,9 +126,9 @@ jobs:
             az container create \
             --resource-group ${{ vars.TEST_RESOURCE_GROUP_NAME }} \
             --environment-variables \
-            TECHNEWS_CORE_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-technews-test-brazilsouth.database.windows.net,1433;Initial Catalog=TechNewsTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" \
+            TECHNEWS_CORE_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-technews-test-eastus.database.windows.net,1433;Initial Catalog=TechNewsTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" \
             ASPNETCORE_URLS="http://+:${{ vars.CORE_PORT }}" \
-            TECHNEWS_CORE_API_AUTH_JWKS_URL="http://${{ vars.AUTH_APP_NAME }}-test.brazilsouth.azurecontainer.io:${{ vars.AUTH_PORT }}/jwks" \
+            TECHNEWS_CORE_API_AUTH_JWKS_URL="http://${{ vars.AUTH_APP_NAME }}-test.eastus.azurecontainer.io:${{ vars.AUTH_PORT }}/jwks" \
             --memory 0.5 --cpu 1 --ports ${{ vars.CORE_PORT }} \
             --ip-address Public \
             --dns-name-label ${{ vars.CORE_APP_NAME }}-test \
@@ -140,7 +140,7 @@ jobs:
       
       - name: Health Check Core
         run: |
-          RESPONSE=$(curl -s "http://${{ vars.CORE_APP_NAME }}-test.brazilsouth.azurecontainer.io:${{ vars.CORE_PORT }}/health")
+          RESPONSE=$(curl -s "http://${{ vars.CORE_APP_NAME }}-test.eastus.azurecontainer.io:${{ vars.CORE_PORT }}/health")
           
           if [[ "$RESPONSE" == *"Healthy"* ]]; then
             echo "API is Healthy"
@@ -160,8 +160,8 @@ jobs:
             az container create \
             --resource-group ${{ vars.TEST_RESOURCE_GROUP_NAME }} \
             --environment-variables \
-            TECHNEWS_APP_API_AUTH_URL="http://${{ vars.AUTH_APP_NAME }}-test.brazilsouth.azurecontainer.io:${{ vars.AUTH_PORT }}" \
-            TECHNEWS_APP_API_CORE_URL="http://${{ vars.CORE_APP_NAME }}-test.brazilsouth.azurecontainer.io:${{ vars.CORE_PORT }}" \
+            TECHNEWS_APP_API_AUTH_URL="http://${{ vars.AUTH_APP_NAME }}-test.eastus.azurecontainer.io:${{ vars.AUTH_PORT }}" \
+            TECHNEWS_APP_API_CORE_URL="http://${{ vars.CORE_APP_NAME }}-test.eastus.azurecontainer.io:${{ vars.CORE_PORT }}" \
             ASPNETCORE_URLS="http://+:${{ vars.WEB_PORT }}" \
             --memory 0.5 --cpu 1 --ports ${{ vars.WEB_PORT }} \
             --ip-address Public \

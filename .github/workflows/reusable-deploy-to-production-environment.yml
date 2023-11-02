@@ -79,7 +79,7 @@ jobs:
 
       - name: Health Check Auth
         run: |
-          RESPONSE=$(curl -s "http://${{ vars.AUTH_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.AUTH_PORT }}/health")
+          RESPONSE=$(curl -s "http://${{ vars.AUTH_APP_NAME }}.eastus.azurecontainer.io:${{ vars.AUTH_PORT }}/health")
 
           if [[ "$RESPONSE" == *"Healthy"* ]]; then
             echo "API is Healthy"
@@ -100,7 +100,7 @@ jobs:
             --environment-variables \
             TECHNEWS_CORE_API_DATABASE_CONNECTION_STRING="${{ secrets.TECHNEWS_CONNECTION_STRING }}" \
             ASPNETCORE_URLS="http://+:${{ vars.CORE_PORT }}" \
-            TECHNEWS_CORE_API_AUTH_JWKS_URL="http://${{ vars.AUTH_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.AUTH_PORT }}/jwks" \
+            TECHNEWS_CORE_API_AUTH_JWKS_URL="http://${{ vars.AUTH_APP_NAME }}.eastus.azurecontainer.io:${{ vars.AUTH_PORT }}/jwks" \
             --memory 0.5 --cpu 1 --ports ${{ vars.CORE_PORT }} \
             --ip-address Public \
             --dns-name-label ${{ vars.CORE_APP_NAME }} \
@@ -112,7 +112,7 @@ jobs:
 
       - name: Health Check Core
         run: |
-          RESPONSE=$(curl -s "http://${{ vars.CORE_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.CORE_PORT }}/health")
+          RESPONSE=$(curl -s "http://${{ vars.CORE_APP_NAME }}.eastus.azurecontainer.io:${{ vars.CORE_PORT }}/health")
 
           if [[ "$RESPONSE" == *"Healthy"* ]]; then
             echo "API is Healthy"
@@ -131,8 +131,8 @@ jobs:
             az container create \
             --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
             --environment-variables \
-            TECHNEWS_APP_API_AUTH_URL="http://${{ vars.AUTH_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.AUTH_PORT }}" \
-            TECHNEWS_APP_API_CORE_URL="http://${{ vars.CORE_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.CORE_PORT }}" \
+            TECHNEWS_APP_API_AUTH_URL="http://${{ vars.AUTH_APP_NAME }}.eastus.azurecontainer.io:${{ vars.AUTH_PORT }}" \
+            TECHNEWS_APP_API_CORE_URL="http://${{ vars.CORE_APP_NAME }}.eastus.azurecontainer.io:${{ vars.CORE_PORT }}" \
             ASPNETCORE_URLS="http://+:${{ vars.WEB_PORT }}" \
             --memory 0.5 --cpu 1 --ports ${{ vars.WEB_PORT }} \
             --ip-address Public \
