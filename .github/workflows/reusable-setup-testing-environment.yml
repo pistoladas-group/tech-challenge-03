@@ -35,7 +35,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
+          resourceGroupName: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
           template: ./azure/arm-templates/database/template.json
           parameters: ./azure/arm-templates/database/parameters-TechNewsAuthTest.json
 
@@ -43,7 +43,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
+          resourceGroupName: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
           template: ./azure/arm-templates/database/template.json
           parameters: ./azure/arm-templates/database/parameters-TechNewsTest.json
 
