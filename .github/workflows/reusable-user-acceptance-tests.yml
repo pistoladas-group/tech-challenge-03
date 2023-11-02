@@ -7,10 +7,8 @@ jobs:
   run-user-acceptance-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: fake Run Acceptance Tests
-        run: echo running user acceptance tests
-#      - name: Clone Repo
-#        uses: actions/checkout@v3
-#
-#      - name: Run Acceptance Tests
-#        run: dotnet test ./tests/user-interface/TechNews.UI.Tests/TechNews.UI.Tests.csproj -e TECH_NEWS_WEB_URI="http://${{ vars.WEB_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.WEB_PORT }}" -e MAX_SECONDS_WAITING_FOR_PAGE="30"
+      - name: Clone Repo
+        uses: actions/checkout@v3
+
+      - name: Run Acceptance Tests
+        run: dotnet test ./tests/user-interface/TechNews.UI.Tests/TechNews.UI.Tests.csproj -e TECH_NEWS_WEB_URI="http://${{ vars.WEB_APP_NAME }}.brazilsouth.azurecontainer.io:${{ vars.WEB_PORT }}" -e MAX_SECONDS_WAITING_FOR_PAGE="30"
