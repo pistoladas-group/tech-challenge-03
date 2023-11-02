@@ -1,10 +1,12 @@
 using Bogus;
+using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using TechNews.Common.Library.Models;
 using TechNews.Core.Api.Data;
 using TechNews.Core.Api.Data.Models;
+using Testcontainers.MsSql;
 
 namespace TechNews.Core.Api.Tests;
 
@@ -13,19 +15,27 @@ public class TestsFixtureCollection : ICollectionFixture<TestsFixture>
 {
 }
 
-public class TestsFixture : IDisposable
+public class TestsFixture : IDisposable, IAsyncLifetime
 {
     private ApplicationDbContext? _applicationDbContext { get; set; }
+    private MsSqlContainer _sqlServerContainer = new MsSqlBuilder()
+        .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+        .WithPortBinding(hostPort: 1434, containerPort: 1433)
+        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(1433))
+        .WithPassword("Pass@123")
+        .WithEnvironment(name: "ACCEPT_EULA", value: "Y")
+        .WithEnvironment(name: "MSSQL_PID", value: "developer")
+        .Build();
+    
     public ApplicationDbContext GetDbContext()
     {
         var contextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase("TechNews")
+            .UseSqlServer(_sqlServerContainer.GetConnectionString())
             .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
 
         _applicationDbContext = new ApplicationDbContext(contextOptions);
 
-        _applicationDbContext.Database.EnsureDeleted();
         _applicationDbContext.Database.EnsureCreated();
 
         return _applicationDbContext;
@@ -81,5 +91,15 @@ public class TestsFixture : IDisposable
     public void Dispose()
     {
         _applicationDbContext?.Dispose();
+    }
+
+    public async Task InitializeAsync()
+    {
+        await _sqlServerContainer.StartAsync();
+    }
+
+    public async Task DisposeAsync()
+    {
+        await _sqlServerContainer.StopAsync();
     }
 }
