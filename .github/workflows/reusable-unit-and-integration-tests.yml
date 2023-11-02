@@ -16,5 +16,5 @@ jobs:
       - name: Run Core Unit Tests
         run: dotnet test ./tests/unit/TechNews.Core.Api.Tests/TechNews.Core.Api.Tests.csproj
 
-      # - name: Run Auth Integration Tests
-      #   run: dotnet test ./tests/integration/TechNews.Auth.Api.IntegrationTests/TechNews.Auth.Api.IntegrationTests.csproj
+      - name: Run Auth Integration Tests
+        run: dotnet test ./tests/integration/TechNews.Auth.Api.IntegrationTests/TechNews.Auth.Api.IntegrationTests.csproj

@@ -23,7 +23,7 @@ jobs:
     needs: [ run-unit-and-integration-tests ]
     uses: ./.github/workflows/reusable-setup-testing-environment.yml
     with:
-      image-tag: latest
+      image-tag: test
     secrets: inherit
     
   # Run Acceptance Tests
