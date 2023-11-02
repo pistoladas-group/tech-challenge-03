@@ -22,32 +22,32 @@ jobs:
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
 
-      # - name: Push TechNews Auth API
-      #   uses: azure/cli@v1
-      #   with:
-      #     max_attempts: 1
-      #     retry_on: error
-      #     azcliversion: latest
-      #     inlineScript: |
-      #       az acr build --image ${{ vars.AUTH_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
+      - name: Push TechNews Auth API
+        uses: azure/cli@v1
+        with:
+          max_attempts: 1
+          retry_on: error
+          azcliversion: latest
+          inlineScript: |
+            az acr build --image ${{ vars.AUTH_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
 
-      # - name: Push TechNews Core API
-      #   uses: azure/cli@v1
-      #   with:
-      #     max_attempts: 1
-      #     retry_on: error
-      #     azcliversion: latest
-      #     inlineScript: |
-      #       az acr build --image ${{ vars.CORE_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Core.Api/Dockerfile .
+      - name: Push TechNews Core API
+        uses: azure/cli@v1
+        with:
+          max_attempts: 1
+          retry_on: error
+          azcliversion: latest
+          inlineScript: |
+            az acr build --image ${{ vars.CORE_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Core.Api/Dockerfile .
 
-      # - name: Push TechNews Web
-      #   uses: azure/cli@v1
-      #   with:
-      #     max_attempts: 1
-      #     retry_on: error
-      #     azcliversion: latest
-      #     inlineScript: |
-      #       az acr build --image ${{ vars.WEB_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .
+      - name: Push TechNews Web
+        uses: azure/cli@v1
+        with:
+          max_attempts: 1
+          retry_on: error
+          azcliversion: latest
+          inlineScript: |
+            az acr build --image ${{ vars.WEB_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .
 
       - name: Deploy TechNews Auth Container
         uses: azure/cli@v1
