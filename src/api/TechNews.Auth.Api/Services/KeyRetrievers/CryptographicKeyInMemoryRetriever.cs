@@ -1,4 +1,6 @@
-﻿namespace TechNews.Auth.Api.Services.KeyRetrievers;
+﻿using TechNews.Auth.Api.Services.Cryptography;
+
+namespace TechNews.Auth.Api.Services.KeyRetrievers;
 
 public class CryptographicKeyInMemoryRetriever : ICryptographicKeyRetriever
 {

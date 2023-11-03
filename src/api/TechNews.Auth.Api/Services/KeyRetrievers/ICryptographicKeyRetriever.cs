@@ -1,3 +1,5 @@
+using TechNews.Auth.Api.Services.Cryptography;
+
 namespace TechNews.Auth.Api.Services.KeyRetrievers;
 
 public interface ICryptographicKeyRetriever

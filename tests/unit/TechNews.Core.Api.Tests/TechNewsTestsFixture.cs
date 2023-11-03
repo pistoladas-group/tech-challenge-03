@@ -31,7 +31,6 @@ public class TestsFixture : IDisposable, IAsyncLifetime
     {
         var contextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer(_sqlServerContainer.GetConnectionString())
-            .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
 
         _applicationDbContext = new ApplicationDbContext(contextOptions);

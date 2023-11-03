@@ -3,6 +3,8 @@ using Microsoft.IdentityModel.Tokens;
 using TechNews.Auth.Api.Configurations;
 using TechNews.Auth.Api.Models;
 
+namespace TechNews.Auth.Api.Services.Cryptography;
+
 public class RsaCryptographicKey : ICryptographicKey
 {
     public Guid Id { get; private set; }

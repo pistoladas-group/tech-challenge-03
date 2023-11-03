@@ -8,8 +8,9 @@ using FakeItEasy;
 using TechNews.Auth.Api.Models;
 using TechNews.Common.Library.Models;
 using TechNews.Auth.Api.Data;
+using TechNews.Auth.Api.Services.Cryptography;
 
-namespace TechNews.Core.Api.Tests;
+namespace TechNews.Auth.Api.Tests;
 
 [CollectionDefinition(nameof(TestsFixtureCollection))]
 public class TestsFixtureCollection : ICollectionFixture<TestsFixture>

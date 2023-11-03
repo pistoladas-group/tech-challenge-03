@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography;
 using FakeItEasy;
-using TechNews.Core.Api.Tests;
 using TechNews.Auth.Api.Services.Cryptography;
 
 namespace TechNews.Auth.Api.Tests;

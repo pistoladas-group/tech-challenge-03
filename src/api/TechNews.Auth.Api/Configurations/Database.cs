@@ -5,24 +5,14 @@ namespace TechNews.Auth.Api.Configurations;
 
 public static class Database
 {
-    public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IWebHostEnvironment env)
+    public static IServiceCollection ConfigureDatabase(this IServiceCollection services)
     {
-        if (env.IsEnvironment("Testing"))
-        {
-            services.AddDbContext<AuthDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("TechNewsAuth");
-            });
-
-            return services;
-        }
-
         var connectionString = EnvironmentVariables.DatabaseConnectionString;
 
-        if (string.IsNullOrWhiteSpace(connectionString))
-        {
-            throw new ApplicationException("Undefined Database Connection String. Please check the Environment Variables.");
-        }
+        // if (string.IsNullOrWhiteSpace(connectionString))
+        // {
+        //     throw new ApplicationException("Undefined Database Connection String. Please check the Environment Variables.");
+        // }
 
         services.AddDbContext<AuthDbContext>(options =>
         {

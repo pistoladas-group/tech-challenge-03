@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using FakeItEasy;
 using TechNews.Auth.Api.Controllers;
 using TechNews.Auth.Api.Models;
+using TechNews.Auth.Api.Services.Cryptography;
 using TechNews.Auth.Api.Services.KeyRetrievers;
-using TechNews.Core.Api.Tests;
 
 namespace TechNews.Auth.Api.Tests;
 

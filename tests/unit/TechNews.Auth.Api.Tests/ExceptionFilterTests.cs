@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using FakeItEasy;
 using TechNews.Auth.Api.Filters;
-using TechNews.Core.Api.Tests;
 
 namespace TechNews.Auth.Api.Tests;
 

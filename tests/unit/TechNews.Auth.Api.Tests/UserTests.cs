@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using TechNews.Auth.Api.Data;
-using TechNews.Core.Api.Tests;
 
 namespace TechNews.Auth.Api.Tests;
 

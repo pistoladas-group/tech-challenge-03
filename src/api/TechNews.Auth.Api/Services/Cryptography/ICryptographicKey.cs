@@ -1,6 +1,8 @@
 using Microsoft.IdentityModel.Tokens;
 using TechNews.Auth.Api.Models;
 
+namespace TechNews.Auth.Api.Services.Cryptography;
+
 public interface ICryptographicKey
 {
     Guid Id { get; }
