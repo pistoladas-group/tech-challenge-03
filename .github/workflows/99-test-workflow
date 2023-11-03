@@ -1,0 +1,45 @@
+name: Test Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-apps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Apps
+        uses: actions/test-action@v1
+  
+  # Unit and Integrations Tests
+  # run-unit-and-integration-tests:
+  #   needs: [ build-apps ]
+  #   uses: ./.github/workflows/reusable-unit-and-integration-tests.yml
+  #   secrets: inherit
+  
+  # Setup Testing Environment
+  # setup-testing-environment:
+  #   needs: [ run-unit-and-integration-tests ]
+  #   uses: ./.github/workflows/reusable-setup-testing-environment.yml
+  #   with:
+  #     image-tag: test
+  #   secrets: inherit
+    
+  # Run Acceptance Tests
+  # run-user-acceptance-tests:
+  #   needs: [ setup-testing-environment ]
+  #   uses: ./.github/workflows/reusable-user-acceptance-tests.yml
+  #   secrets: inherit
+  
+  # Clean up Testing Environment
+  # cleanup-testing-environment:
+  #   needs: [ run-user-acceptance-tests ]
+  #   uses: ./.github/workflows/reusable-cleanup-testing-environment.yml
+  #   secrets: inherit
+    
+  # Deploy to Prodution
+  # deploy-to-production-environment:
+  #   #needs: [ run-user-acceptance-tests ]
+  #   uses: ./.github/workflows/reusable-deploy-to-production-environment.yml
+  #   with:
+  #     image-tag: latest
+  #   secrets: inherit
