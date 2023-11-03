@@ -1,0 +1,26 @@
+name: 'Create Resource Group'
+description: 'Creates a Resource Group in Azure'
+inputs:
+  resource-group-name:
+    description: 'The name for the resource group'
+    required: true
+  location:
+    description: 'The region/location for the resource group'
+    required: true
+runs:
+  using: "composite"
+  steps:
+      - name: Azure Login
+        uses: Azure/login@v1.4.6
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Create Resource Group
+        shell: bash
+        uses: azure/cli@v1
+        with:
+          max_attempts: 1
+          retry_on: error
+          azcliversion: latest
+          inlineScript: |
+            az group create --name ${{ inputs.resource-group-name }} --location ${{ inputs.location }}

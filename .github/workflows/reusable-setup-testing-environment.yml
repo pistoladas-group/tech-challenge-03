@@ -16,45 +16,45 @@ jobs:
       - name: Clone Repo
         uses: actions/checkout@v3
 
-      - name: Azure Login
-        id: login
-        uses: Azure/login@v1.4.6
-        with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
+      # - name: Azure Login
+      #   id: login
+      #   uses: Azure/login@v1.4.6
+      #   with:
+      #     creds: ${{secrets.AZURE_CREDENTIALS}}
 
-      - name: Create Resource Group
-        uses: azure/cli@v1
-        with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            az group create --name ${{ vars.TEST_RESOURCE_GROUP_NAME }} --location eastus
+      # - name: Create Resource Group
+      #   uses: azure/cli@v1
+      #   with:
+      #     max_attempts: 1
+      #     retry_on: error
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       az group create --name ${{ vars.TEST_RESOURCE_GROUP_NAME }} --location eastus
 
-      - name: Deploy TechNewsAuthTest Database
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
-          template: ./azure/arm-templates/database/template.json
-          parameters: ./azure/arm-templates/database/parameters-TechNewsAuthTest.json
+      # - name: Deploy TechNewsAuthTest Database
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+      #     resourceGroupName: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+      #     template: ./azure/arm-templates/database/template.json
+      #     parameters: ./azure/arm-templates/database/parameters-TechNewsAuthTest.json
 
-      - name: Deploy TechNewsTest Database
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
-          template: ./azure/arm-templates/database/template.json
-          parameters: ./azure/arm-templates/database/parameters-TechNewsTest.json
+      # - name: Deploy TechNewsTest Database
+      #   uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+      #     resourceGroupName: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+      #     template: ./azure/arm-templates/database/template.json
+      #     parameters: ./azure/arm-templates/database/parameters-TechNewsTest.json
 
-      - name: Push TechNews Auth API
-        uses: azure/cli@v1
-        with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            az acr build --image ${{ vars.AUTH_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
+      # - name: Push TechNews Auth API
+      #   uses: azure/cli@v1
+      #   with:
+      #     max_attempts: 1
+      #     retry_on: error
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       az acr build --image ${{ vars.AUTH_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
 
 
       - name: Push TechNews Core API
