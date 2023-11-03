@@ -13,6 +13,7 @@ jobs:
       - name: Create Resource Group
         uses: ./.github/actions/create-resource-group
         with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
           resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
           location: ${{ vars.AZURE_RESOURCES_LOCATION }}
 

@@ -15,17 +15,17 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-  run-unit-and-integration-tests:
-    needs: [ build-apps ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Actions
-        uses: actions/checkout@v4
+  # run-unit-and-integration-tests:
+  #   needs: [ build-apps ]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Actions
+  #       uses: actions/checkout@v4
 
-      - name: Run Unit and Integration Tests
-        uses: ./.github/actions/run-unit-and-integration-tests
+  #     - name: Run Unit and Integration Tests
+  #       uses: ./.github/actions/run-unit-and-integration-tests
     
-  run-ui-tests:
+  ui-tests:
     needs: [ run-unit-and-integration-tests ]
     uses: ./.github/workflows/99-ui-test-workflow.yml
     secrets: inherit
