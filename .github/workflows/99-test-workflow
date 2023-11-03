@@ -1,6 +1,9 @@
 name: Test Workflow
 
 on:
+  push:
+    branches:
+      - 'feature/github-actions'
   workflow_dispatch:
 
 jobs:
@@ -9,7 +12,7 @@ jobs:
     steps:
       - name: Build Apps
         uses: actions/test-action@v1
-  #tessst
+
   # Unit and Integrations Tests
   # run-unit-and-integration-tests:
   #   needs: [ build-apps ]
