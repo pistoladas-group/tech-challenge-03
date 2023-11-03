@@ -1,0 +1,45 @@
+name: Test Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-apps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Build Apps
+        uses: ./.github/actions/build-apps
+        with:
+          dotnet-version: '6.0.x'
+
+  run-unit-and-integration-tests:
+    needs: [ build-apps ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Run Unit and Integration Tests
+        uses: ./.github/actions/run-unit-and-integration-tests
+    
+  run-ui-tests:
+    needs: [ run-unit-and-integration-tests ]
+    uses: ./.github/workflows/ui-test-pipeline.yml
+    secrets: inherit
+  
+  # Clean up Testing Environment
+  # cleanup-testing-environment:
+  #   needs: [ run-user-acceptance-tests ]
+  #   uses: ./.github/workflows/reusable-cleanup-testing-environment.yml
+  #   secrets: inherit
+    
+  # Deploy to Prodution
+  # deploy-to-production-environment:
+  #   #needs: [ run-user-acceptance-tests ]
+  #   uses: ./.github/workflows/reusable-deploy-to-production-environment.yml
+  #   with:
+  #     image-tag: latest
+  #   secrets: inherit

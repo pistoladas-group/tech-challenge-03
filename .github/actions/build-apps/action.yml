@@ -1,0 +1,22 @@
+name: 'Build Apps'
+description: 'Build the apps of the repository'
+inputs:
+  dotnet-version:
+    description: '.NET version to setup for the build'
+    required: true
+    default: '6.0.x'
+runs:
+  using: "composite"
+  steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+        
+      - name: Restore Dependencies
+        shell: bash
+        run: dotnet restore
+
+      - name: Build Apps
+        shell: bash
+        run: dotnet build --no-restore

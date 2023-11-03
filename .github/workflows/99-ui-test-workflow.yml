@@ -1,0 +1,47 @@
+name: UI Test Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  create-resource-group:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Create Resource Group
+        uses: ./.github/actions/create-resource-group
+        with:
+          resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+
+  # deploy-databases:
+  #   needs: [ create-resource-group ]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Actions
+  #       uses: actions/checkout@v4
+
+  #     - name: Deploy Databases
+  #       uses: ./.github/actions/deploy-databases
+  #       with:
+  #         subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+  #         resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+  #         environment: test
+  #         location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+
+  # push-auth-image:
+  #   needs: [ create-resource-group ]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Actions
+  #       uses: actions/checkout@v4
+
+  #     - name: Push Auth Image
+  #       uses: ./.github/actions/push-image
+  #       with:
+  #         image-name: ${{ vars.AUTH_APP_NAME}}
+  #         image-tag: test
+  #         registry-name: ${{ vars.CONTAINER_REGISTRY_NAME}}
+  #         docker-file-path: ./src/api/TechNews.Auth.Api/Dockerfile .
