@@ -13,17 +13,12 @@ inputs:
 runs:
   using: "composite"
   steps:
-      - name: Azure Login
-        uses: Azure/login@v1.4.6
-        with:
-          creds: ${{ inputs.credentials }}
-
-      - name: Create Resource Group
-        shell: bash
-        uses: azure/cli@v1
-        with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            az group create --name ${{ inputs.resource-group-name }} --location ${{ inputs.location }}
+    - name: Azure Login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{ inputs.credentials }}
+    
+    - name: Create Resource Group
+      uses: azure/cli@v1
+      run: |
+        az group create --name ${{ inputs.resource-group-name }} --location ${{ inputs.location }}
