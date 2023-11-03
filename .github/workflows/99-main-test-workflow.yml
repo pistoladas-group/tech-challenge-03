@@ -26,7 +26,7 @@ jobs:
   #       uses: ./.github/actions/run-unit-and-integration-tests
     
   ui-tests:
-    needs: [ run-unit-and-integration-tests ]
+    #needs: [ run-unit-and-integration-tests ]
     uses: ./.github/workflows/99-ui-test-workflow.yml
     secrets: inherit
   
