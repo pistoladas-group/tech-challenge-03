@@ -1,9 +1,6 @@
 name: Test Workflow
 
 on:
-  push:
-    branches:
-      - 'feature/github-actions'
   workflow_dispatch:
 
 jobs:
