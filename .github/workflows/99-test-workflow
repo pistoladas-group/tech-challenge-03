@@ -1,4 +1,4 @@
-name: Main Workflow
+name: Test Workflow
 
 on:
   push:
@@ -8,10 +8,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-apps:
     runs-on: ubuntu-latest
     steps:
-      - name: Use Custom Build Action
+      - name: Build Apps
         uses: actions/test-action@v1
   
   # Unit and Integrations Tests
