@@ -21,8 +21,6 @@ runs:
     - name: Create Resource Group
       uses: azure/cli@v1
       with:
-        max_attempts: 1
-        retry_on: error
         azcliversion: latest
         inlineScript: |
           az group create --name ${{ inputs.resource-group-name }} --location ${{ inputs.location }}
