@@ -1,6 +1,7 @@
 name: Unit and Integration Tests Reusable Workflow
 
 on:
+  workflow_dispatch: 
   workflow_call:
 
 jobs:
