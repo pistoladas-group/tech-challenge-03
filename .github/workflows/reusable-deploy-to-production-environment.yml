@@ -22,71 +22,71 @@ jobs:
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
 
-      - name: Push TechNews Auth API
-        uses: azure/cli@v1
-        with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            az acr build --image ${{ vars.AUTH_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
+      # - name: Push TechNews Auth API
+      #   uses: azure/cli@v1
+      #   with:
+      #     max_attempts: 1
+      #     retry_on: error
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       az acr build --image ${{ vars.AUTH_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Auth.Api/Dockerfile .
 
-      - name: Push TechNews Core API
-        uses: azure/cli@v1
-        with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            az acr build --image ${{ vars.CORE_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Core.Api/Dockerfile .
+      # - name: Push TechNews Core API
+      #   uses: azure/cli@v1
+      #   with:
+      #     max_attempts: 1
+      #     retry_on: error
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       az acr build --image ${{ vars.CORE_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/api/TechNews.Core.Api/Dockerfile .
 
-      - name: Push TechNews Web
-        uses: azure/cli@v1
-        with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            az acr build --image ${{ vars.WEB_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .
+      # - name: Push TechNews Web
+      #   uses: azure/cli@v1
+      #   with:
+      #     max_attempts: 1
+      #     retry_on: error
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       az acr build --image ${{ vars.WEB_APP_NAME}}:${{ inputs.image-tag }} --registry ${{ vars.CONTAINER_REGISTRY_NAME}} --file ./src/web/TechNews.Web/Dockerfile .
 
-      - name: Deploy TechNews Auth Container
-        uses: azure/cli@v1
-        with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            az container create \
-            --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
-            --assign-identity \
-            --environment-variables \
-            TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-technews-prod-eastus.database.windows.net,1433;Initial Catalog=TechNewsAuth;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" \
-            AZURE_KEY_VAULT_URL="https://${{ vars.VAULT_NAME }}.vault.azure.net/" \
-            ASPNETCORE_URLS="http://+:${{ vars.AUTH_PORT }} " \
-            TOKEN_EXPIRATION_IN_MINUTES="${{ vars.TOKEN_EXPIRATION_IN_MINUTES }}" \
-            KEY_ROTATOR_EXECUTION_IN_MINUTES="${{ vars.KEY_ROTATOR_EXECUTION_IN_MINUTES }}" \
-            KEY_CREATION_SIZE_IN_BITS="${{ vars.KEY_CREATION_SIZE_IN_BITS }}" \
-            KEY_EXPIRATION_IN_DAYS="${{ vars.KEY_EXPIRATION_IN_DAYS }}" \
-            CRYPTOGRAPHIC_ALGORITHM="${{ vars.CRYPTOGRAPHIC_ALGORITHM }}" \
-            --memory 0.5 --cpu 1 --ports ${{ vars.AUTH_PORT }} \
-            --ip-address Public \
-            --dns-name-label ${{ vars.AUTH_APP_NAME }} \
-            --registry-login-server ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io \
-            --registry-username "anonymous" \
-            --registry-password "anonymous" \
-            --name ${{ vars.AUTH_APP_NAME }}-container \
-            --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.AUTH_APP_NAME }}:${{ inputs.image-tag }}
+      # - name: Deploy TechNews Auth Container
+      #   uses: azure/cli@v1
+      #   with:
+      #     max_attempts: 1
+      #     retry_on: error
+      #     azcliversion: latest
+      #     inlineScript: |
+      #       az container create \
+      #       --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
+      #       --assign-identity \
+      #       --environment-variables \
+      #       TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-technews-prod-eastus.database.windows.net,1433;Initial Catalog=TechNewsAuth;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" \
+      #       AZURE_KEY_VAULT_URL="https://${{ vars.VAULT_NAME }}.vault.azure.net/" \
+      #       ASPNETCORE_URLS="http://+:${{ vars.AUTH_PORT }} " \
+      #       TOKEN_EXPIRATION_IN_MINUTES="${{ vars.TOKEN_EXPIRATION_IN_MINUTES }}" \
+      #       KEY_ROTATOR_EXECUTION_IN_MINUTES="${{ vars.KEY_ROTATOR_EXECUTION_IN_MINUTES }}" \
+      #       KEY_CREATION_SIZE_IN_BITS="${{ vars.KEY_CREATION_SIZE_IN_BITS }}" \
+      #       KEY_EXPIRATION_IN_DAYS="${{ vars.KEY_EXPIRATION_IN_DAYS }}" \
+      #       CRYPTOGRAPHIC_ALGORITHM="${{ vars.CRYPTOGRAPHIC_ALGORITHM }}" \
+      #       --memory 0.5 --cpu 1 --ports ${{ vars.AUTH_PORT }} \
+      #       --ip-address Public \
+      #       --dns-name-label ${{ vars.AUTH_APP_NAME }} \
+      #       --registry-login-server ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io \
+      #       --registry-username "anonymous" \
+      #       --registry-password "anonymous" \
+      #       --name ${{ vars.AUTH_APP_NAME }}-container \
+      #       --image ${{ vars.CONTAINER_REGISTRY_NAME}}.azurecr.io/${{ vars.AUTH_APP_NAME }}:${{ inputs.image-tag }}
 
-      - name: Health Check Auth
-        run: |
-          RESPONSE=$(curl -s "http://${{ vars.AUTH_APP_NAME }}.eastus.azurecontainer.io:${{ vars.AUTH_PORT }}/health")
+      # - name: Health Check Auth
+      #   run: |
+      #     RESPONSE=$(curl -s "http://${{ vars.AUTH_APP_NAME }}.eastus.azurecontainer.io:${{ vars.AUTH_PORT }}/health")
 
-          if [[ "$RESPONSE" == *"Healthy"* ]]; then
-            echo "API is Healthy"
-          else
-            echo "API is not Healthy"
-            exit 1
-          fi
+      #     if [[ "$RESPONSE" == *"Healthy"* ]]; then
+      #       echo "API is Healthy"
+      #     else
+      #       echo "API is not Healthy"
+      #       exit 1
+      #     fi
 
       - name: Deploy TechNews Core Container
         uses: azure/cli@v1
@@ -120,7 +120,7 @@ jobs:
             echo "API is not Healthy"
             exit 1
           fi
-#testing
+
       - name: Deploy TechNews Web Container
         uses: azure/cli@v1
         with:
