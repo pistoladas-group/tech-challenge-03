@@ -120,7 +120,7 @@ jobs:
             echo "API is not Healthy"
             exit 1
           fi
-
+#testing
       - name: Deploy TechNews Web Container
         uses: azure/cli@v1
         with:
