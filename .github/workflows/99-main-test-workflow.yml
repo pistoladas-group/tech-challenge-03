@@ -27,7 +27,7 @@ jobs:
     
   run-ui-tests:
     needs: [ run-unit-and-integration-tests ]
-    uses: ./.github/workflows/ui-test-pipeline.yml
+    uses: ./.github/workflows/99-ui-test-workflow.yml
     secrets: inherit
   
   # Clean up Testing Environment
