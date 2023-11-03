@@ -1,6 +1,9 @@
 name: 'Deploy Databases'
 description: 'Deploy the databases in Azure'
 inputs:
+  credentials:
+    description: 'The Azure credentials to log in'
+    required: true
   subscription-id:
     description: 'The subscription that the database will be created'
     required: true
@@ -16,23 +19,23 @@ inputs:
 runs:
   using: "composite"
   steps:
-      - name: Azure Login
-        uses: Azure/login@v1.4.6
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Azure Login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{ inputs.credentials }}
 
-      - name: Deploy TechNewsAuth Database
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ inputs.subscription-id }}
-          resourceGroupName: ${{ inputs.resource-group-name }}
-          template: ./azure/arm-templates/database/${{ inputs.environment }}/${{ inputs.location }}/template.json
-          parameters: ./azure/arm-templates/database/${{ inputs.environment }}/${{ inputs.location }}/parameters-TechNewsAuthTest.json
+    - name: Deploy TechNewsAuth Database
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ inputs.subscription-id }}
+        resourceGroupName: ${{ inputs.resource-group-name }}
+        template: ./azure/arm-templates/database/${{ inputs.environment }}/${{ inputs.location }}/template.json
+        parameters: ./azure/arm-templates/database/${{ inputs.environment }}/${{ inputs.location }}/parameters-TechNewsAuthTest.json
 
-      - name: Deploy TechNews Database
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ inputs.subscription-id }}
-          resourceGroupName: ${{ inputs.resource-group-name }}
-          template: ./azure/arm-templates/database/${{ inputs.environment }}/${{ inputs.location }}/template.json
-          parameters: ./azure/arm-templates/database/${{ inputs.environment }}/${{ inputs.location }}/parameters-TechNewsTest.json
+    - name: Deploy TechNews Database
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ inputs.subscription-id }}
+        resourceGroupName: ${{ inputs.resource-group-name }}
+        template: ./azure/arm-templates/database/${{ inputs.environment }}/${{ inputs.location }}/template.json
+        parameters: ./azure/arm-templates/database/${{ inputs.environment }}/${{ inputs.location }}/parameters-TechNewsTest.json
