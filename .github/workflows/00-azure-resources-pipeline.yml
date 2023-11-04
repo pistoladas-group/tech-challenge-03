@@ -18,6 +18,7 @@ jobs:
           location: ${{ vars.AZURE_RESOURCES_LOCATION }}
 
   deploy-container-registry:
+    needs: [ create-resource-group ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Actions
