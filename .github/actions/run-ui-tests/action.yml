@@ -1,0 +1,12 @@
+name: 'Run UI Tests'
+description: 'Runs the UI Tests of the repository'
+inputs:
+  web-uri:
+    description: 'The URI of the Web Application to be tested'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Run UI Tests
+      shell: bash
+      run: dotnet test ./tests/user-interface/TechNews.UI.Tests/TechNews.UI.Tests.csproj -e TECH_NEWS_WEB_URI="http://${{ inputs.web-uri }}" -e MAX_SECONDS_WAITING_FOR_PAGE="30"
