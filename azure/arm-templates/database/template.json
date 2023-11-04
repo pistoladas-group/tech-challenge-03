@@ -21,7 +21,7 @@
             "type": "string"
         },
         "administratorLogin": {
-            "type": "string",
+            "type": "object",
             "defaultValue": {
                 "reference": {
                     "keyVault": {
@@ -32,7 +32,7 @@
             }
         },
         "administratorLoginPassword": {
-            "type": "securestring",
+            "type": "object",
             "defaultValue": {
                 "reference": {
                     "keyVault": {
@@ -213,7 +213,7 @@
             "defaultValue": ""
         },
         "clientIpValue": {
-            "type": "string",
+            "type": "object",
             "defaultValue": {
                 "reference": {
                     "keyVault": {
