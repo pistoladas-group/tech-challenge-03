@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="Selenium.Support" Version="4.14.1" />
     <PackageReference Include="Selenium.WebDriver" Version="4.14.1" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="118.0.5993.7000" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="119.0.6045.10500" />
     <PackageReference Include="SeleniumExtras.WaitHelpers" Version="1.0.2" />
     <PackageReference Include="Specflow" Version="3.9.74" />
     <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74" />
