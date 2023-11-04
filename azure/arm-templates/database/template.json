@@ -21,26 +21,13 @@
             "type": "string"
         },
         "administratorLogin": {
-            "type": "object",
-            "defaultValue": {
-                "reference": {
-                    "keyVault": {
-                        "id": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('resourceGroupName'), '/providers/Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
-                    },
-                    "secretName": "administratorLogin"
-                }
-            }
+            "type": "string"
         },
         "administratorLoginPassword": {
-            "type": "object",
-            "defaultValue": {
-                "reference": {
-                    "keyVault": {
-                        "id": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('resourceGroupName'), '/providers/Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
-                    },
-                    "secretName": "administratorLoginPassword"
-                }
-            }
+            "type": "securestring"
+        },
+        "clientIpValue": {
+            "type": "string"
         },
         "administrators": {
             "type": "object",
@@ -211,17 +198,6 @@
         "clientIpRuleName": {
             "type": "string",
             "defaultValue": ""
-        },
-        "clientIpValue": {
-            "type": "object",
-            "defaultValue": {
-                "reference": {
-                    "keyVault": {
-                        "id": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('resourceGroupName'), '/providers/Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
-                    },
-                    "secretName": "clientIpValue"
-                }
-            }
         },
         "publicNetworkAccess": {
             "type": "string",

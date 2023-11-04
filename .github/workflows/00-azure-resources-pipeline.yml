@@ -75,10 +75,9 @@ jobs:
           key-vault-name: kv${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           environment: ${{ env.ENVIRONMENT }}
           location: ${{ vars.AZURE_RESOURCES_LOCATION }}
-
-
-  
-
+          admin-login: ${{ secrets.ADMIN_LOGIN }}
+          admin-password: ${{ secrets.ADMIN_PASSWORD }}
+          client-ip: ${{ secrets.CLIENT_IP }}
 
     # - name: Deploy TechNewsAuth Database Template
     #   uses: azure/arm-deploy@v1

@@ -25,6 +25,15 @@ inputs:
   location:
     description: 'The region/location for the database'
     required: true
+  admin-login:
+    description: 'The administrator login for the database'
+    required: true
+  admin-password:
+    description: 'The password for the login'
+    required: true
+  client-ip:
+    description: 'The IP to be allowed to connect to database'
+    required: false
 runs:
   using: "composite"
   steps:
@@ -44,6 +53,9 @@ runs:
           --template-file ./azure/arm-templates/database/template.json \
           --parameters \
           subscriptionId="${{ inputs.subscription-id }}" \
+          administratorLogin="${{ inputs.admin-login }}" \
+          administratorLoginPassword="${{ inputs.admin-password }}" \
+          clientIpValue="${{ inputs.client-ip }}" \
           resourceGroupName="${{ inputs.resource-group-name }}" \
           keyVaultName="${{ inputs.key-vault-name }}" \
           databaseName="${{ inputs.database-name }}" \
