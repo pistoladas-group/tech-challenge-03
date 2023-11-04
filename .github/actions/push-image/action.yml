@@ -1,6 +1,9 @@
 name: 'Push Image'
 description: 'Push a docker image to the Azure Container Registry'
 inputs:
+  credentials:
+    description: 'The Azure credentials to log in'
+    required: true
   image-name:
     description: 'The name for the image'
     required: true
@@ -19,7 +22,7 @@ runs:
       - name: Azure Login
         uses: Azure/login@v1.4.6
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ inputs.credentials }}
 
       - name: Push Image
         shell: bash

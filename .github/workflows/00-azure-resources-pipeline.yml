@@ -52,7 +52,6 @@ jobs:
           resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
           database-name: TechNewsAuth
           server-name: dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}
-          key-vault-name: kv${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           environment: ${{ env.ENVIRONMENT }}
           location: ${{ vars.AZURE_RESOURCES_LOCATION }}
           admin-login: ${{ secrets.ADMIN_LOGIN }}
