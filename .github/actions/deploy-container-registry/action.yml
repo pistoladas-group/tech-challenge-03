@@ -40,13 +40,9 @@ runs:
 
     - name: Set ACR Anonymous Pull
       uses: azure/cli@v1
-      continue-on-error: true
+      max_attempts: 3
+				retry_on: error
       with:
         azcliversion: latest
         inlineScript: |
-          az acr update --name ${{ inputs.resource-name }} --anonymous-pull-enabled true
-    
-    - name: Retry ACR Anonymous Pull on Failure
-        if: ${{ failure() }}
-        run: |
           az acr update --name ${{ inputs.resource-name }} --anonymous-pull-enabled true
