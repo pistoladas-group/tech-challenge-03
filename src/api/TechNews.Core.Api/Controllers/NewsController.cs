@@ -52,14 +52,14 @@ public class NewsController : ControllerBase
     {
         if (newsId == Guid.Empty)
         {
-            return BadRequest(new ApiResponse());
+            return BadRequest(new ApiResponse(error: new ErrorResponse("invalid_request", "InvalidNewsId", "The newsId is not valid")));
         }
 
         var news = await _context.News.Include(x => x.Author).AsNoTracking().FirstOrDefaultAsync(x => x.Id == newsId);
 
         if (news is null)
         {
-            return NotFound(new ApiResponse());
+            return NotFound(new ApiResponse(error: new ErrorResponse("invalid_request", "NewsNotFound", "The news was not found")));
         }
 
         return Ok(new ApiResponse(data: news));

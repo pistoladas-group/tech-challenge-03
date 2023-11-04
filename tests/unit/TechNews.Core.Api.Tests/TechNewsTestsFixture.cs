@@ -2,7 +2,6 @@ using Bogus;
 using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using TechNews.Common.Library.Models;
 using TechNews.Core.Api.Data;
 using TechNews.Core.Api.Data.Models;

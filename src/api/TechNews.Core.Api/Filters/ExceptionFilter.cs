@@ -16,7 +16,7 @@ public class ExceptionFilter : IExceptionFilter
             return;
         }
 
-        context.Result = new ObjectResult(new ApiResponse(error: new ErrorResponse("invalid_request", "InvalidRequest", "There was an unexpected error with the application. Please contact support!")))
+        context.Result = new ObjectResult(new ApiResponse(error: new ErrorResponse("server_error", "InternalError", "There was an unexpected error with the application. Please contact support!")))
         {
             StatusCode = 500
         };
