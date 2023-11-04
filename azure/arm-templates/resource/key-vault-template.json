@@ -2,6 +2,12 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "resourceName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
         "keyVault": {
             "type": "object"
         },
@@ -13,8 +19,8 @@
         {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2021-10-01",
-            "name": "[parameters('keyVault').name]",
-            "location": "[parameters('keyVault').location]",
+            "name": "[parameters('resourceName')]",
+            "location": "[parameters('location')]",
             "properties": {
                 "enabledForDeployment": "[parameters('keyVault').enabledForDeployment]",
                 "enabledForTemplateDeployment": "[parameters('keyVault').enabledForTemplateDeployment]",

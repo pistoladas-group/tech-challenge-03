@@ -5,26 +5,17 @@
         "collation": {
             "value": "SQL_Latin1_General_CP1_CI_AS"
         },
-        "databaseName": {
-            "value": "TechNewsAuthTest"
-        },
         "tier": {
             "value": "Standard"
         },
         "skuName": {
             "value": "S0"
         },
-        "location": {
-            "value": "eastus"
-        },
         "maxSizeBytes": {
             "value": 268435456000
         },
         "sampleName": {
             "value": ""
-        },
-        "serverName": {
-            "value": "dbs-technews-test-eastus"
         },
         "licenseType": {
             "value": ""
@@ -49,14 +40,6 @@
         },
         "allowClientIp": {
             "value": true
-        },
-        "clientIpValue": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/kvtechnewsprodeastus"
-                },
-                "secretName": "clientIpValue"
-            }
         },
         "databaseTags": {
             "value": {}
@@ -195,22 +178,6 @@
         },
         "maintenanceConfigurationId": {
             "value": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"
-        },
-        "administratorLogin": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/kvtechnewsprodeastus"
-                },
-                "secretName": "administratorLogin"
-            }
-        },
-        "administratorLoginPassword": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/5d17a1d6-e7cf-4fb4-978f-701807e9dd06/resourceGroups/rg-tech-challenge-03/providers/Microsoft.KeyVault/vaults/kvtechnewsprodeastus"
-                },
-                "secretName": "administratorLoginPassword"
-            }
         },
         "identity": {
             "value": {

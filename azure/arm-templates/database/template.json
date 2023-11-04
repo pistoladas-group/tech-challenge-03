@@ -2,13 +2,29 @@
     "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "subscriptionId": {
+            "type": "string"
+        },
+        "resourceGroupName": {
+            "type": "string"
+        },
+        "databaseName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "serverName": {
+            "type": "string"
+        },
         "administratorLogin": {
-            "type": "string",
-            "defaultValue": ""
+            "type": "string"
         },
         "administratorLoginPassword": {
-            "type": "securestring",
-            "defaultValue": ""
+            "type": "securestring"
+        },
+        "clientIpValue": {
+            "type": "string"
         },
         "administrators": {
             "type": "object",
@@ -17,23 +33,14 @@
         "collation": {
             "type": "string"
         },
-        "databaseName": {
-            "type": "string"
-        },
         "tier": {
             "type": "string"
         },
         "skuName": {
             "type": "string"
         },
-        "location": {
-            "type": "string"
-        },
         "maxSizeBytes": {
             "type": "int"
-        },
-        "serverName": {
-            "type": "string"
         },
         "sampleName": {
             "type": "string",
@@ -186,10 +193,6 @@
             "defaultValue": false
         },
         "clientIpRuleName": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "clientIpValue": {
             "type": "string",
             "defaultValue": ""
         },

@@ -1,0 +1,60 @@
+name: 'Deploy Database'
+description: 'Deploy a SQL Database in Azure'
+inputs:
+  credentials:
+    description: 'The Azure credentials to log in'
+    required: true
+  subscription-id:
+    description: 'The subscription that the database will be created'
+    required: true
+  resource-group-name:
+    description: 'The resource group name that the database will be created'
+    required: true
+  database-name:
+    description: 'The database name'
+    required: true
+  server-name:
+    description: 'The server name that the database will be created'
+    required: true
+  environment:
+    description: 'The environment that the database will be created'
+    required: true
+  location:
+    description: 'The region/location for the database'
+    required: true
+  admin-login:
+    description: 'The administrator login for the database'
+    required: true
+  admin-password:
+    description: 'The password for the login'
+    required: true
+  client-ip:
+    description: 'The IP to be allowed to connect to database'
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: Azure Login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{ inputs.credentials }}
+
+    - name: Deploy Database
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az deployment group create \
+          --name deploy-${{ inputs.database-name }} \
+          --resource-group ${{ inputs.resource-group-name }} \
+          --template-file ./azure/arm-templates/database/template.json \
+          --parameters \
+          subscriptionId="${{ inputs.subscription-id }}" \
+          administratorLogin="${{ inputs.admin-login }}" \
+          administratorLoginPassword="${{ inputs.admin-password }}" \
+          clientIpValue="${{ inputs.client-ip }}" \
+          resourceGroupName="${{ inputs.resource-group-name }}" \
+          databaseName="${{ inputs.database-name }}" \
+          location="${{ inputs.location }}" \
+          serverName="${{ inputs.server-name }}" \
+          @./azure/arm-templates/database/parameters.json

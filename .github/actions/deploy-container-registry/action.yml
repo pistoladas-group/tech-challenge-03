@@ -1,0 +1,46 @@
+name: 'Deploy Container Registry'
+description: 'Deploy the Container Registry in Azure'
+inputs:
+  credentials:
+    description: 'The Azure credentials to log in'
+    required: true
+  subscription-id:
+    description: 'The subscription that the registry will be created'
+    required: true
+  resource-group-name:
+    description: 'The resource group name that the registry will be created'
+    required: true
+  resource-name:
+    description: 'The resource name that the registry will be created'
+    required: true
+  environment:
+    description: 'The environment that the registry will be created'
+    required: true
+  location:
+    description: 'The region/location for the registry'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Azure Login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{ inputs.credentials }}
+
+    - name: Deploy Container Registry
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az deployment group create \
+          --name deploy-${{ inputs.resource-name }} \
+          --resource-group ${{ inputs.resource-group-name }} \
+          --template-file ./azure/arm-templates/resource/acr-template.json \
+          --parameters resourceName="${{ inputs.resource-name }}" location="${{ inputs.location }}" @./azure/arm-templates/resource/parameters.json
+
+    - name: Set ACR Anonymous Pull
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az acr update --name ${{ inputs.resource-name }} --anonymous-pull-enabled true

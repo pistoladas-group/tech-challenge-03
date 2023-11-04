@@ -1,6 +1,9 @@
 name: 'Push Image'
 description: 'Push a docker image to the Azure Container Registry'
 inputs:
+  credentials:
+    description: 'The Azure credentials to log in'
+    required: true
   image-name:
     description: 'The name for the image'
     required: true
@@ -16,17 +19,14 @@ inputs:
 runs:
   using: "composite"
   steps:
-      - name: Azure Login
-        uses: Azure/login@v1.4.6
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Azure Login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{ inputs.credentials }}
 
-      - name: Push Image
-        shell: bash
-        uses: azure/cli@v1
-        with:
-          max_attempts: 1
-          retry_on: error
-          azcliversion: latest
-          inlineScript: |
-            az acr build --image ${{ inputs.image-name }}:${{ inputs.image-tag }} --registry ${{ inputs.registry-name }} --file ${{ inputs.docker-file-path }}
+    - name: Push Image
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az acr build --image ${{ inputs.image-name }}:${{ inputs.image-tag }} --registry ${{ inputs.registry-name }} --file ${{ inputs.docker-file-path }}

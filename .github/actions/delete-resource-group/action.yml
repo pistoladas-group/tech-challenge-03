@@ -1,14 +1,11 @@
-name: 'Create Resource Group'
-description: 'Creates a Resource Group in Azure'
+name: 'Delete Resource Group'
+description: 'Deletes a Resource Group in Azure'
 inputs:
   credentials:
     description: 'The Azure credentials to log in'
     required: true
   resource-group-name:
-    description: 'The name for the resource group'
-    required: true
-  location:
-    description: 'The region/location for the resource group'
+    description: 'The name for the resource group to be deleted'
     required: true
 runs:
   using: "composite"
@@ -18,9 +15,9 @@ runs:
       with:
         creds: ${{ inputs.credentials }}
     
-    - name: Create Resource Group
+    - name: Delete Resource Group
       uses: azure/cli@v1
       with:
         azcliversion: latest
         inlineScript: |
-          az group create --name ${{ inputs.resource-group-name }} --location ${{ inputs.location }}
+          az group delete --name ${{ inputs.resource-group-name }} --yes

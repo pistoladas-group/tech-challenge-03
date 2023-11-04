@@ -1,0 +1,192 @@
+name: UI Test Workflow
+
+on:
+  workflow_call:
+
+env:
+  ENVIRONMENT: test
+  REGISTRY_ENVIRONMENT: prod
+
+jobs:
+  # Setup
+  create-resource-group:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Create Resource Group
+        uses: ./.github/actions/create-resource-group
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+
+  deploy-databases:
+    needs: [ create-resource-group ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Deploy TechNewsAuthTest Database
+        uses: ./.github/actions/deploy-database
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+          resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+          database-name: TechNewsAuthTest
+          server-name: dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}
+          environment: ${{ env.ENVIRONMENT }}
+          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+          admin-login: ${{ secrets.ADMIN_LOGIN }}
+          admin-password: ${{ secrets.ADMIN_PASSWORD }}
+          client-ip: ${{ secrets.CLIENT_IP }}
+
+      - name: Deploy TechNewsTest Database
+        uses: ./.github/actions/deploy-database
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+          resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+          database-name: TechNewsTest
+          server-name: dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}
+          environment: ${{ env.ENVIRONMENT }}
+          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+          admin-login: ${{ secrets.ADMIN_LOGIN }}
+          admin-password: ${{ secrets.ADMIN_PASSWORD }}
+          client-ip: ${{ secrets.CLIENT_IP }} 
+
+  push-auth-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Push Auth Image
+        uses: ./.github/actions/push-image
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          image-name: ${{ vars.APP_NAME}}-auth-api
+          image-tag: ${{ env.ENVIRONMENT }}
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          docker-file-path: ./src/api/TechNews.Auth.Api/Dockerfile .
+  
+  push-core-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Push Core Image
+        uses: ./.github/actions/push-image
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          image-name: ${{ vars.APP_NAME}}-core-api
+          image-tag: ${{ env.ENVIRONMENT }}
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          docker-file-path: ./src/api/TechNews.Core.Api/Dockerfile .
+  
+  push-web-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Push Web Image
+        uses: ./.github/actions/push-image
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          image-name: ${{ vars.APP_NAME}}-web
+          image-tag: ${{ env.ENVIRONMENT }}
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          docker-file-path: ./src/web/TechNews.Web/Dockerfile .
+
+  deploy-auth-container:
+    needs: [ deploy-databases, push-auth-image, push-core-image, push-web-image ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Deploy TechNews Auth Container
+        uses: ./.github/actions/deploy-container-instance
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+          environment: ${{ env.ENVIRONMENT }}
+          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+          container-name: ${{ vars.APP_NAME}}-auth-api
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          image-tag: ${{ env.ENVIRONMENT }}
+          port: ${{ vars.AUTH_PORT }}
+          runs-health-check: true
+          environment-variables: TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}.database.windows.net,1433;Initial Catalog=TechNewsAuthTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" AZURE_KEY_VAULT_URL="https://kv${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}.vault.azure.net/" ASPNETCORE_URLS="http://+:${{ vars.AUTH_PORT }} " TOKEN_EXPIRATION_IN_MINUTES="${{ vars.TOKEN_EXPIRATION_IN_MINUTES }}" KEY_ROTATOR_EXECUTION_IN_MINUTES="${{ vars.KEY_ROTATOR_EXECUTION_IN_MINUTES }}" KEY_CREATION_SIZE_IN_BITS="${{ vars.KEY_CREATION_SIZE_IN_BITS }}" KEY_EXPIRATION_IN_DAYS="${{ vars.KEY_EXPIRATION_IN_DAYS }}" CRYPTOGRAPHIC_ALGORITHM="${{ vars.CRYPTOGRAPHIC_ALGORITHM }}"
+      
+  deploy-core-container:
+    needs: [ deploy-databases, push-auth-image, push-core-image, push-web-image ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Deploy TechNews Core Container
+        uses: ./.github/actions/deploy-container-instance
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+          environment: ${{ env.ENVIRONMENT }}
+          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+          container-name: ${{ vars.APP_NAME}}-core-api
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          image-tag: ${{ env.ENVIRONMENT }}
+          port: ${{ vars.CORE_PORT }}
+          runs-health-check: true
+          environment-variables: TECHNEWS_CORE_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}.database.windows.net,1433;Initial Catalog=TechNewsTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" ASPNETCORE_URLS="http://+:${{ vars.CORE_PORT }}" TECHNEWS_CORE_API_AUTH_JWKS_URL="http://${{ vars.APP_NAME}}-auth-api-${{ env.ENVIRONMENT }}.${{ vars.AZURE_RESOURCES_LOCATION }}.azurecontainer.io:${{ vars.AUTH_PORT }}/jwks"
+
+  deploy-web-container:
+    needs: [ deploy-auth-container, deploy-core-container ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Deploy TechNews Web Container
+        uses: ./.github/actions/deploy-container-instance
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
+          environment: ${{ env.ENVIRONMENT }}
+          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+          container-name: ${{ vars.APP_NAME}}-web
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          image-tag: ${{ env.ENVIRONMENT }}
+          port: ${{ vars.WEB_PORT }}
+          environment-variables: TECHNEWS_APP_API_AUTH_URL="http://${{ vars.APP_NAME}}-auth-api-${{ env.ENVIRONMENT }}.${{ vars.AZURE_RESOURCES_LOCATION }}.azurecontainer.io:${{ vars.AUTH_PORT }}" TECHNEWS_APP_API_CORE_URL="http://${{ vars.APP_NAME}}-core-api-${{ env.ENVIRONMENT }}.${{ vars.AZURE_RESOURCES_LOCATION }}.azurecontainer.io:${{ vars.CORE_PORT }}" ASPNETCORE_URLS="http://+:${{ vars.WEB_PORT }}"
+
+  # Run Tests
+  run-unit-and-integration-tests:
+    needs: [ deploy-web-container ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Run UI Tests
+        uses: ./.github/actions/run-ui-tests
+        with:
+          web-uri: ${{ vars.APP_NAME}}-web-${{ env.ENVIRONMENT }}.${{ vars.AZURE_RESOURCES_LOCATION }}.azurecontainer.io:${{ vars.WEB_PORT }}
+
+  # Cleanup
+  clean-up-setup:
+    needs: [ run-unit-and-integration-tests ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
+
+      - name: Delete Resource Group
+        uses: ./.github/actions/delete-resource-group
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}

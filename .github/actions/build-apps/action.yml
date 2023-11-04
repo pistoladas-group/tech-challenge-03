@@ -8,15 +8,15 @@ inputs:
 runs:
   using: "composite"
   steps:
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ inputs.dotnet-version }}
-        
-      - name: Restore Dependencies
-        shell: bash
-        run: dotnet restore
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
+      
+    - name: Restore Dependencies
+      shell: bash
+      run: dotnet restore
 
-      - name: Build Apps
-        shell: bash
-        run: dotnet build --no-restore
+    - name: Build Apps
+      shell: bash
+      run: dotnet build --no-restore
