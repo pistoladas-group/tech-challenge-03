@@ -27,21 +27,20 @@ runs:
       with:
         creds: ${{ inputs.credentials }}
 
-    # - name: Deploy Container Registry
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-    #     resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
-    #     template: ./azure/arm-templates/resource/acr-template.json
-    #     parameters: ./azure/arm-templates/resource/parameters.json
-
     - name: Deploy Container Registry
       uses: azure/cli@v1
       with:
         azcliversion: latest
         inlineScript: |
           az deployment group create \
-          --name deploy \
+          --name Deploy ${{ inputs.resource-name }} \
           --resource-group ${{ inputs.resource-group-name }} \
           --template-file ./azure/arm-templates/resource/acr-template.json \
           --parameters resourceName="${{ inputs.resource-name }}" location="${{ inputs.location }}" @./azure/arm-templates/resource/parameters.json
+
+    - name: Set ACR Anonymous Pull
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az acr update --name ${{ inputs.resource-name }} --anonymous-pull-enabled true

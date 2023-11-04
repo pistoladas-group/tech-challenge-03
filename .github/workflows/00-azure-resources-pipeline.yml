@@ -2,7 +2,10 @@ name: Create Azure Resources Workflow
 
 on:
   workflow_dispatch:
-  
+
+env:
+  ENVIRONMENT: prod
+
 jobs:
   create-resource-group:
     runs-on: ubuntu-latest
@@ -30,46 +33,29 @@ jobs:
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
           resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
-          environment: prod
-          resource-name: acr${{ vars.APP_NAME }}prod${{ vars.AZURE_RESOURCES_LOCATION }}
+          environment: $ENVIRONMENT
+          resource-name: acr${{ vars.APP_NAME }}$ENVIRONMENT${{ vars.AZURE_RESOURCES_LOCATION }}
           location: ${{ vars.AZURE_RESOURCES_LOCATION }}
 
-    # - name: Deploy Container Registry
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-    #     resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
-    #     template: ./azure/arm-templates/resource/acr-template.json
-    #     parameters: ./azure/arm-templates/resource/parameters.json
+  deploy-key-vault:
+    needs: [ create-resource-group ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
 
-
-
-
-
-
-    # - name: Set ACR Anonymous Pull
-    #   uses: azure/cli@v1
-    #   with:
-    #     azcliversion: latest
-    #     inlineScript: |
-    #       az acr update --name ${{ vars.CONTAINER_REGISTRY_NAME }} --anonymous-pull-enabled true
-
-    # - name: Deploy Key Vault
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-    #     resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
-    #     template: ./azure/arm-templates/resource/key-vault-template.json
-    #     parameters: ./azure/arm-templates/resource/parameters.json
-
-    # - name: Upload Vault Secrets
-    #   uses: azure/cli@v1
-    #   with:
-    #     azcliversion: latest
-    #     inlineScript: |
-    #       az keyvault secret set --vault-name ${{ vars.VAULT_NAME }} --name administratorLogin --value ${{secrets.ADMIN_LOGIN}}
-    #       az keyvault secret set --vault-name ${{ vars.VAULT_NAME }} --name administratorLoginPassword --value ${{secrets.ADMIN_PASSWORD}}
-    #       az keyvault secret set --vault-name ${{ vars.VAULT_NAME }} --name clientIpValue --value ${{secrets.CLIENT_IP}}
+      - name: Deploy Key Vault
+        uses: ./.github/actions/deploy-key-vault
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+          resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
+          environment: $ENVIRONMENT
+          resource-name: kv${{ vars.APP_NAME }}$ENVIRONMENT${{ vars.AZURE_RESOURCES_LOCATION }}
+          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+          database-admin-login: ${{ secrets.ADMIN_LOGIN }}
+          database-admin-pass: ${{ secrets.ADMIN_PASSWORD }}
+          database-client-ip-value: ${{ secrets.CLIENT_IP }}
 
     # - name: Deploy TechNewsAuth Database Template
     #   uses: azure/arm-deploy@v1

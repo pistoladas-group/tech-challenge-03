@@ -13,8 +13,8 @@
         {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2021-10-01",
-            "name": "[parameters('keyVault').name]",
-            "location": "[parameters('keyVault').location]",
+            "name": "[parameters('resourceName')]",
+            "location": "[parameters('location')]",
             "properties": {
                 "enabledForDeployment": "[parameters('keyVault').enabledForDeployment]",
                 "enabledForTemplateDeployment": "[parameters('keyVault').enabledForTemplateDeployment]",
