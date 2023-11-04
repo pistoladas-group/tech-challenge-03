@@ -58,23 +58,23 @@ jobs:
           database-client-ip-value: ${{ secrets.CLIENT_IP }}
 
   deploy-auth-database:
-  needs: [ create-resource-group ]
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout Actions
-      uses: actions/checkout@v4
+    needs: [ create-resource-group ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
 
-    - name: Deploy TechNewsAuth Database
-      uses: ./.github/actions/deploy-database
-      with:
-        credentials: ${{ secrets.AZURE_CREDENTIALS }}
-        subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
-        resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
-        database-name: TechNewsAuth
-        server-name: dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}
-        key-vault-name: kv${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
-        environment: ${{ env.ENVIRONMENT }}
-        location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+      - name: Deploy TechNewsAuth Database
+        uses: ./.github/actions/deploy-database
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+          resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
+          database-name: TechNewsAuth
+          server-name: dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}
+          key-vault-name: kv${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          environment: ${{ env.ENVIRONMENT }}
+          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
 
 
   
