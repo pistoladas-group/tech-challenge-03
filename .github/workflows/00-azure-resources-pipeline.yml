@@ -37,7 +37,7 @@ jobs:
           resource-name: acr${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           location: ${{ vars.AZURE_RESOURCES_LOCATION }}
 
-  deploy-auth-database:
+  deploy-databases:
     needs: [ create-resource-group ]
     runs-on: ubuntu-latest
     steps:
@@ -58,13 +58,6 @@ jobs:
           admin-login: ${{ secrets.ADMIN_LOGIN }}
           admin-password: ${{ secrets.ADMIN_PASSWORD }}
           client-ip: ${{ secrets.CLIENT_IP }}
-  
-  deploy-core-database:
-    needs: [ create-resource-group ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Actions
-        uses: actions/checkout@v4
 
       - name: Deploy TechNews Database
         uses: ./.github/actions/deploy-database
@@ -78,4 +71,4 @@ jobs:
           location: ${{ vars.AZURE_RESOURCES_LOCATION }}
           admin-login: ${{ secrets.ADMIN_LOGIN }}
           admin-password: ${{ secrets.ADMIN_PASSWORD }}
-          client-ip: ${{ secrets.CLIENT_IP }}
+          client-ip: ${{ secrets.CLIENT_IP }}  
