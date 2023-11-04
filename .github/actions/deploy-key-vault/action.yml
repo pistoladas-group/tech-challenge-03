@@ -42,7 +42,7 @@ runs:
         azcliversion: latest
         inlineScript: |
           az deployment group create \
-          --name Deploy ${{ inputs.resource-name }} \
+          --name "Deploy ${{ inputs.resource-name }}" \
           --resource-group ${{ inputs.resource-group-name }} \
           --template-file ./azure/arm-templates/resource/key-vault-template.json \
           --parameters resourceName="${{ inputs.resource-name }}" location="${{ inputs.location }}" @./azure/arm-templates/resource/parameters.json
