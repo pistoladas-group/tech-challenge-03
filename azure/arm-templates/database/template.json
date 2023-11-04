@@ -8,9 +8,6 @@
         "resourceGroupName": {
             "type": "string"
         },
-        "keyVaultName": {
-            "type": "string"
-        },
         "databaseName": {
             "type": "string"
         },

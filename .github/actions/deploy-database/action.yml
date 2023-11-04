@@ -16,9 +16,6 @@ inputs:
   server-name:
     description: 'The server name that the database will be created'
     required: true
-  key-vault-name:
-    description: 'The key vault name to fetch admin credentials'
-    required: true
   environment:
     description: 'The environment that the database will be created'
     required: true
@@ -57,7 +54,6 @@ runs:
           administratorLoginPassword="${{ inputs.admin-password }}" \
           clientIpValue="${{ inputs.client-ip }}" \
           resourceGroupName="${{ inputs.resource-group-name }}" \
-          keyVaultName="${{ inputs.key-vault-name }}" \
           databaseName="${{ inputs.database-name }}" \
           location="${{ inputs.location }}" \
           serverName="${{ inputs.server-name }}" \
