@@ -4,16 +4,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-apps:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Actions
-        uses: actions/checkout@v4
+  # build-apps:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Actions
+  #       uses: actions/checkout@v4
 
-      - name: Build Apps
-        uses: ./.github/actions/build-apps
-        with:
-          dotnet-version: '6.0.x'
+  #     - name: Build Apps
+  #       uses: ./.github/actions/build-apps
+  #       with:
+  #         dotnet-version: '6.0.x'
 
   # run-unit-and-integration-tests:
   #   needs: [ build-apps ]
