@@ -26,8 +26,6 @@
         },
         "containerRegistry": {
             "value": {
-                "registryName": "acrtechnewsprodeastus",
-                "registryLocation": "eastus",
                 "zoneRedundancy": "disabled",
                 "registrySku": "Standard",
                 "registryApiVersion": "2022-02-01-preview",
