@@ -7,21 +7,21 @@ env:
   ENVIRONMENT: prod
 
 jobs:
-  create-resource-group:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Actions
-        uses: actions/checkout@v4
+  # create-resource-group:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Actions
+  #       uses: actions/checkout@v4
 
-      - name: Create Resource Group
-        uses: ./.github/actions/create-resource-group
-        with:
-          credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
-          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
+  #     - name: Create Resource Group
+  #       uses: ./.github/actions/create-resource-group
+  #       with:
+  #         credentials: ${{ secrets.AZURE_CREDENTIALS }}
+  #         resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
+  #         location: ${{ vars.AZURE_RESOURCES_LOCATION }}
 
   deploy-container-registry:
-    needs: [ create-resource-group ]
+    #needs: [ create-resource-group ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Actions
@@ -33,12 +33,12 @@ jobs:
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
           resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
-          environment: $ENVIRONMENT
-          resource-name: acr${{ vars.APP_NAME }}$ENVIRONMENT${{ vars.AZURE_RESOURCES_LOCATION }}
+          environment: ${{ env.ENVIRONMENT }}
+          resource-name: acr${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           location: ${{ vars.AZURE_RESOURCES_LOCATION }}
 
   deploy-key-vault:
-    needs: [ create-resource-group ]
+    #needs: [ create-resource-group ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Actions
@@ -50,8 +50,8 @@ jobs:
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
           resource-group-name: ${{ vars.RESOURCE_GROUP_NAME }}
-          environment: $ENVIRONMENT
-          resource-name: kv${{ vars.APP_NAME }}$ENVIRONMENT${{ vars.AZURE_RESOURCES_LOCATION }}
+          environment: ${{ env.ENVIRONMENT }}
+          resource-name: kv${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           location: ${{ vars.AZURE_RESOURCES_LOCATION }}
           database-admin-login: ${{ secrets.ADMIN_LOGIN }}
           database-admin-pass: ${{ secrets.ADMIN_PASSWORD }}
