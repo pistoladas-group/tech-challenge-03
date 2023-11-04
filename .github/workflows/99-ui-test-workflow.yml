@@ -117,6 +117,7 @@ jobs:
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
           resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
           environment: ${{ env.ENVIRONMENT }}
+          location: ${{ vars.AZURE_RESOURCES_LOCATION }}
           container-name: ${{ vars.APP_NAME}}-auth-api
           registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           port: ${{ vars.AUTH_PORT }}

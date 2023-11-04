@@ -10,6 +10,9 @@ inputs:
   environment:
     description: 'The environment that the container will be created'
     required: true
+  location:
+    description: 'The region/location where the container is hosted'
+    required: true
   container-name:
     description: 'The application name for the container'
     required: true
@@ -22,25 +25,36 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Azure Login
-      uses: Azure/login@v1.4.6
-      with:
-        creds: ${{ inputs.credentials }}
+    # - name: Azure Login
+    #   uses: Azure/login@v1.4.6
+    #   with:
+    #     creds: ${{ inputs.credentials }}
 
-    - name: Deploy Container Instance
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az container create \
-            --resource-group ${{ inputs.resource-group-name }} \
-            --assign-identity \
-            --environment-variables ${{ inputs.environment-variables }} \
-            --memory 0.5 --cpu 1 --ports ${{ inputs.port }} \
-            --ip-address Public \
-            --dns-name-label ${{ inputs.container-name }}-${{ inputs.environment }} \
-            --registry-login-server ${{ inputs.registry-name }}.azurecr.io \
-            --registry-username "anonymous" \
-            --registry-password "anonymous" \
-            --name ${{ inputs.container-name }}-${{ inputs.environment }}-container \
-            --image ${{ inputs.registry-name }}.azurecr.io/${{ inputs.container-name }}:${{ inputs.environment }}
+    # - name: Deploy Container Instance
+    #   uses: azure/cli@v1
+    #   with:
+    #     azcliversion: latest
+    #     inlineScript: |
+    #       az container create \
+    #         --resource-group ${{ inputs.resource-group-name }} \
+    #         --assign-identity \
+    #         --environment-variables ${{ inputs.environment-variables }} \
+    #         --memory 0.5 --cpu 1 --ports ${{ inputs.port }} \
+    #         --ip-address Public \
+    #         --dns-name-label ${{ inputs.container-name }}-${{ inputs.environment }} \
+    #         --registry-login-server ${{ inputs.registry-name }}.azurecr.io \
+    #         --registry-username "anonymous" \
+    #         --registry-password "anonymous" \
+    #         --name ${{ inputs.container-name }}-${{ inputs.environment }}-container \
+    #         --image ${{ inputs.registry-name }}.azurecr.io/${{ inputs.container-name }}:${{ inputs.environment }}
+    
+    - name: Health Check API
+        run: |
+          RESPONSE=$(curl -s "http://${{ inputs.container-name }}-${{ inputs.environment }}.${{ inputs.location }}.azurecontainer.io:${{ inputs.port }}/health")
+          
+          if [[ "$RESPONSE" == *"Healthy"* ]]; then
+            echo "API is Healthy"
+          else
+            echo "API is not Healthy"
+            exit 1
+          fi
