@@ -19,6 +19,9 @@ inputs:
   registry-name:
     description: 'The registry name to pull the image from'
     required: true
+  image-tag:
+    description: 'The image tag to pull the image from'
+    required: true
   port:
     description: 'The port for the container'
     required: true
@@ -53,7 +56,7 @@ runs:
             --registry-username "anonymous" \
             --registry-password "anonymous" \
             --name ${{ inputs.container-name }}-${{ inputs.environment }}-container \
-            --image ${{ inputs.registry-name }}.azurecr.io/${{ inputs.container-name }}:${{ inputs.environment }}
+            --image ${{ inputs.registry-name }}.azurecr.io/${{ inputs.container-name }}:${{ inputs.image-tag }}
     
     - name: Health Check API
       if: ${{ inputs.runs-health-check == 'true' }}
