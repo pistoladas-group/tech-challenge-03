@@ -82,7 +82,7 @@ jobs:
 
   # Deploy
   deploy-auth-container:
-    needs: [ push-auth-image, push-core-image, push-web-image ]
+    #needs: [ push-auth-image, push-core-image, push-web-image ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Actions
@@ -103,7 +103,7 @@ jobs:
           environment-variables: TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}.database.windows.net,1433;Initial Catalog=TechNewsAuth;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" AZURE_KEY_VAULT_URL="https://kv${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}.vault.azure.net/" ASPNETCORE_URLS="http://+:${{ vars.AUTH_PORT }} " TOKEN_EXPIRATION_IN_MINUTES="${{ vars.TOKEN_EXPIRATION_IN_MINUTES }}" KEY_ROTATOR_EXECUTION_IN_MINUTES="${{ vars.KEY_ROTATOR_EXECUTION_IN_MINUTES }}" KEY_CREATION_SIZE_IN_BITS="${{ vars.KEY_CREATION_SIZE_IN_BITS }}" KEY_EXPIRATION_IN_DAYS="${{ vars.KEY_EXPIRATION_IN_DAYS }}" CRYPTOGRAPHIC_ALGORITHM="${{ vars.CRYPTOGRAPHIC_ALGORITHM }}"
       
   deploy-core-container:
-    needs: [ push-auth-image, push-core-image, push-web-image ]
+    #needs: [ push-auth-image, push-core-image, push-web-image ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Actions
@@ -124,7 +124,7 @@ jobs:
           environment-variables: TECHNEWS_CORE_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}.database.windows.net,1433;Initial Catalog=TechNews;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" ASPNETCORE_URLS="http://+:${{ vars.CORE_PORT }}" TECHNEWS_CORE_API_AUTH_JWKS_URL="http://${{ vars.APP_NAME}}-auth-api-${{ env.ENVIRONMENT }}.${{ vars.AZURE_RESOURCES_LOCATION }}.azurecontainer.io:${{ vars.AUTH_PORT }}/jwks"
 
   deploy-web-container:
-    needs: [ deploy-auth-container, deploy-core-container ]
+    #needs: [ deploy-auth-container, deploy-core-container ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Actions
