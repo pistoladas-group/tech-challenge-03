@@ -87,20 +87,20 @@ jobs:
   #         registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
   #         docker-file-path: ./src/api/TechNews.Core.Api/Dockerfile .
   
-  # push-web-image:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Actions
-  #       uses: actions/checkout@v4
+  push-web-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions
+        uses: actions/checkout@v4
 
-  #     - name: Push Web Image
-  #       uses: ./.github/actions/push-image
-  #       with:
-  #         credentials: ${{ secrets.AZURE_CREDENTIALS }}
-  #         image-name: ${{ vars.APP_NAME}}-web
-  #         image-tag: ${{ env.ENVIRONMENT }}
-  #         registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
-  #         docker-file-path: ./src/api/TechNews.Core.Api/Dockerfile .
+      - name: Push Web Image
+        uses: ./.github/actions/push-image
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          image-name: ${{ vars.APP_NAME}}-web
+          image-tag: ${{ env.ENVIRONMENT }}
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          docker-file-path: ./src/web/TechNews.Web/Dockerfile .
 
   # Deploy
   # deploy-auth-container:
