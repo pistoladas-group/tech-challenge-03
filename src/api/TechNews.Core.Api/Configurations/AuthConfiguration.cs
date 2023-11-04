@@ -21,7 +21,7 @@ public static class AuthConfiguration
             {
                 if (retrievalUrl is null)
                 {
-                    throw new ApplicationException(nameof(retrievalUrl));
+                    throw new ArgumentNullException(nameof(retrievalUrl));
                 }
 
                 options.RequireHttpsMetadata = false;

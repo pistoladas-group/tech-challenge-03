@@ -43,6 +43,6 @@ public static class EnvironmentVariables
         DatabaseConnectionString = Environment.GetEnvironmentVariable("TECHNEWS_CORE_API_DATABASE_CONNECTION_STRING");
         DiscordWebhookId = Environment.GetEnvironmentVariable("TECHNEWS_CORE_API_DISCORD_WEBHOOK_ID");
         DiscordWebhookToken = Environment.GetEnvironmentVariable("TECHNEWS_CORE_API_DISCORD_WEBHOOK_TOKEN");
-        AuthJwksUrl = Environment.GetEnvironmentVariable("TECHNEWS_CORE_API_AUTH_JWKS_URL");
+        AuthJwksUrl = Environment.GetEnvironmentVariable("TECHNEWS_CORE_API_AUTH_JWKS_URL") ?? "https://localhost/jwks";
     }
 }

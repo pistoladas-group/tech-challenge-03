@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration", "integration"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechNews.Auth.Api.IntegrationTests", "tests\integration\TechNews.Auth.Api.IntegrationTests\TechNews.Auth.Api.IntegrationTests.csproj", "{711B4F02-7D53-42DC-8A67-23C87007BBB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechNews.Core.Api.IntegrationTests", "tests\integration\TechNews.Core.Api.IntegrationTests\TechNews.Core.Api.IntegrationTests.csproj", "{B9430392-147C-4D50-ADDD-AE3A1C8EE93F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{711B4F02-7D53-42DC-8A67-23C87007BBB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{711B4F02-7D53-42DC-8A67-23C87007BBB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{711B4F02-7D53-42DC-8A67-23C87007BBB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9430392-147C-4D50-ADDD-AE3A1C8EE93F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9430392-147C-4D50-ADDD-AE3A1C8EE93F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9430392-147C-4D50-ADDD-AE3A1C8EE93F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9430392-147C-4D50-ADDD-AE3A1C8EE93F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{5E5B354B-DA19-48D7-979B-090B3AED58EB} = {12AF6F30-6688-458E-BC39-A50CE10DCFD9}
 		{0889293B-5565-42EA-8A53-9BAFADD9BBF8} = {B13517E0-0D56-4773-B295-A1870C392F2D}
 		{711B4F02-7D53-42DC-8A67-23C87007BBB2} = {0889293B-5565-42EA-8A53-9BAFADD9BBF8}
+		{B9430392-147C-4D50-ADDD-AE3A1C8EE93F} = {0889293B-5565-42EA-8A53-9BAFADD9BBF8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1904BB76-12DE-4DD8-BA2C-4A8D2566F470}

@@ -11,11 +11,6 @@ public static class Database
     {
         var connectionString = EnvironmentVariables.DatabaseConnectionString;
 
-        if (string.IsNullOrWhiteSpace(connectionString))
-        {
-            throw new ApplicationException("Undefined Database Connection String. Please check the Environment Variables.");
-        }
-
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseSqlServer(connectionString, assembly =>
