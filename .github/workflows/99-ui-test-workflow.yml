@@ -5,6 +5,7 @@ on:
 
 env:
   ENVIRONMENT: test
+  REGISTRY_ENVIRONMENT: prod
 
 jobs:
   # Setup
@@ -68,7 +69,7 @@ jobs:
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
           image-name: ${{ vars.APP_NAME}}-auth-api
           image-tag: ${{ env.ENVIRONMENT }}
-          registry-name: acr${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           docker-file-path: ./src/api/TechNews.Auth.Api/Dockerfile .
   
   push-core-image:
@@ -83,7 +84,7 @@ jobs:
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
           image-name: ${{ vars.APP_NAME}}-core-api
           image-tag: ${{ env.ENVIRONMENT }}
-          registry-name: acr${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           docker-file-path: ./src/api/TechNews.Core.Api/Dockerfile .
   
   push-web-image:
@@ -98,7 +99,7 @@ jobs:
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
           image-name: ${{ vars.APP_NAME}}-web
           image-tag: ${{ env.ENVIRONMENT }}
-          registry-name: acr${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           docker-file-path: ./src/api/TechNews.Core.Api/Dockerfile .
 
   # Deploy
@@ -117,7 +118,7 @@ jobs:
           resource-group-name: ${{ vars.TEST_RESOURCE_GROUP_NAME }}
           environment: ${{ env.ENVIRONMENT }}
           container-name: ${{ vars.APP_NAME}}-auth-api
-          registry-name: acr${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           port: ${{ vars.AUTH_PORT }}
           environment-variables: TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}.database.windows.net,1433;Initial Catalog=TechNewsAuthTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" \
             AZURE_KEY_VAULT_URL="https://kv${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}.vault.azure.net/" \
