@@ -1,26 +1,27 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Bogus;
+using DotNet.Testcontainers.Builders;
 using TechNews.Auth.Api.Models;
 using TechNews.Common.Library.Models;
+using Testcontainers.MsSql;
 
 namespace TechNews.Auth.Api.IntegrationTests;
 
-[CollectionDefinition(nameof(TestsFixtureCollection))]
-public class TestsFixtureCollection : ICollectionFixture<TestsFixture<Program>>
+public class TestsFixture : IDisposable, IAsyncLifetime
 {
-}
-
-public class TestsFixture<TProgram> : IDisposable where TProgram : class
-{
-    public readonly AuthApiFactory<TProgram> Factory;
+    private AuthApiFactory Factory;
     public HttpClient Client;
+    
+    private MsSqlContainer _sqlServerContainer = new MsSqlBuilder()
+        .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+        .WithPortBinding(hostPort: 1434, containerPort: 1433)
+        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(1433))
+        .WithPassword("Pass@123")
+        .WithEnvironment(name: "ACCEPT_EULA", value: "Y")
+        .WithEnvironment(name: "MSSQL_PID", value: "developer")
+        .Build();
 
-    public TestsFixture()
-    {
-        Factory = new AuthApiFactory<TProgram>();
-        Client = Factory.CreateClient();
-    }
 
     public HttpContent ConvertToContentInJson(object objectToConvert)
     {
@@ -122,5 +123,18 @@ public class TestsFixture<TProgram> : IDisposable where TProgram : class
     {
         Factory.Dispose();
         Client.Dispose();
+    }
+
+    public async Task InitializeAsync()
+    {
+        await _sqlServerContainer.StartAsync();
+        
+        Factory = new AuthApiFactory(_sqlServerContainer.GetConnectionString());
+        Client = Factory.CreateClient();
+    }
+
+    public async Task DisposeAsync()
+    {
+        await _sqlServerContainer.StopAsync();
     }
 }

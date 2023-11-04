@@ -11,6 +11,13 @@ public class RsaCryptographicKey : ICryptographicKey
     public DateTime CreationDate { get; private set; }
     private RSA _keyInstance { get; set; }
 
+    public RsaCryptographicKey()
+    {
+        Id = Guid.NewGuid();
+        CreationDate = DateTime.UtcNow;
+        _keyInstance = RSA.Create(2048);
+    }
+    
     public RsaCryptographicKey(Guid id, DateTime creationDate, RSA instance)
     {
         Id = id;

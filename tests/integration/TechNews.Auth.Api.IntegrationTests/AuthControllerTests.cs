@@ -4,12 +4,11 @@ using Bogus;
 
 namespace TechNews.Auth.Api.IntegrationTests;
 
-[Collection(nameof(TestsFixtureCollection))]
-public class AuthControllerTests
+public class AuthControllerTests : IClassFixture<TestsFixture>
 {
-    private readonly TestsFixture<Program> _testsFixture;
+    private readonly TestsFixture _testsFixture;
 
-    public AuthControllerTests(TestsFixture<Program> testsFixture)
+    public AuthControllerTests(TestsFixture testsFixture)
     {
         _testsFixture = testsFixture;
     }
@@ -155,128 +154,6 @@ public class AuthControllerTests
         Assert.True(response?.Errors?.Count > 0);
         Assert.True(response?.Errors?.Any(x => x.ErrorCode == "LockedUser"));
     }
-
-    //[Fact(DisplayName = "ShouldReturnBadRequest_WhenSignInFails")]
-    //[Trait("Login User", "")]
-    //public async void LoginAsync_ShouldReturnBadRequest_WhenSignInFails()
-    //{
-    //    // Arrange
-    //    var userManagerFake = A.Fake<UserManager<User>>();
-    //    var signInManagerFake = A.Fake<SignInManager<User>>();
-    //    var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
-    //    var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
-
-    //    var requestFake = _testsFixture.GetValidLoginRequestModel();
-
-    //    A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
-    //        .Returns(Task.FromResult<User?>(_testsFixture.GetFakeUser()));
-
-    //    A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true))
-    //        .Returns(Task.FromResult(Microsoft.AspNetCore.Identity.SignInResult.Failed));
-
-    //    // Act
-    //    var response = await controller.LoginAsync(requestFake);
-
-    //    // Assert
-    //    var objectResult = (ObjectResult?)response;
-    //    var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
-
-    //    Assert.Equal((int)HttpStatusCode.BadRequest, objectResult?.StatusCode);
-    //    Assert.Null(apiResponse?.Data);
-    //    Assert.True(apiResponse?.Errors?.Count > 0);
-    //    Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InvalidRequest"));
-    //    A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
-    //    A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
-    //}
-
-    //[Fact(DisplayName = "ShouldReturnInternalError_WhenNoCryptoKeyAvailable")]
-    //[Trait("Login User", "")]
-    //public async void LoginAsync_ShouldReturnInternalError_WhenNoCryptoKeyAvailable()
-    //{
-    //    // Arrange
-    //    var userManagerFake = A.Fake<UserManager<User>>();
-    //    var signInManagerFake = A.Fake<SignInManager<User>>();
-    //    var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
-    //    var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake);
-
-    //    var requestFake = _testsFixture.GetValidLoginRequestModel();
-
-    //    A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
-    //        .Returns(Task.FromResult<User?>(_testsFixture.GetFakeUser()));
-
-    //    A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true))
-    //        .Returns(Task.FromResult(Microsoft.AspNetCore.Identity.SignInResult.Success));
-
-    //    A.CallTo(() => cryptographicKeyRetrieverFake.GetExistingKeyAsync())
-    //       .Returns(Task.FromResult<ICryptographicKey?>(null));
-
-    //    // Act
-    //    var response = await controller.LoginAsync(requestFake);
-
-    //    // Assert
-    //    var objectResult = (ObjectResult?)response;
-    //    var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
-
-    //    Assert.Equal((int)HttpStatusCode.InternalServerError, objectResult?.StatusCode);
-    //    Assert.Null(apiResponse?.Data);
-    //    Assert.True(apiResponse?.Errors?.Count > 0);
-    //    Assert.True(apiResponse?.Errors?.Any(x => x.ErrorCode == "InternalError"));
-    //    A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
-    //    A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
-    //}
-
-    //[Fact(DisplayName = "ShouldReturnOkWithToken_WhenRequestIsValid")]
-    //[Trait("Login User", "")]
-    //public async void LoginAsync_ShouldReturnOkWithToken_WhenRequestIsValid()
-    //{
-    //    // Arrange
-    //    var userManagerFake = A.Fake<UserManager<User>>();
-    //    var signInManagerFake = A.Fake<SignInManager<User>>();
-    //    var cryptographicKeyRetrieverFake = A.Fake<ICryptographicKeyRetriever>();
-    //    var cryptoKeyFake = A.Fake<ICryptographicKey>();
-    //    var httpContextFake = A.Fake<HttpContext>();
-    //    var requestFake = _testsFixture.GetValidLoginRequestModel();
-
-    //    A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._))
-    //        .Returns(Task.FromResult<User?>(_testsFixture.GetFakeUser()));
-
-    //    A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true))
-    //        .Returns(Task.FromResult(Microsoft.AspNetCore.Identity.SignInResult.Success));
-
-    //    A.CallTo(() => cryptographicKeyRetrieverFake.GetExistingKeyAsync())
-    //       .Returns(Task.FromResult<ICryptographicKey?>(cryptoKeyFake));
-
-    //    A.CallTo(() => cryptoKeyFake.GetSigningCredentials())
-    //       .Returns(_testsFixture.GetRsaSigningCredentials());
-
-    //    A.CallTo(() => httpContextFake.Request.Scheme).Returns("https");
-    //    A.CallTo(() => httpContextFake.Request.Host).Returns(new HostString("localhost:5000"));
-
-    //    var controller = new AuthController(userManagerFake, signInManagerFake, cryptographicKeyRetrieverFake)
-    //    {
-    //        ControllerContext = new ControllerContext()
-    //        {
-    //            HttpContext = httpContextFake
-    //        }
-    //    };
-
-    //    // Act
-    //    var response = await controller.LoginAsync(requestFake);
-
-    //    // Assert
-    //    var objectResult = (ObjectResult?)response;
-    //    var apiResponse = _testsFixture.GetApiResponseFromObjectResult(objectResult);
-    //    var accessToken = _testsFixture.GetAccessTokenFromApiResponse(apiResponse);
-
-    //    Assert.Equal((int)HttpStatusCode.OK, objectResult?.StatusCode);
-    //    Assert.NotNull(apiResponse?.Data);
-    //    Assert.Null(apiResponse?.Errors);
-    //    Assert.True(accessToken?.ExpiresInSeconds > 0);
-    //    Assert.Equal("at+jwt", accessToken?.TokenType);
-    //    Assert.True(!string.IsNullOrWhiteSpace(accessToken?.AccessToken));
-    //    A.CallTo(() => userManagerFake.FindByEmailAsync(A<string>._)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
-    //    A.CallTo(() => signInManagerFake.PasswordSignInAsync(A<string>._, A<string>._, false, true)).MustHaveHappened(numberOfTimes: 1, timesOption: Times.Exactly);
-    //}
 
     [Fact(DisplayName = "ShouldReturnBadRequest_WhenGuidEmpty")]
     [Trait("Get User", "")]
