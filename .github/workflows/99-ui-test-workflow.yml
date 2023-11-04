@@ -57,55 +57,55 @@ jobs:
   #         admin-password: ${{ secrets.ADMIN_PASSWORD }}
   #         client-ip: ${{ secrets.CLIENT_IP }} 
 
-  push-auth-image:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Actions
-        uses: actions/checkout@v4
+  # push-auth-image:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Actions
+  #       uses: actions/checkout@v4
 
-      - name: Push Auth Image
-        uses: ./.github/actions/push-image
-        with:
-          credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          image-name: ${{ vars.APP_NAME}}-auth-api
-          image-tag: ${{ env.ENVIRONMENT }}
-          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
-          docker-file-path: ./src/api/TechNews.Auth.Api/Dockerfile .
+  #     - name: Push Auth Image
+  #       uses: ./.github/actions/push-image
+  #       with:
+  #         credentials: ${{ secrets.AZURE_CREDENTIALS }}
+  #         image-name: ${{ vars.APP_NAME}}-auth-api
+  #         image-tag: ${{ env.ENVIRONMENT }}
+  #         registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+  #         docker-file-path: ./src/api/TechNews.Auth.Api/Dockerfile .
   
-  push-core-image:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Actions
-        uses: actions/checkout@v4
+  # push-core-image:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Actions
+  #       uses: actions/checkout@v4
 
-      - name: Push Core Image
-        uses: ./.github/actions/push-image
-        with:
-          credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          image-name: ${{ vars.APP_NAME}}-core-api
-          image-tag: ${{ env.ENVIRONMENT }}
-          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
-          docker-file-path: ./src/api/TechNews.Core.Api/Dockerfile .
+  #     - name: Push Core Image
+  #       uses: ./.github/actions/push-image
+  #       with:
+  #         credentials: ${{ secrets.AZURE_CREDENTIALS }}
+  #         image-name: ${{ vars.APP_NAME}}-core-api
+  #         image-tag: ${{ env.ENVIRONMENT }}
+  #         registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+  #         docker-file-path: ./src/api/TechNews.Core.Api/Dockerfile .
   
-  push-web-image:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Actions
-        uses: actions/checkout@v4
+  # push-web-image:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Actions
+  #       uses: actions/checkout@v4
 
-      - name: Push Web Image
-        uses: ./.github/actions/push-image
-        with:
-          credentials: ${{ secrets.AZURE_CREDENTIALS }}
-          image-name: ${{ vars.APP_NAME}}-web
-          image-tag: ${{ env.ENVIRONMENT }}
-          registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
-          docker-file-path: ./src/api/TechNews.Core.Api/Dockerfile .
+  #     - name: Push Web Image
+  #       uses: ./.github/actions/push-image
+  #       with:
+  #         credentials: ${{ secrets.AZURE_CREDENTIALS }}
+  #         image-name: ${{ vars.APP_NAME}}-web
+  #         image-tag: ${{ env.ENVIRONMENT }}
+  #         registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
+  #         docker-file-path: ./src/api/TechNews.Core.Api/Dockerfile .
 
   # Deploy
   deploy-auth-container:
     #needs: [ deploy-databases, push-auth-image, push-core-image, push-web-image ]
-    needs: [ push-auth-image, push-core-image, push-web-image ]
+    #needs: [ push-auth-image, push-core-image, push-web-image ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Actions
@@ -120,11 +120,12 @@ jobs:
           container-name: ${{ vars.APP_NAME}}-auth-api
           registry-name: acr${{ vars.APP_NAME }}${{ env.REGISTRY_ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}
           port: ${{ vars.AUTH_PORT }}
-          environment-variables: TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}.database.windows.net,1433;Initial Catalog=TechNewsAuthTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" \
-            AZURE_KEY_VAULT_URL="https://kv${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}.vault.azure.net/" \
-            ASPNETCORE_URLS="http://+:${{ vars.AUTH_PORT }} " \
-            TOKEN_EXPIRATION_IN_MINUTES="${{ vars.TOKEN_EXPIRATION_IN_MINUTES }}" \
-            KEY_ROTATOR_EXECUTION_IN_MINUTES="${{ vars.KEY_ROTATOR_EXECUTION_IN_MINUTES }}" \
-            KEY_CREATION_SIZE_IN_BITS="${{ vars.KEY_CREATION_SIZE_IN_BITS }}" \
-            KEY_EXPIRATION_IN_DAYS="${{ vars.KEY_EXPIRATION_IN_DAYS }}" \
-            CRYPTOGRAPHIC_ALGORITHM="${{ vars.CRYPTOGRAPHIC_ALGORITHM }}"       
+          environment-variables: |
+            TECHNEWS_AUTH_API_DATABASE_CONNECTION_STRING="Server=tcp:dbs-${{ vars.APP_NAME }}-${{ env.ENVIRONMENT }}-${{ vars.AZURE_RESOURCES_LOCATION }}.database.windows.net,1433;Initial Catalog=TechNewsAuthTest;Persist Security Info=False;User ID=${{ secrets.ADMIN_LOGIN }};Password=${{ secrets.ADMIN_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" 
+            AZURE_KEY_VAULT_URL="https://kv${{ vars.APP_NAME }}${{ env.ENVIRONMENT }}${{ vars.AZURE_RESOURCES_LOCATION }}.vault.azure.net/" 
+            ASPNETCORE_URLS="http://+:${{ vars.AUTH_PORT }} " 
+            TOKEN_EXPIRATION_IN_MINUTES="${{ vars.TOKEN_EXPIRATION_IN_MINUTES }}" 
+            KEY_ROTATOR_EXECUTION_IN_MINUTES="${{ vars.KEY_ROTATOR_EXECUTION_IN_MINUTES }}" 
+            KEY_CREATION_SIZE_IN_BITS="${{ vars.KEY_CREATION_SIZE_IN_BITS }}" 
+            KEY_EXPIRATION_IN_DAYS="${{ vars.KEY_EXPIRATION_IN_DAYS }}" 
+            CRYPTOGRAPHIC_ALGORITHM="${{ vars.CRYPTOGRAPHIC_ALGORITHM }}"
