@@ -41,7 +41,7 @@ runs:
     - name: Set ACR Anonymous Pull
       uses: azure/cli@v1
       max_attempts: 3
-				retry_on: error
+      retry_on: error
       with:
         azcliversion: latest
         inlineScript: |
