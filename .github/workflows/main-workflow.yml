@@ -1,4 +1,4 @@
-name: Test Workflow
+name: Main Workflow
 
 on:
   workflow_dispatch:
@@ -31,7 +31,7 @@ jobs:
     
   ui-tests:
     needs: [ run-unit-and-integration-tests ]
-    uses: ./.github/workflows/99-ui-test-workflow.yml
+    uses: ./.github/workflows/ui-test-workflow.yml
     secrets: inherit
     
   # Generate Artifacts
