@@ -43,9 +43,9 @@ runs:
           --resource-group ${{ inputs.resource-group-name }} \
           --template-file ./azure/arm-templates/database/template.json \
           --parameters \
-          subscriptionId="${{ inputs.subscription-id }}"
-          resourceGroupName="${{ inputs.resource-group-name }}"
-          keyVaultName="${{ inputs.key-vault-name }}"
+          subscriptionId="${{ inputs.subscription-id }}" \
+          resourceGroupName="${{ inputs.resource-group-name }}" \
+          keyVaultName="${{ inputs.key-vault-name }}" \
           databaseName="${{ inputs.database-name }}" \
           location="${{ inputs.location }}" \
           serverName="${{ inputs.server-name }}" \
