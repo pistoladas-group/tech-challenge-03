@@ -1,0 +1,16 @@
+name: 'Run Unit and Integration Tests'
+description: 'Runs the Unit and Integration Tests of the repository'
+runs:
+  using: "composite"
+  steps:
+      - name: Run Auth Unit Tests
+        shell: bash
+        run: dotnet test ./tests/unit/TechNews.Auth.Api.Tests/TechNews.Auth.Api.Tests.csproj
+
+      - name: Run Core Unit Tests
+        shell: bash
+        run: dotnet test ./tests/unit/TechNews.Core.Api.Tests/TechNews.Core.Api.Tests.csproj
+
+      - name: Run Auth Integration Tests
+        shell: bash
+        run: dotnet test ./tests/integration/TechNews.Auth.Api.IntegrationTests/TechNews.Auth.Api.IntegrationTests.csproj
