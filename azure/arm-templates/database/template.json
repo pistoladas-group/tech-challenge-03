@@ -2,13 +2,45 @@
     "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "subscriptionId": {
+            "type": "string"
+        },
+        "resourceGroupName": {
+            "type": "string"
+        },
+        "keyVaultName": {
+            "type": "string"
+        },
+        "databaseName": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "serverName": {
+            "type": "string"
+        },
         "administratorLogin": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": {
+                "reference": {
+                    "keyVault": {
+                        "id": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('resourceGroupName'), '/providers/Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+                    },
+                    "secretName": "administratorLogin"
+                }
+            }
         },
         "administratorLoginPassword": {
             "type": "securestring",
-            "defaultValue": ""
+            "defaultValue": {
+                "reference": {
+                    "keyVault": {
+                        "id": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('resourceGroupName'), '/providers/Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+                    },
+                    "secretName": "administratorLoginPassword"
+                }
+            }
         },
         "administrators": {
             "type": "object",
@@ -17,23 +49,14 @@
         "collation": {
             "type": "string"
         },
-        "databaseName": {
-            "type": "string"
-        },
         "tier": {
             "type": "string"
         },
         "skuName": {
             "type": "string"
         },
-        "location": {
-            "type": "string"
-        },
         "maxSizeBytes": {
             "type": "int"
-        },
-        "serverName": {
-            "type": "string"
         },
         "sampleName": {
             "type": "string",
@@ -191,7 +214,14 @@
         },
         "clientIpValue": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": {
+                "reference": {
+                    "keyVault": {
+                        "id": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('resourceGroupName'), '/providers/Microsoft.KeyVault/vaults/', parameters('keyVaultName'))]"
+                    },
+                    "secretName": "clientIpValue"
+                }
+            }
         },
         "publicNetworkAccess": {
             "type": "string",
